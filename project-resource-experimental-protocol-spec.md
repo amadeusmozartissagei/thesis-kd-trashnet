@@ -119,6 +119,20 @@ LOSS = "KD Loss (Hard Label + Soft Label)"
 
 ---
 
+## Knowledge Distillation Configuration
+```python
+KD_LOSS = "KLDivLoss"
+KD_TEMPERATURE = 4
+KD_ALPHA = 0.5
+```
+
+Notes:
+- Paper mendefinisikan formula `L = α * L_soft + (1-α) * L_hard` tetapi tidak menyebutkan nilai T dan α yang digunakan.
+- T=4 dan α=0.5 adalah asumsi reproduksi berdasarkan konvensi umum literatur KD (Hinton et al., 2015).
+- Keputusan ini didokumentasikan sebagai **reproduction assumption**, bukan informasi dari paper.
+
+---
+
 ## Checkpoint Strategy
 ```python
 CHECKPOINT = "best_val_accuracy"
@@ -132,6 +146,22 @@ EARLY_STOPPING = False
 PRETRAINED = True
 WEIGHTS = "ImageNet"
 ```
+
+---
+
+## Model Source Libraries
+```python
+TEACHER_MODEL = "EfficientNet-B4"
+TEACHER_SOURCE = "timm"
+TEACHER_TIMM_NAME = "efficientnet_b4"
+
+STUDENT_MODEL = "Focus-RCNet"
+STUDENT_SOURCE = "custom (paper reproduction)"
+```
+
+Notes:
+- Focus-RCNet diimplementasikan manual berdasarkan arsitektur dari paper (tabel konfigurasi stage, Focus module, Sandglass block, SimAM).
+- EfficientNet-B4 menggunakan pretrained weights dari `timm`.
 
 ---
 
@@ -211,15 +241,27 @@ Focus-RCNet-KD
 ---
 
 ### 4. Two-Stage KD + Fine-Tuning (EfficientNet-B4 → Focus-RCNet)
+
+**Note: Ini adalah extension penelitian, bukan bagian dari paper original.**
+
 Stage 1:
 ```text
-Train Focus-RCNet normal
+Train Focus-RCNet normal (menggunakan konfigurasi Phase 1)
 ```
 
-Stage 2:
-```text
-Fine-tune Focus-RCNet menggunakan KD
+Stage 2 — Fine-Tuning with KD:
+```python
+STAGE2_EPOCHS = 50
+STAGE2_LR = 0.005
+STAGE2_FREEZE_LAYERS = False
+STAGE2_SCHEDULER = "CosineAnnealingLR"
+STAGE2_T_MAX = STAGE2_EPOCHS
 ```
+
+Notes:
+- Stage 2 menggunakan separuh epoch dari Stage 1 untuk menghindari overfitting.
+- Learning rate diturunkan 10x dari Phase 1 LR (0.05 → 0.005) karena model sudah pre-converged.
+- Tidak ada layer freezing — seluruh parameter di-fine-tune dengan KD signal.
 
 Purpose:
 - membandingkan KD from scratch vs KD fine-tuning
@@ -325,6 +367,18 @@ LOSS = "KD Loss (Hard Label + Soft Label)"
 
 ---
 
+## Knowledge Distillation Configuration
+```python
+KD_LOSS = "KLDivLoss"
+KD_TEMPERATURE = 4
+KD_ALPHA = 0.5
+```
+
+Notes:
+- Menggunakan konfigurasi KD yang sama dengan Phase 1 untuk konsistensi.
+
+---
+
 ## Checkpoint Strategy
 ```python
 CHECKPOINT = "best_val_accuracy"
@@ -338,6 +392,22 @@ EARLY_STOPPING = False
 PRETRAINED = True
 WEIGHTS = "ImageNet"
 ```
+
+---
+
+## Model Source Libraries
+```python
+TEACHER_MODEL = "EfficientNet-B4"
+TEACHER_SOURCE = "timm"
+TEACHER_TIMM_NAME = "efficientnet_b4"
+
+STUDENT_MODEL = "EfficientNet-Lite0"
+STUDENT_SOURCE = "timm"
+STUDENT_TIMM_NAME = "efficientnet_lite0"
+```
+
+Notes:
+- Kedua model menggunakan pretrained ImageNet weights dari library `timm`.
 
 ---
 
@@ -398,15 +468,27 @@ EfficientNet-Lite0-KD
 ---
 
 ### 7. Two-Stage KD + Fine-Tuning (EfficientNet-B4 → EfficientNet-Lite0)
+
+**Note: Ini adalah extension penelitian, bukan bagian dari paper original.**
+
 Stage 1:
 ```text
-Train EfficientNet-Lite0 normal
+Train EfficientNet-Lite0 normal (menggunakan konfigurasi Phase 2)
 ```
 
-Stage 2:
-```text
-Fine-tuning menggunakan KD
+Stage 2 — Fine-Tuning with KD:
+```python
+STAGE2_EPOCHS = 50
+STAGE2_LR = 0.001
+STAGE2_FREEZE_LAYERS = False
+STAGE2_SCHEDULER = "CosineAnnealingLR"
+STAGE2_T_MAX = STAGE2_EPOCHS
 ```
+
+Notes:
+- Stage 2 menggunakan separuh epoch dari Stage 1.
+- Learning rate diturunkan 10x dari Phase 2 LR (0.01 → 0.001).
+- Tidak ada layer freezing.
 
 Output:
 ```text
@@ -431,3 +513,43 @@ Total experiments:
 ```text
 7
 ```
+
+---
+
+# Evaluation Metrics
+
+## Primary Metric
+```python
+PRIMARY_METRIC = "Accuracy"
+```
+
+---
+
+## Reporting Metrics
+```python
+REPORT_METRICS = [
+    "Accuracy",
+    "Precision (macro)",
+    "Recall (macro)",
+    "F1-Score (macro)",
+    "Confusion Matrix",
+    "ROC Curve",
+    "AUC (macro)"
+]
+```
+
+---
+
+## Model Efficiency Metrics
+```python
+EFFICIENCY_METRICS = [
+    "Total Parameters",
+    "FLOPs",
+    "Inference Time (ms)"
+]
+```
+
+Notes:
+- Precision, Recall, dan F1-Score menggunakan macro averaging untuk konsistensi pada imbalanced dataset.
+- Efficiency metrics diukur pada single NVIDIA Tesla T4 untuk fair comparison.
+- ROC/AUC mengikuti paper original.
