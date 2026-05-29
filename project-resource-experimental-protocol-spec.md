@@ -553,3 +553,229 @@ Notes:
 - Precision, Recall, dan F1-Score menggunakan macro averaging untuk konsistensi pada imbalanced dataset.
 - Efficiency metrics diukur pada single NVIDIA Tesla T4 untuk fair comparison.
 - ROC/AUC mengikuti paper original.
+
+---
+
+# Notebook Execution Plan
+
+Seluruh eksperimen dibagi ke dalam **3 notebook** yang dijalankan secara sequential di Kaggle.
+
+---
+
+## Notebook 1 — Teacher Model Training
+
+### Content
+```text
+Experiment 1: Train EfficientNet-B4 (Teacher)
+```
+
+### Sections
+```text
+0. Setup (imports, config, seed, device)
+1. Dataset & DataLoader (TrashNet, split 70/30, seed 42)
+2. Model Definition (EfficientNet-B4 from timm, ImageNet pretrained)
+3. Training Loop (100 epochs, SGD, CosineAnnealingLR)
+4. Training Results (loss/accuracy curves, best metrics)
+5. Save Checkpoint
+```
+
+### Configuration
+```python
+IMG_SIZE = 380
+LR = 0.05
+EPOCHS = 100
+BATCH_SIZE = 8
+```
+
+### Input Dependencies
+```text
+- TrashNet dataset
+```
+
+### Output Artifacts
+```text
+- efficientnet_b4_teacher_best.pth
+- training_history_exp1.csv
+```
+
+### Estimated Runtime
+```text
+~2-3 hours
+```
+
+---
+
+## Notebook 2 — Phase 1: Focus-RCNet Experiments
+
+### Content
+```text
+Experiment 2: Train Focus-RCNet (Baseline)
+Experiment 3: KD From Scratch (EfficientNet-B4 → Focus-RCNet)
+Experiment 4: Two-Stage KD (EfficientNet-B4 → Focus-RCNet)
+```
+
+### Sections
+```text
+0. Setup (imports, config, seed, device)
+1. Dataset & DataLoader (TrashNet, split 70/30, seed 42, IMG_SIZE=380)
+2. Load Teacher Model (EfficientNet-B4 from checkpoint)
+3. Focus-RCNet Model Definition (custom implementation)
+4. Experiment 2 — Train Focus-RCNet Baseline
+5. Experiment 3 — KD From Scratch
+6. Experiment 4 — Two-Stage KD (load Exp 2 checkpoint → fine-tune with KD)
+7. Phase 1 Results Summary
+8. Save All Checkpoints
+```
+
+### Configuration
+```python
+IMG_SIZE = 380
+LR = 0.05
+EPOCHS = 100
+BATCH_SIZE = 8
+
+# KD Config
+KD_TEMPERATURE = 4
+KD_ALPHA = 0.5
+
+# Two-Stage (Experiment 4, Stage 2)
+STAGE2_EPOCHS = 50
+STAGE2_LR = 0.005
+```
+
+### Input Dependencies
+```text
+- TrashNet dataset
+- efficientnet_b4_teacher_best.pth (from Notebook 1)
+```
+
+### Output Artifacts
+```text
+- focus_rcnet_baseline_best.pth
+- focus_rcnet_kd_scratch_best.pth
+- focus_rcnet_kd_twostage_best.pth
+- training_history_exp2.csv
+- training_history_exp3.csv
+- training_history_exp4.csv
+```
+
+### Estimated Runtime
+```text
+~2-3 hours
+```
+
+### Notes
+- Experiment 4 Stage 1 tidak perlu di-retrain — langsung load checkpoint dari Experiment 2.
+- Teacher model di-load dalam eval mode, tidak di-update selama KD training.
+
+---
+
+## Notebook 3 — Phase 2: EfficientNet-Lite0 Experiments + Final Evaluation
+
+### Content
+```text
+Experiment 5: Train EfficientNet-Lite0 (Baseline)
+Experiment 6: KD From Scratch (EfficientNet-B4 → EfficientNet-Lite0)
+Experiment 7: Two-Stage KD (EfficientNet-B4 → EfficientNet-Lite0)
+Final Evaluation & Comparison (All 7 Experiments)
+```
+
+### Sections
+```text
+0. Setup (imports, config, seed, device)
+1. Dataset & DataLoader (TrashNet, split 70/30, seed 42, IMG_SIZE=224)
+2. Load Teacher Model (EfficientNet-B4 from checkpoint)
+3. EfficientNet-Lite0 Model Definition (from timm)
+4. Experiment 5 — Train EfficientNet-Lite0 Baseline
+5. Experiment 6 — KD From Scratch
+6. Experiment 7 — Two-Stage KD (load Exp 5 checkpoint → fine-tune with KD)
+7. Phase 2 Results Summary
+8. Save All Checkpoints
+9. Final Evaluation — Load All 7 Checkpoints
+10. Comparison Tables (Accuracy, Precision, Recall, F1, Params, FLOPs)
+11. Visualization (Confusion Matrices, ROC Curves, Training Curves)
+```
+
+### Configuration
+```python
+IMG_SIZE = 224
+LR = 0.01
+EPOCHS = 100
+BATCH_SIZE = 8
+
+# KD Config
+KD_TEMPERATURE = 4
+KD_ALPHA = 0.5
+
+# Two-Stage (Experiment 7, Stage 2)
+STAGE2_EPOCHS = 50
+STAGE2_LR = 0.001
+```
+
+### Input Dependencies
+```text
+- TrashNet dataset
+- efficientnet_b4_teacher_best.pth (from Notebook 1)
+- All Phase 1 checkpoints (from Notebook 2, for final comparison only)
+```
+
+### Output Artifacts
+```text
+- efficientnet_lite0_baseline_best.pth
+- efficientnet_lite0_kd_scratch_best.pth
+- efficientnet_lite0_kd_twostage_best.pth
+- training_history_exp5.csv
+- training_history_exp6.csv
+- training_history_exp7.csv
+- final_comparison_table.csv
+- confusion_matrices.png
+- roc_curves.png
+```
+
+### Estimated Runtime
+```text
+~2-3 hours
+```
+
+### Notes
+- Experiment 7 Stage 1 tidak perlu di-retrain — langsung load checkpoint dari Experiment 5.
+- Final Evaluation membutuhkan semua checkpoint dari Notebook 1 dan 2 untuk perbandingan lengkap.
+- Teacher model di Notebook 3 menggunakan IMG_SIZE=224 (bukan 380) karena mengikuti protocol Phase 2.
+
+---
+
+## Execution Flow
+
+```text
+Notebook 1                 Notebook 2                    Notebook 3
+──────────                 ──────────                    ──────────
+Train B4 Teacher    →    Load Teacher                 →  Load Teacher
+     │                      │                               │
+     │                   Train Focus-RCNet (Exp 2)       Train Lite0 (Exp 5)
+     │                      │                               │
+     │                   KD Scratch (Exp 3)              KD Scratch (Exp 6)
+     │                      │                               │
+     │                   Two-Stage KD (Exp 4)            Two-Stage KD (Exp 7)
+     │                      │                               │
+Save checkpoint          Save checkpoints              Save checkpoints
+                                                            │
+                                                     Final Evaluation
+                                                     (load ALL 7 checkpoints)
+```
+
+---
+
+## Checkpoint Naming Convention
+```python
+CHECKPOINT_FORMAT = "{model_name}_{experiment_type}_best.pth"
+```
+
+| Experiment | Checkpoint Filename |
+|------------|-------------------|
+| 1 | `efficientnet_b4_teacher_best.pth` |
+| 2 | `focus_rcnet_baseline_best.pth` |
+| 3 | `focus_rcnet_kd_scratch_best.pth` |
+| 4 | `focus_rcnet_kd_twostage_best.pth` |
+| 5 | `efficientnet_lite0_baseline_best.pth` |
+| 6 | `efficientnet_lite0_kd_scratch_best.pth` |
+| 7 | `efficientnet_lite0_kd_twostage_best.pth` |
