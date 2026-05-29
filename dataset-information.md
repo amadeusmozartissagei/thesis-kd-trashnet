@@ -6,6 +6,9 @@ Penelitian ini menggunakan **TrashNet dataset** dari Kaggle sebagai dataset utam
 Source:
 https://www.kaggle.com/datasets/feyzazkefe/trashnet
 
+Kaggle Dataset Path:
+`/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized`
+
 ---
 
 ## Dataset Description

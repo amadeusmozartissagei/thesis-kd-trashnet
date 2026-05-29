@@ -71,6 +71,8 @@ Notes:
 ## Dataset Configuration
 ```python
 DATASET = "TrashNet"
+DATASET_PATH = "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized"
+OUTPUT_DIR = "/kaggle/working/"
 
 TRAIN_SPLIT = 0.7
 VAL_SPLIT = 0.3
@@ -311,6 +313,8 @@ SEED = 42
 ## Dataset Configuration
 ```python
 DATASET = "TrashNet"
+DATASET_PATH = "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized"
+OUTPUT_DIR = "/kaggle/working/"
 
 TRAIN_SPLIT = 0.7
 VAL_SPLIT = 0.3

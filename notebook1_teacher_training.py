@@ -122,8 +122,8 @@ class Config:
 
     # ----- Paths -----
     # Update DATASET_PATH to match your Kaggle input directory
-    DATASET_PATH = "/kaggle/input/trashnet/dataset-resized/dataset-resized"
-    OUTPUT_DIR = "/kaggle/working"
+    DATASET_PATH = "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized"
+    OUTPUT_DIR = "/kaggle/working/"
 
 
 cfg = Config()
@@ -169,7 +169,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"🖥️  Device: {device}")
 if torch.cuda.is_available():
     print(f"   GPU: {torch.cuda.get_device_name(0)}")
-    print(f"   VRAM: {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+    print(f"   VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
     print(f"   CUDA: {torch.version.cuda}")
 
 # %% [markdown]
