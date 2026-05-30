@@ -141,7 +141,7 @@ class Config:
 
     # ----- Paths -----
     DATASET_PATH = "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized"
-    TEACHER_CHECKPOINT_PATH = "/kaggle/input/notebook1-output/efficientnet_b4_teacher_best.pth"
+    TEACHER_CHECKPOINT_PATH = "/kaggle/input/notebooks/hamzapratama/notebook1-teacher-training/efficientnet_b4_teacher_best.pth"
     OUTPUT_DIR = "/kaggle/working/"
 
 
@@ -209,13 +209,10 @@ train_transform = A.Compose([
     A.VerticalFlip(p=0.5),
     A.RandomBrightnessContrast(p=0.5),
     A.CoarseDropout(
-        max_holes=1,
-        max_height=int(cfg.IMG_SIZE * 0.2),
-        max_width=int(cfg.IMG_SIZE * 0.2),
-        min_holes=1,
-        min_height=int(cfg.IMG_SIZE * 0.05),
-        min_width=int(cfg.IMG_SIZE * 0.05),
-        fill_value=0,
+        num_holes_range=(1, 1),
+        hole_height_range=(int(cfg.IMG_SIZE * 0.05), int(cfg.IMG_SIZE * 0.2)),
+        hole_width_range=(int(cfg.IMG_SIZE * 0.05), int(cfg.IMG_SIZE * 0.2)),
+        fill=0,
         p=0.5,
     ),
     A.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
