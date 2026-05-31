@@ -26,6 +26,7 @@ Paper original menggunakan:
 - Learning rate: 0.05
 - Momentum: 0.9
 - Weight decay: 1e-4
+- Learning rate reduced by a factor of 10 every 90 epochs
 - Cosine annealing scheduler
 
 Karena keterbatasan resource, penelitian ini menyesuaikan:
@@ -33,7 +34,10 @@ Karena keterbatasan resource, penelitian ini menyesuaikan:
 - batch size
 - hardware environment
 
-Selain itu, konfigurasi lain dibuat semirip mungkin dengan paper.
+Selain itu, konfigurasi lain dibuat semirip mungkin dengan paper. Reproduksi ini
+tidak diklaim identik karena paper tidak menjelaskan seluruh detail implementasi,
+termasuk nilai hyperparameter knowledge distillation dan interaksi antara
+step-based learning-rate decay dengan cosine annealing scheduler.
 
 ---
 
@@ -78,6 +82,11 @@ TRAIN_SPLIT = 0.7
 VAL_SPLIT = 0.3
 ```
 
+Notes:
+- Paper melaporkan 2528 citra TrashNet, termasuk 483 citra plastic.
+- Kaggle mirror yang digunakan pada eksperimen ini berisi 2527 citra, termasuk
+  482 citra plastic.
+
 ---
 
 ## Input Configuration
@@ -106,6 +115,12 @@ SCHEDULER = "CosineAnnealingLR"
 T_MAX = EPOCHS
 ```
 
+Notes:
+- Paper menyebut cosine annealing dan penurunan learning rate sebesar 10x setiap
+  90 epoch.
+- Implementasi reproduksi menggunakan `CosineAnnealingLR(T_max=EPOCHS)` tanpa
+  step-based decay tambahan.
+
 ---
 
 ## Loss Function
@@ -130,7 +145,11 @@ KD_ALPHA = 0.5
 
 Notes:
 - Paper mendefinisikan formula `L = α * L_soft + (1-α) * L_hard` tetapi tidak menyebutkan nilai T dan α yang digunakan.
+- Paper juga tidak menyebutkan fungsi `L_soft` secara eksplisit maupun faktor
+  `T²`.
 - T=4 dan α=0.5 adalah asumsi reproduksi berdasarkan konvensi umum literatur KD (Hinton et al., 2015).
+- Implementasi reproduksi menggunakan `KLDivLoss(reduction="batchmean")`,
+  temperature scaling pada logit teacher dan student, serta faktor `T²`.
 - Keputusan ini didokumentasikan sebagai **reproduction assumption**, bukan informasi dari paper.
 
 ---
@@ -145,9 +164,17 @@ EARLY_STOPPING = False
 
 ## Weight Initialization
 ```python
-PRETRAINED = True
-WEIGHTS = "ImageNet"
+TEACHER_PRETRAINED = True
+TEACHER_WEIGHTS = "ImageNet"
+
+STUDENT_PRETRAINED = False
+STUDENT_INITIALIZATION = "Kaiming Normal for Conv2d"
 ```
+
+Notes:
+- EfficientNet-B4 diinisialisasi menggunakan pretrained ImageNet weights pada
+  Notebook 1, kemudian checkpoint hasil fine-tuning digunakan sebagai teacher.
+- Focus-RCNet adalah custom student model dan dilatih dari random initialization.
 
 ---
 
@@ -164,6 +191,27 @@ STUDENT_SOURCE = "custom (paper reproduction)"
 Notes:
 - Focus-RCNet diimplementasikan manual berdasarkan arsitektur dari paper (tabel konfigurasi stage, Focus module, Sandglass block, SimAM).
 - EfficientNet-B4 menggunakan pretrained weights dari `timm`.
+
+---
+
+## Focus-RCNet Architecture
+```text
+Focus CBS 1x1:  3 → 24
+Stage 1:       24 → 48,  4 Sandglass blocks, SimAM
+Stage 2:       48 → 96,  3 Sandglass blocks, SimAM
+Stage 3:       96 → 192, 2 Sandglass blocks, SimAM
+Stage 4:      192 → 384, 2 Sandglass blocks, SimAM
+Conv5 1x1:    384 → 512
+Classifier:   GAP → Dropout → Linear(512, 6)
+```
+
+Notes:
+- Block pertama pada setiap stage menggunakan stride 2; block berikutnya
+  menggunakan stride 1.
+- Hasil verifikasi implementasi untuk klasifikasi enam kelas adalah 520,630
+  parameter. Paper melaporkan 525,802 parameter.
+- Selisih parameter sebesar 0.98% didokumentasikan sebagai bagian dari
+  keterbatasan reproduksi custom architecture.
 
 ---
 
@@ -280,7 +328,10 @@ Focus-RCNet-KD-TwoStage
 ## Objective
 Membandingkan lightweight student models secara fair menggunakan standardized experimental protocol.
 
-Semua model menggunakan konfigurasi identik.
+Semua model pada main experimental comparison menggunakan konfigurasi identik
+agar Experiment 5/6/7 dapat dibandingkan langsung dengan Experiment 2/3/4.
+Perbandingan utama mengisolasi perbedaan arsitektur student model, bukan perbedaan
+resolusi input, learning rate, atau pretrained initialization.
 
 ---
 
@@ -329,13 +380,13 @@ Rules:
 
 ## Input Configuration
 ```python
-IMG_SIZE = 224
+IMG_SIZE = 380
 ```
 
 Reason:
-- fair comparison
-- sesuai native EfficientNet-Lite0
-- lebih realistis untuk Kaggle T4
+- identik dengan konfigurasi Focus-RCNet pada Phase 1
+- mengisolasi pengaruh arsitektur student model
+- memungkinkan perbandingan langsung Experiment 5/6/7 terhadap Experiment 2/3/4
 
 ---
 
@@ -343,10 +394,13 @@ Reason:
 ```python
 OPTIMIZER = "SGD"
 
-LR = 0.01
+LR = 0.05
 MOMENTUM = 0.9
 WEIGHT_DECAY = 1e-4
 ```
+
+Notes:
+- Learning rate disamakan dengan Phase 1 untuk menjaga controlled comparison.
 
 ---
 
@@ -393,9 +447,16 @@ EARLY_STOPPING = False
 
 ## Weight Initialization
 ```python
-PRETRAINED = True
-WEIGHTS = "ImageNet"
+TEACHER_CHECKPOINT = "efficientnet_b4_teacher_best.pth"
+STUDENT_PRETRAINED = False
+STUDENT_INITIALIZATION = "random initialization from timm"
 ```
+
+Notes:
+- Teacher menggunakan checkpoint EfficientNet-B4 hasil Notebook 1.
+- EfficientNet-Lite0 pada main experimental comparison menggunakan
+  `pretrained=False`, konsisten dengan Focus-RCNet yang dilatih dari random
+  initialization.
 
 ---
 
@@ -411,7 +472,10 @@ STUDENT_TIMM_NAME = "efficientnet_lite0"
 ```
 
 Notes:
-- Kedua model menggunakan pretrained ImageNet weights dari library `timm`.
+- Arsitektur EfficientNet-Lite0 dibuat menggunakan `timm` dengan
+  `pretrained=False` untuk main experimental comparison.
+- Pretrained ImageNet weights untuk EfficientNet-Lite0 hanya dipakai pada
+  conditional native-profile follow-up dan tidak dicampur ke tabel utama.
 
 ---
 
@@ -429,7 +493,7 @@ AUGMENTATION = {
 Validation:
 ```python
 VAL_TRANSFORM = {
-    "Resize": 224,
+    "Resize": 380,
     "Normalize": "ImageNet"
 }
 ```
@@ -483,7 +547,7 @@ Train EfficientNet-Lite0 normal (menggunakan konfigurasi Phase 2)
 Stage 2 — Fine-Tuning with KD:
 ```python
 STAGE2_EPOCHS = 50
-STAGE2_LR = 0.001
+STAGE2_LR = 0.005
 STAGE2_FREEZE_LAYERS = False
 STAGE2_SCHEDULER = "CosineAnnealingLR"
 STAGE2_T_MAX = STAGE2_EPOCHS
@@ -491,12 +555,54 @@ STAGE2_T_MAX = STAGE2_EPOCHS
 
 Notes:
 - Stage 2 menggunakan separuh epoch dari Stage 1.
-- Learning rate diturunkan 10x dari Phase 2 LR (0.01 → 0.001).
+- Learning rate diturunkan 10x dari Phase 2 LR (0.05 → 0.005).
 - Tidak ada layer freezing.
 
 Output:
 ```text
 EfficientNet-Lite0-KD-TwoStage
+```
+
+---
+
+# Conditional Follow-Up — EfficientNet-Lite0 Native Profile
+
+## Execution Rule
+Track tambahan ini hanya dijalankan setelah Notebook 3 main experimental
+comparison selesai dan hasil Experiment 5/6/7 telah dianalisis. Track ini bersifat
+opsional apabila akurasi controlled comparison dinilai kurang memuaskan.
+
+Track ini tidak dimasukkan ke controlled comparison utama dan tidak digunakan
+sebagai lawan langsung Experiment 2/3/4 karena menggunakan konfigurasi native
+yang berbeda.
+
+## Native Configuration
+```python
+IMG_SIZE = 224
+LR = 0.01
+EPOCHS = 100
+BATCH_SIZE = 8
+
+STUDENT_PRETRAINED = True
+STUDENT_WEIGHTS = "ImageNet"
+
+KD_TEMPERATURE = 4
+KD_ALPHA = 0.5
+
+STAGE2_EPOCHS = 50
+STAGE2_LR = 0.001
+```
+
+## Purpose
+- mengevaluasi EfficientNet-Lite0 pada resolusi native dan pretrained ImageNet
+- mengukur trade-off accuracy, FLOPs, inference time, dan memory usage untuk deployment
+- menyediakan analisis tambahan tanpa mencampurkan hasil ke tabel controlled comparison
+
+## Optional Output Artifacts
+```text
+efficientnet_lite0_native_baseline_best.pth
+efficientnet_lite0_native_kd_scratch_best.pth
+efficientnet_lite0_native_kd_twostage_best.pth
 ```
 
 ---
@@ -513,10 +619,14 @@ EfficientNet-Lite0-KD-TwoStage
 | 6 | EfficientNet-Lite0 KD Scratch | Proposed KD |
 | 7 | EfficientNet-Lite0 Two-Stage KD | Proposed KD extension |
 
-Total experiments:
+Total core experiments:
 ```text
 7
 ```
+
+Notes:
+- Conditional EfficientNet-Lite0 Native Profile tidak termasuk ke matriks tujuh
+  eksperimen utama.
 
 ---
 
@@ -668,9 +778,22 @@ STAGE2_LR = 0.005
 ~2-3 hours
 ```
 
+### Actual Results
+
+| Experiment | Best Validation Accuracy | Best Epoch |
+|------------|--------------------------|------------|
+| Exp 2: Focus-RCNet Baseline | 85.24% | 71 |
+| Exp 3: Focus-RCNet KD Scratch | 85.64% | 87 |
+| Exp 4: Focus-RCNet Two-Stage KD | 86.30% | 31 |
+
 ### Notes
 - Experiment 4 Stage 1 tidak perlu di-retrain — langsung load checkpoint dari Experiment 2.
 - Teacher model di-load dalam eval mode, tidak di-update selama KD training.
+- KD Scratch meningkatkan validation accuracy sebesar 0.40 percentage point
+  dibandingkan baseline.
+- Two-Stage KD meningkatkan validation accuracy sebesar 1.05 percentage point
+  dibandingkan baseline. Eksperimen ini adalah extension penelitian, bukan
+  bagian dari paper original.
 
 ---
 
@@ -687,7 +810,7 @@ Final Evaluation & Comparison (All 7 Experiments)
 ### Sections
 ```text
 0. Setup (imports, config, seed, device)
-1. Dataset & DataLoader (TrashNet, split 70/30, seed 42, IMG_SIZE=224)
+1. Dataset & DataLoader (TrashNet, split 70/30, seed 42, IMG_SIZE=380)
 2. Load Teacher Model (EfficientNet-B4 from checkpoint)
 3. EfficientNet-Lite0 Model Definition (from timm)
 4. Experiment 5 — Train EfficientNet-Lite0 Baseline
@@ -702,10 +825,11 @@ Final Evaluation & Comparison (All 7 Experiments)
 
 ### Configuration
 ```python
-IMG_SIZE = 224
-LR = 0.01
+IMG_SIZE = 380
+LR = 0.05
 EPOCHS = 100
 BATCH_SIZE = 8
+STUDENT_PRETRAINED = False
 
 # KD Config
 KD_TEMPERATURE = 4
@@ -713,7 +837,7 @@ KD_ALPHA = 0.5
 
 # Two-Stage (Experiment 7, Stage 2)
 STAGE2_EPOCHS = 50
-STAGE2_LR = 0.001
+STAGE2_LR = 0.005
 ```
 
 ### Input Dependencies
@@ -744,7 +868,8 @@ STAGE2_LR = 0.001
 ### Notes
 - Experiment 7 Stage 1 tidak perlu di-retrain — langsung load checkpoint dari Experiment 5.
 - Final Evaluation membutuhkan semua checkpoint dari Notebook 1 dan 2 untuk perbandingan lengkap.
-- Teacher model di Notebook 3 menggunakan IMG_SIZE=224 (bukan 380) karena mengikuti protocol Phase 2.
+- Teacher dan student di Notebook 3 menggunakan IMG_SIZE=380 agar Experiment 5/6/7 dapat dibandingkan langsung dengan Experiment 2/3/4.
+- EfficientNet-Lite0 Native Profile hanya dijalankan sebagai follow-up kondisional setelah hasil utama dianalisis dan dilaporkan terpisah.
 
 ---
 
