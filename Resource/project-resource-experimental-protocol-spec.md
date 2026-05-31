@@ -468,10 +468,12 @@ TEACHER_TIMM_NAME = "efficientnet_b4"
 
 STUDENT_MODEL = "EfficientNet-Lite0"
 STUDENT_SOURCE = "timm"
-STUDENT_TIMM_NAME = "efficientnet_lite0"
+STUDENT_TIMM_NAME = "tf_efficientnet_lite0"
 ```
 
 Notes:
+- Script Notebook 3 memprioritaskan registry resmi `tf_efficientnet_lite0` dan
+  memiliki runtime resolver untuk kompatibilitas antarversi `timm`.
 - Arsitektur EfficientNet-Lite0 dibuat menggunakan `timm` dengan
   `pretrained=False` untuk main experimental comparison.
 - Pretrained ImageNet weights untuk EfficientNet-Lite0 hanya dipakai pada
