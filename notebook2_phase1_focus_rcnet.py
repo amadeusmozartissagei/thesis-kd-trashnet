@@ -549,14 +549,14 @@ class FocusRCNet(nn.Module):
     Focus-RCNet: Lightweight recyclable waste classification network.
 
     Architecture:
-        Focus(3→32) → [Sandglass stages with SimAM] → GAP → Classifier
+        Focus(3→24) → [Sandglass stages with SimAM] → Conv5(384→512)
+        → GAP → Classifier
 
-    Stage configuration (reconstructed from paper, ~525K params):
-        Stage 1: 32→64,   n=2, stride=2
-        Stage 2: 64→96,   n=3, stride=2
-        Stage 3: 96→160,  n=4, stride=2
-        Stage 4: 160→256, n=3, stride=2
-        Stage 5: 256→320, n=2, stride=1
+    Stage configuration from Table 1 of the paper:
+        Stage 1: 24→48,   n=4, first block stride=2
+        Stage 2: 48→96,   n=3, first block stride=2
+        Stage 3: 96→192,  n=2, first block stride=2
+        Stage 4: 192→384, n=2, first block stride=2
 
     Args:
         num_classes: number of output classes
@@ -565,22 +565,21 @@ class FocusRCNet(nn.Module):
 
     # Stage config: (out_channels, num_blocks, stride, reduction)
     STAGE_CONFIG = [
-        (64,  2, 2, 2),   # Stage 1
+        (48,  4, 2, 2),   # Stage 1
         (96,  3, 2, 2),   # Stage 2
-        (160, 4, 2, 2),   # Stage 3
-        (256, 3, 2, 2),   # Stage 4
-        (320, 2, 1, 2),   # Stage 5
+        (192, 2, 2, 2),   # Stage 3
+        (384, 2, 2, 2),   # Stage 4
     ]
 
     def __init__(self, num_classes: int = 6, dropout: float = 0.2):
         super().__init__()
 
-        # Focus module: 3 → 32 channels, spatial /2
-        self.focus = Focus(in_channels=3, out_channels=32, kernel_size=3)
+        # Focus module: 3 → 24 channels, spatial /2
+        self.focus = Focus(in_channels=3, out_channels=24, kernel_size=1)
 
         # Build sandglass stages with SimAM attention
         stages = []
-        in_ch = 32
+        in_ch = 24
         for out_ch, num_blocks, stride, reduction in self.STAGE_CONFIG:
             stage_blocks = []
             for i in range(num_blocks):
@@ -592,12 +591,19 @@ class FocusRCNet(nn.Module):
 
         self.stages = nn.Sequential(*stages)
 
+        # Final 1x1 convolution from Table 1 of the paper
+        self.conv5 = nn.Sequential(
+            nn.Conv2d(in_ch, 512, kernel_size=1, bias=False),
+            nn.BatchNorm2d(512),
+            nn.SiLU(inplace=True),
+        )
+
         # Classification head
         self.classifier = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Flatten(),
             nn.Dropout(p=dropout),
-            nn.Linear(in_ch, num_classes),
+            nn.Linear(512, num_classes),
         )
 
         # Weight initialization
@@ -618,6 +624,7 @@ class FocusRCNet(nn.Module):
     def forward(self, x):
         x = self.focus(x)
         x = self.stages(x)
+        x = self.conv5(x)
         x = self.classifier(x)
         return x
 
@@ -659,6 +666,8 @@ print(f"     Focus  : {list(_x.shape)}")
 for i, stage in enumerate(_test_model.stages):
     _x = stage(_x)
     print(f"     Stage {i+1}: {list(_x.shape)}")
+_x = _test_model.conv5(_x)
+print(f"     Conv5  : {list(_x.shape)}")
 
 del _test_model, _test_input, _test_output, _x
 
@@ -709,7 +718,9 @@ def train_one_epoch_kd(student, teacher, loader, optimizer, scaler, device, use_
     """
     student.train()
     teacher.eval()
-    running_loss = 0.0
+    running_loss_total = 0.0
+    running_loss_soft = 0.0
+    running_loss_hard = 0.0
     correct = 0
     total = 0
 
@@ -729,28 +740,43 @@ def train_one_epoch_kd(student, teacher, loader, optimizer, scaler, device, use_
             with torch.no_grad():
                 teacher_logits = teacher(images)
 
+        # Compute soft-target operations in FP32 for numerical stability.
+        with autocast(enabled=False):
             # Soft targets
-            student_log_soft = F.log_softmax(student_logits / temperature, dim=1)
-            teacher_soft = F.softmax(teacher_logits / temperature, dim=1)
+            student_log_soft = F.log_softmax(student_logits.float() / temperature, dim=1)
+            teacher_soft = F.softmax(teacher_logits.float() / temperature, dim=1)
 
             # KD loss components
             loss_soft = F.kl_div(student_log_soft, teacher_soft,
                                  reduction="batchmean") * (temperature ** 2)
-            loss_hard = ce_criterion(student_logits, labels)
+            loss_hard = ce_criterion(student_logits.float(), labels)
 
             # Combined loss
             loss = alpha * loss_soft + (1.0 - alpha) * loss_hard
+
+        if not torch.isfinite(loss):
+            raise FloatingPointError(
+                f"Non-finite KD loss detected: total={loss.item()}, "
+                f"soft={loss_soft.item()}, hard={loss_hard.item()}"
+            )
 
         scaler.scale(loss).backward()
         scaler.step(optimizer)
         scaler.update()
 
-        running_loss += loss.item() * images.size(0)
+        running_loss_total += loss.item() * images.size(0)
+        running_loss_soft += loss_soft.item() * images.size(0)
+        running_loss_hard += loss_hard.item() * images.size(0)
         _, predicted = student_logits.max(1)
         total += labels.size(0)
         correct += predicted.eq(labels).sum().item()
 
-    return running_loss / total, correct / total
+    return (
+        running_loss_total / total,
+        correct / total,
+        running_loss_soft / total,
+        running_loss_hard / total,
+    )
 
 
 @torch.no_grad()
@@ -831,6 +857,9 @@ def run_experiment(
         "epoch": [], "train_loss": [], "train_acc": [],
         "val_loss": [], "val_acc": [], "lr": [], "epoch_time": [],
     }
+    if use_kd:
+        history["train_loss_soft"] = []
+        history["train_loss_hard"] = []
 
     best_val_acc = 0.0
     best_epoch = 0
@@ -844,7 +873,7 @@ def run_experiment(
 
         # Train
         if use_kd:
-            train_loss, train_acc = train_one_epoch_kd(
+            train_loss, train_acc, train_loss_soft, train_loss_hard = train_one_epoch_kd(
                 model, teacher_model, train_loader, optimizer, scaler,
                 device, use_amp, kd_temperature, kd_alpha,
             )
@@ -870,6 +899,9 @@ def run_experiment(
         history["val_acc"].append(val_acc)
         history["lr"].append(current_lr)
         history["epoch_time"].append(epoch_time)
+        if use_kd:
+            history["train_loss_soft"].append(train_loss_soft)
+            history["train_loss_hard"].append(train_loss_hard)
 
         # Check for best model
         is_best = val_acc > best_val_acc
@@ -880,13 +912,24 @@ def run_experiment(
 
         # Logging
         best_marker = " ⭐ BEST" if is_best else ""
-        print(
-            f"Epoch [{epoch:3d}/{epochs}] "
-            f"| Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f} "
-            f"| Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f} "
-            f"| LR: {current_lr:.6f} "
-            f"| Time: {epoch_time:.1f}s{best_marker}"
-        )
+        if use_kd:
+            print(
+                f"Epoch [{epoch:3d}/{epochs}] "
+                f"| Train Loss: {train_loss:.4f} "
+                f"(Soft: {train_loss_soft:.4f}, Hard: {train_loss_hard:.4f}) "
+                f"| Train Acc: {train_acc:.4f} "
+                f"| Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f} "
+                f"| LR: {current_lr:.6f} "
+                f"| Time: {epoch_time:.1f}s{best_marker}"
+            )
+        else:
+            print(
+                f"Epoch [{epoch:3d}/{epochs}] "
+                f"| Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f} "
+                f"| Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f} "
+                f"| LR: {current_lr:.6f} "
+                f"| Time: {epoch_time:.1f}s{best_marker}"
+            )
 
     total_train_time = time.time() - total_train_start
 
@@ -950,19 +993,39 @@ def save_checkpoint(model_state, experiment_id, experiment_name, model_name,
 def save_history(history, filename):
     """Save training history to CSV."""
     path = os.path.join(cfg.OUTPUT_DIR, filename)
+    is_kd_history = "train_loss_soft" in history
     with open(path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["epoch", "train_loss", "train_acc", "val_loss", "val_acc", "lr", "epoch_time"])
-        for i in range(len(history["epoch"])):
+        if is_kd_history:
             writer.writerow([
-                history["epoch"][i],
-                f"{history['train_loss'][i]:.6f}",
-                f"{history['train_acc'][i]:.6f}",
-                f"{history['val_loss'][i]:.6f}",
-                f"{history['val_acc'][i]:.6f}",
-                f"{history['lr'][i]:.8f}",
-                f"{history['epoch_time'][i]:.2f}",
+                "epoch", "train_loss_total", "train_loss_soft", "train_loss_hard",
+                "train_acc", "val_loss", "val_acc", "lr", "epoch_time",
             ])
+        else:
+            writer.writerow(["epoch", "train_loss", "train_acc", "val_loss", "val_acc", "lr", "epoch_time"])
+        for i in range(len(history["epoch"])):
+            if is_kd_history:
+                writer.writerow([
+                    history["epoch"][i],
+                    f"{history['train_loss'][i]:.6f}",
+                    f"{history['train_loss_soft'][i]:.6f}",
+                    f"{history['train_loss_hard'][i]:.6f}",
+                    f"{history['train_acc'][i]:.6f}",
+                    f"{history['val_loss'][i]:.6f}",
+                    f"{history['val_acc'][i]:.6f}",
+                    f"{history['lr'][i]:.8f}",
+                    f"{history['epoch_time'][i]:.2f}",
+                ])
+            else:
+                writer.writerow([
+                    history["epoch"][i],
+                    f"{history['train_loss'][i]:.6f}",
+                    f"{history['train_acc'][i]:.6f}",
+                    f"{history['val_loss'][i]:.6f}",
+                    f"{history['val_acc'][i]:.6f}",
+                    f"{history['lr'][i]:.8f}",
+                    f"{history['epoch_time'][i]:.2f}",
+                ])
     print(f"✅ History saved: {path}")
     return path
 
