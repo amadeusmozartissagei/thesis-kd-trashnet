@@ -580,7 +580,8 @@ yang berbeda.
 
 ## Native Configuration
 ```python
-IMG_SIZE = 224
+STUDENT_IMG_SIZE = 224
+TEACHER_KD_IMG_SIZE = 380
 LR = 0.01
 EPOCHS = 100
 BATCH_SIZE = 8
@@ -595,17 +596,54 @@ STAGE2_EPOCHS = 50
 STAGE2_LR = 0.001
 ```
 
+Notes:
+- Baseline dan evaluasi deployment EfficientNet-Lite0 menggunakan input student
+  `224x224`.
+- Selama KD, satu gambar augmentasi dibuat menjadi dua view yang selaras:
+  EfficientNet-B4 teacher menerima `380x380`, sedangkan EfficientNet-Lite0
+  student menerima `224x224`.
+- Teacher tetap menggunakan checkpoint Notebook 1 tanpa retraining dan berada
+  pada `eval()` mode dengan seluruh parameter frozen.
+- Native B dilaporkan sebagai **Direct KD from ImageNet Initialization**, bukan
+  KD from scratch murni, karena student memakai pretrained ImageNet weights.
+
 ## Purpose
 - mengevaluasi EfficientNet-Lite0 pada resolusi native dan pretrained ImageNet
 - mengukur trade-off accuracy, FLOPs, inference time, dan memory usage untuk deployment
 - menyediakan analisis tambahan tanpa mencampurkan hasil ke tabel controlled comparison
 
-## Optional Output Artifacts
+## Output Artifacts
 ```text
 efficientnet_lite0_native_baseline_best.pth
 efficientnet_lite0_native_kd_scratch_best.pth
 efficientnet_lite0_native_kd_twostage_best.pth
+training_history_lite0_native_baseline.csv
+training_history_lite0_native_direct_kd.csv
+training_history_lite0_native_kd_twostage.csv
+lite0_native_comparison_table.csv
+training_curves_lite0_native.png
+val_accuracy_comparison_lite0_native.png
+confusion_matrices_lite0_native.png
+roc_curves_lite0_native.png
 ```
+
+## Actual Results
+
+| Native Track | Best Validation Accuracy | Best Epoch | F1 Macro | AUC Macro | GFLOPs | Latency | Peak GPU Memory |
+|--------------|--------------------------|------------|----------|-----------|--------|---------|-----------------|
+| Native A: Lite0 Baseline | 89.59% | 79 | 0.8896 | 0.9880 | 0.768 | 7.205 ms | 146.6 MB |
+| Native B: Lite0 Direct KD | 86.82% | 73 | 0.8556 | 0.9791 | 0.768 | 7.109 ms | 146.6 MB |
+| Native C: Lite0 Two-Stage KD | 90.91% | 7 | 0.9053 | 0.9884 | 0.768 | 7.142 ms | 146.6 MB |
+
+Interpretation:
+- Native B mengalami negative transfer sebesar `-2.77` percentage points dari
+  Native A. Seluruh pemeriksaan implementasi lolos: teacher preflight tetap
+  `95.52%`, input KD benar-benar `teacher-380 -> student-224`, soft-target loss
+  finite, checkpoint valid, dan teacher tetap frozen. Penurunan ini dicatat
+  sebagai hasil eksperimen, bukan indikasi bug implementasi.
+- Native C meningkatkan akurasi sebesar `+1.32` percentage points dari Native A
+  dan `+4.08` percentage points dari Native B. Hasil ini mendukung penggunaan
+  adaptasi CE terlebih dahulu sebelum fine-tuning KD pada Lite0 Native.
 
 ---
 
@@ -629,6 +667,53 @@ Total core experiments:
 Notes:
 - Conditional EfficientNet-Lite0 Native Profile tidak termasuk ke matriks tujuh
   eksperimen utama.
+
+---
+
+# Final Results Overview
+
+## Main Controlled Comparison
+
+Tujuh core experiments di bawah menggunakan split dataset yang sama dan input
+`380x380`. Perbandingan Focus-RCNet vs EfficientNet-Lite0 pada bagian ini adalah
+perbandingan utama yang fair.
+
+| ID | Experiment | Model | Accuracy | F1 Macro | AUC Macro | Parameters | GFLOPs | Latency |
+|----|------------|-------|----------|----------|-----------|------------|--------|---------|
+| 1 | Teacher | EfficientNet-B4 | 95.52% | 0.9434 | 0.9955 | 17,559,374 | 8.784 | 20.291 ms |
+| 2 | Baseline | Focus-RCNet | 85.24% | 0.8489 | 0.9754 | 520,630 | 0.526 | 6.461 ms |
+| 3 | KD Scratch | Focus-RCNet | 85.64% | 0.8433 | 0.9756 | 520,630 | 0.526 | 6.087 ms |
+| 4 | Two-Stage KD | Focus-RCNet | 86.30% | 0.8641 | 0.9734 | 520,630 | 0.526 | 6.488 ms |
+| 5 | Baseline | EfficientNet-Lite0 | 76.15% | 0.7490 | 0.9481 | 3,378,694 | 2.246 | 7.364 ms |
+| 6 | KD Scratch | EfficientNet-Lite0 | 78.26% | 0.7617 | 0.9542 | 3,378,694 | 2.246 | 7.078 ms |
+| 7 | Two-Stage KD | EfficientNet-Lite0 | 79.58% | 0.7890 | 0.9546 | 3,378,694 | 2.246 | 6.970 ms |
+
+## Controlled vs Native Lite0 Analysis
+
+Tabel ini menjelaskan dampak konfigurasi Native pada EfficientNet-Lite0. Angka
+Native tidak menggantikan Exp 5/6/7 dan tidak dipakai sebagai lawan langsung
+Focus-RCNet dalam controlled comparison karena resolusi dan inisialisasinya
+berbeda.
+
+| Lite0 Variant | Track | Student Input | Initialization | Accuracy | F1 Macro | AUC Macro | GFLOPs | Latency |
+|---------------|-------|---------------|----------------|----------|----------|-----------|--------|---------|
+| Exp 5: Baseline | Controlled | 380x380 | Random | 76.15% | 0.7490 | 0.9481 | 2.246 | 7.364 ms |
+| Exp 6: KD Scratch | Controlled | 380x380 | Random | 78.26% | 0.7617 | 0.9542 | 2.246 | 7.078 ms |
+| Exp 7: Two-Stage KD | Controlled | 380x380 | Random -> CE -> KD | 79.58% | 0.7890 | 0.9546 | 2.246 | 6.970 ms |
+| Native A: Baseline | Native Follow-Up | 224x224 | ImageNet -> CE | 89.59% | 0.8896 | 0.9880 | 0.768 | 7.205 ms |
+| Native B: Direct KD | Native Follow-Up | 224x224 | ImageNet -> KD | 86.82% | 0.8556 | 0.9791 | 0.768 | 7.109 ms |
+| Native C: Two-Stage KD | Native Follow-Up | 224x224 | ImageNet -> CE -> KD | 90.91% | 0.9053 | 0.9884 | 0.768 | 7.142 ms |
+
+Key findings:
+- Focus-RCNet Two-Stage KD adalah lightweight student terbaik pada controlled
+  comparison: `86.30%` accuracy, `520,630` parameters, dan `0.526` GFLOPs.
+- Lite0 Native Two-Stage KD adalah hasil akurasi student tertinggi pada optional
+  deployment-oriented follow-up: `90.91%` dengan `0.768` GFLOPs.
+- Native Lite0 mengurangi FLOPs sebesar `65.81%` dibandingkan Lite0 controlled
+  (`2.246 -> 0.768` GFLOPs) sambil meningkatkan akurasi Two-Stage sebesar
+  `+11.33` percentage points (`79.58% -> 90.91%`).
+- Klaim terakhir adalah analisis profile-specific, bukan controlled architectural
+  superiority, karena Native memakai input `224x224` dan pretrained ImageNet.
 
 ---
 
@@ -674,7 +759,7 @@ Notes:
 
 # Notebook Execution Plan
 
-Seluruh eksperimen dibagi ke dalam **3 notebook** yang dijalankan secara sequential di Kaggle.
+Core experiments dibagi ke dalam **3 notebook** yang dijalankan secara sequential di Kaggle. Satu notebook tambahan (`Notebook 3B`) dijalankan secara kondisional sebagai deployment-oriented follow-up.
 
 ---
 
@@ -867,11 +952,43 @@ STAGE2_LR = 0.005
 ~2-3 hours
 ```
 
+### Actual Results
+
+| Experiment | Best Validation Accuracy | Best Epoch |
+|------------|--------------------------|------------|
+| Exp 5: EfficientNet-Lite0 Baseline | 76.15% | 86 |
+| Exp 6: EfficientNet-Lite0 KD Scratch | 78.26% | 92 |
+| Exp 7: EfficientNet-Lite0 Two-Stage KD | 79.58% | 38 |
+
 ### Notes
 - Experiment 7 Stage 1 tidak perlu di-retrain — langsung load checkpoint dari Experiment 5.
 - Final Evaluation membutuhkan semua checkpoint dari Notebook 1 dan 2 untuk perbandingan lengkap.
 - Teacher dan student di Notebook 3 menggunakan IMG_SIZE=380 agar Experiment 5/6/7 dapat dibandingkan langsung dengan Experiment 2/3/4.
 - EfficientNet-Lite0 Native Profile hanya dijalankan sebagai follow-up kondisional setelah hasil utama dianalisis dan dilaporkan terpisah.
+
+---
+
+## Notebook 3B — Conditional Follow-Up: EfficientNet-Lite0 Native Profile
+
+### Content
+```text
+Native A: EfficientNet-Lite0 baseline (ImageNet initialization, student 224x224)
+Native B: EfficientNet-Lite0 Direct KD (teacher 380x380 -> student 224x224)
+Native C: EfficientNet-Lite0 Two-Stage KD (load Native A -> fine-tune with KD)
+Deployment-oriented evaluation for three Native variants
+```
+
+### Execution Rule
+Notebook 3B hanya dijalankan setelah hasil controlled Notebook 3 dianalisis dan
+akurasi Lite0 controlled dinilai kurang memuaskan. Hasilnya dilaporkan terpisah.
+
+### Actual Results
+
+| Native Track | Best Validation Accuracy | Best Epoch |
+|--------------|--------------------------|------------|
+| Native A: Lite0 Baseline | 89.59% | 79 |
+| Native B: Lite0 Direct KD | 86.82% | 73 |
+| Native C: Lite0 Two-Stage KD | 90.91% | 7 |
 
 ---
 
@@ -910,3 +1027,6 @@ CHECKPOINT_FORMAT = "{model_name}_{experiment_type}_best.pth"
 | 5 | `efficientnet_lite0_baseline_best.pth` |
 | 6 | `efficientnet_lite0_kd_scratch_best.pth` |
 | 7 | `efficientnet_lite0_kd_twostage_best.pth` |
+| Native A | `efficientnet_lite0_native_baseline_best.pth` |
+| Native B | `efficientnet_lite0_native_kd_scratch_best.pth` |
+| Native C | `efficientnet_lite0_native_kd_twostage_best.pth` |
