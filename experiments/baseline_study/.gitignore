@@ -1,6 +1,0 @@
-*.pt
-*.pth
-*.ckpt
-*.onnx
-__pycache__/
-.ipynb_checkpoints/
