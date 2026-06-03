@@ -360,6 +360,10 @@ Profil latency diukur pada GPU sesi Kaggle dan tidak langsung mewakili perangkat
 
 Eksperimen berikutnya sebaiknya diprioritaskan berdasarkan nilai informasinya. Grid search besar belum diperlukan karena baseline, direct KD, two-stage KD, dan dua kelompok alpha ablation sudah memberi pola yang cukup jelas. Percobaan yang ada tetap disimpan sebagai arsip, tetapi Lite0 controlled dan Lite0 native alpha ablation tidak perlu diperluas dalam narasi utama kecuali sebagai bukti pendukung.
 
+Eksperimen tambahan yang paling bernilai adalah pengujian pada RealWaste sebagai external validation. RealWaste berbeda dari TrashNet karena berisi citra sampah dari lingkungan landfill autentik, dengan kondisi visual yang lebih mendekati deployment: material bercampur, objek terdeformasi, latar lebih kompleks, dan kelas lebih rinci. Karena itu, eksperimen ini dapat menjawab apakah Focus-RCNet dan strategi KD yang stabil pada TrashNet benar-benar memiliki kemampuan generalisasi lintas domain, atau hanya kuat pada distribusi TrashNet.
+
+Pengujian RealWaste sebaiknya dilakukan bertahap. Tahap pertama memakai kelas yang overlap dengan TrashNet, yaitu cardboard, glass, metal, paper, plastic, dan kemungkinan miscellaneous trash sebagai padanan trash. Tahap kedua memakai seluruh 9 kelas RealWaste dengan final layer baru dan fine-tuning. Jika performa turun tajam pada tahap pertama, klaim penelitian perlu dibatasi sebagai reimplementation pada TrashNet. Jika fine-tuning atau two-stage KD memperbaiki hasil pada RealWaste, maka KD dapat diposisikan sebagai strategi adaptasi domain untuk skenario deployment.
+
 Tabel 16. Prioritas eksperimen lanjutan
 
 | Prioritas | Eksperimen | Tujuan | Keputusan setelah hasil |
@@ -367,10 +371,11 @@ Tabel 16. Prioritas eksperimen lanjutan
 | 1 | Focus-RCNet direct KD 200e-bs16, T=4, alpha=0,5 | Uji apakah protokol paper juga membantu KD | Bandingkan dengan baseline follow-up 86,30% |
 | 2 | Multi-seed baseline vs two-stage KD | Estimasi mean dan standard deviation | Perkuat klaim konsistensi |
 | 3 | Independent test split atau cross-validation | Pisahkan model selection dari evaluasi akhir | Laporkan test accuracy |
-| 4 | Ablation dataset-original vs dataset-resized | Uji dampak source resolution | Validasi hipotesis dataset |
-| 5 | Ekspor prediction-level CSV | Lakukan paired test dan analisis error | Uji signifikansi dan kasus gagal |
+| 4 | External validation pada RealWaste | Uji generalisasi Focus-RCNet/KD dari TrashNet ke citra landfill nyata | Jika drop besar, batasi klaim ke TrashNet; jika fine-tuning/KD membaik, bahas sebagai domain adaptation |
+| 5 | Ablation dataset-original vs dataset-resized | Uji dampak source resolution | Validasi hipotesis dataset |
+| 6 | Ekspor prediction-level CSV | Lakukan paired test dan analisis error | Uji signifikansi dan kasus gagal |
 
-Sumber: Sintesis hasil eksperimen lokal.
+Sumber: Sintesis hasil eksperimen lokal, UCI RealWaste, dan Single et al. (2023).
 
 # 8. Kesimpulan
 
@@ -399,6 +404,10 @@ Sumber: Folder Results pada workspace penelitian.
 Zheng, D., Wang, R., Duan, Y., Pang, P. C.-I., & Tan, T. (2023). Focus-RCNet: a lightweight recyclable waste classification algorithm based on focus and knowledge distillation. Visual Computing for Industry, Biomedicine, and Art, 6:19. https://doi.org/10.1186/s42492-023-00146-3
 
 Thung, G., & Yang, M. TrashNet dataset repository. https://github.com/garythung/trashnet
+
+Single, S., Iranmanesh, S., & Raad, R. (2023). RealWaste: A Novel Real-Life Data Set for Landfill Waste Classification Using Deep Learning. Information, 14(12), 633. https://doi.org/10.3390/info14120633
+
+UCI Machine Learning Repository. RealWaste dataset. https://archive.ics.uci.edu/dataset/908/realwaste
 
 Hinton, G., Vinyals, O., & Dean, J. (2015). Distilling the Knowledge in a Neural Network. arXiv:1503.02531.
 
