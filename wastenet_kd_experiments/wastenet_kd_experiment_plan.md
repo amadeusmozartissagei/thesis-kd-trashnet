@@ -13,7 +13,7 @@ Eksperimen ini melanjutkan hasil sebelumnya:
 - KD yang dipakai tetap logits-based vanilla KD:
   `alpha * KLDiv(student_logits / T, teacher_logits / T) * T^2 + (1 - alpha) * CE`.
 
-WasteNet-123K menjadi kandidat deployment utama karena berada di bawah target
+WasteNet-128K menjadi kandidat deployment utama karena berada di bawah target
 200K parameters. WasteNet-256K dipakai sebagai pembanding capacity trade-off,
 tetapi tidak boleh diklaim memenuhi target under 200K jika batas tersebut
 dipakai secara strict.
@@ -22,9 +22,9 @@ dipakai secara strict.
 
 | ID | Model | Training mode | Teacher | Purpose |
 | --- | --- | --- | --- | --- |
-| WN123-CE | WasteNet-123K | Baseline CE | None | Baseline utama under 200K |
-| WN123-DKD | WasteNet-123K | Direct KD | EfficientNet-B4 | Uji direct big-teacher KD ke tiny student |
-| WN123-TA2KD | WasteNet-123K | Two-stage / teacher-assistant KD | Focus-RCNet KD | Uji apakah intermediate teacher membantu capacity gap |
+| WN128-CE | WasteNet-128K | Baseline CE | None | Baseline utama under 200K |
+| WN128-DKD | WasteNet-128K | Direct KD | EfficientNet-B4 | Uji direct big-teacher KD ke tiny student |
+| WN128-TA2KD | WasteNet-128K | Two-stage / teacher-assistant KD | Focus-RCNet KD | Uji apakah intermediate teacher membantu capacity gap |
 | WN256-CE | WasteNet-256K | Baseline CE | None | Baseline pembanding kapasitas lebih besar |
 | WN256-DKD | WasteNet-256K | Direct KD | EfficientNet-B4 | Uji direct KD pada WasteNet lebih besar |
 | WN256-TA2KD | WasteNet-256K | Two-stage / teacher-assistant KD | Focus-RCNet KD | Uji teacher-assistant KD pada WasteNet lebih besar |
@@ -43,8 +43,8 @@ notebook4_wastenet_baseline_direct_kd.py
 
 Isi:
 
-1. WasteNet-123K baseline CE.
-2. WasteNet-123K direct KD from EfficientNet-B4.
+1. WasteNet-128K baseline CE.
+2. WasteNet-128K direct KD from EfficientNet-B4.
 3. WasteNet-256K baseline CE.
 4. WasteNet-256K direct KD from EfficientNet-B4.
 
@@ -57,12 +57,12 @@ Input dependencies:
 Expected outputs:
 
 ```text
-wastenet_123k_baseline_ce_best.pth
-wastenet_123k_direct_kd_b4_best.pth
+wastenet_128k_baseline_ce_best.pth
+wastenet_128k_direct_kd_b4_best.pth
 wastenet_256k_baseline_ce_best.pth
 wastenet_256k_direct_kd_b4_best.pth
-training_history_wastenet_123k_baseline_ce.csv
-training_history_wastenet_123k_direct_kd_b4.csv
+training_history_wastenet_128k_baseline_ce.csv
+training_history_wastenet_128k_direct_kd_b4.csv
 training_history_wastenet_256k_baseline_ce.csv
 training_history_wastenet_256k_direct_kd_b4.csv
 wastenet_baseline_direct_kd_comparison.csv
@@ -78,8 +78,8 @@ notebook5_wastenet_teacher_assistant_twostage_kd.py
 
 Isi:
 
-1. Load WasteNet-123K CE checkpoint from Notebook 4.
-2. Fine-tune WasteNet-123K with KD from Focus-RCNet KD teacher assistant.
+1. Load WasteNet-128K CE checkpoint from Notebook 4.
+2. Fine-tune WasteNet-128K with KD from Focus-RCNet KD teacher assistant.
 3. Load WasteNet-256K CE checkpoint from Notebook 4.
 4. Fine-tune WasteNet-256K with KD from Focus-RCNet KD teacher assistant.
 
@@ -105,16 +105,16 @@ Important interpretation:
 Input dependencies:
 
 - Focus-RCNet KD or two-stage KD checkpoint.
-- WasteNet-123K CE checkpoint from Notebook 4.
+- WasteNet-128K CE checkpoint from Notebook 4.
 - WasteNet-256K CE checkpoint from Notebook 4.
 - Same split indices used in Notebook 4.
 
 Expected outputs:
 
 ```text
-wastenet_123k_ta_twostage_kd_best.pth
+wastenet_128k_ta_twostage_kd_best.pth
 wastenet_256k_ta_twostage_kd_best.pth
-training_history_wastenet_123k_ta_twostage_kd.csv
+training_history_wastenet_128k_ta_twostage_kd.csv
 training_history_wastenet_256k_ta_twostage_kd.csv
 wastenet_teacher_assistant_twostage_comparison.csv
 ```
@@ -127,7 +127,7 @@ final validation protocol is started immediately.
 Recommended default:
 
 ```python
-IMG_SIZE = 380
+IMG_SIZE = 160
 EPOCHS = 200
 BATCH_SIZE = 16
 OPTIMIZER = "SGD"
@@ -232,9 +232,9 @@ Efficiency metrics:
 Primary comparisons:
 
 ```text
-WasteNet-123K CE vs WasteNet-123K direct KD
-WasteNet-123K CE vs WasteNet-123K teacher-assistant two-stage KD
-WasteNet-123K direct KD vs WasteNet-123K teacher-assistant two-stage KD
+WasteNet-128K CE vs WasteNet-128K direct KD
+WasteNet-128K CE vs WasteNet-128K teacher-assistant two-stage KD
+WasteNet-128K direct KD vs WasteNet-128K teacher-assistant two-stage KD
 ```
 
 Secondary comparisons:
@@ -242,12 +242,12 @@ Secondary comparisons:
 ```text
 WasteNet-256K CE vs WasteNet-256K direct KD
 WasteNet-256K CE vs WasteNet-256K teacher-assistant two-stage KD
-WasteNet-123K best vs WasteNet-256K best
+WasteNet-128K best vs WasteNet-256K best
 ```
 
 Interpretation rules:
 
-- If WasteNet-123K wins or is close to WasteNet-256K, emphasize deployment
+- If WasteNet-128K wins or is close to WasteNet-256K, emphasize deployment
   efficiency.
 - If WasteNet-256K wins clearly, report it as a capacity trade-off, not as the
   under-200K deployment solution.

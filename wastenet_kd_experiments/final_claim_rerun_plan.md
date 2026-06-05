@@ -42,9 +42,9 @@ SEEDS = [42, 123, 777, 2026, 3407]
 | --- | --- | --- | --- | --- |
 | R1 | EfficientNet-B4 teacher | None | EfficientNet-B4 | Split berubah, jadi teacher final harus dilatih ulang tanpa melihat test set. |
 | R2 | Focus-RCNet two-stage KD | EfficientNet-B4 | Focus-RCNet | Diperlukan jika Focus-RCNet dipakai sebagai teacher assistant untuk WasteNet. |
-| R3 | WasteNet-123K baseline CE | None | WasteNet-123K | Baseline utama untuk klaim under 200K parameters. |
-| R4 | WasteNet-123K direct KD | EfficientNet-B4 | WasteNet-123K | Menguji direct KD dari big teacher ke tiny student. |
-| R5 | WasteNet-123K two-stage / TA-KD | Focus-RCNet | WasteNet-123K | Menguji teacher-assistant KD untuk target under 200K. |
+| R3 | WasteNet-128K baseline CE | None | WasteNet-128K | Baseline utama untuk klaim under 200K parameters. |
+| R4 | WasteNet-128K direct KD | EfficientNet-B4 | WasteNet-128K | Menguji direct KD dari big teacher ke tiny student. |
+| R5 | WasteNet-128K two-stage / TA-KD | Focus-RCNet | WasteNet-128K | Menguji teacher-assistant KD untuk target under 200K. |
 | R6 | WasteNet-256K baseline CE | None | WasteNet-256K | Baseline pembanding dengan kapasitas lebih besar. |
 | R7 | WasteNet-256K direct KD | EfficientNet-B4 | WasteNet-256K | Menguji direct KD pada WasteNet yang lebih besar. |
 | R8 | WasteNet-256K two-stage / TA-KD | Focus-RCNet | WasteNet-256K | Menguji teacher-assistant KD pada WasteNet yang lebih besar. |
@@ -62,15 +62,15 @@ Jika semua dijalankan dengan 5 seed, total training run menjadi:
 ```text
 R1: EfficientNet-B4 teacher
   -> R2: Focus-RCNet two-stage KD teacher assistant
-      -> R5: WasteNet-123K two-stage / TA-KD
+      -> R5: WasteNet-128K two-stage / TA-KD
       -> R8: WasteNet-256K two-stage / TA-KD
 
 R1: EfficientNet-B4 teacher
-  -> R4: WasteNet-123K direct KD
+  -> R4: WasteNet-128K direct KD
   -> R7: WasteNet-256K direct KD
 
-R3: WasteNet-123K baseline CE
-  -> R5: WasteNet-123K two-stage / TA-KD
+R3: WasteNet-128K baseline CE
+  -> R5: WasteNet-128K two-stage / TA-KD
 
 R6: WasteNet-256K baseline CE
   -> R8: WasteNet-256K two-stage / TA-KD
@@ -132,20 +132,20 @@ notebook_final_03_wastenet_baseline_direct_kd.py
 
 Contents:
 
-- WasteNet-123K baseline CE.
-- WasteNet-123K direct KD from EfficientNet-B4.
+- WasteNet-128K baseline CE.
+- WasteNet-128K direct KD from EfficientNet-B4.
 - WasteNet-256K baseline CE.
 - WasteNet-256K direct KD from EfficientNet-B4.
 
 Outputs:
 
 ```text
-wastenet_123k_final_baseline_ce_seed_{seed}.pth
-wastenet_123k_final_direct_kd_b4_seed_{seed}.pth
+wastenet_128k_final_baseline_ce_seed_{seed}.pth
+wastenet_128k_final_direct_kd_b4_seed_{seed}.pth
 wastenet_256k_final_baseline_ce_seed_{seed}.pth
 wastenet_256k_final_direct_kd_b4_seed_{seed}.pth
-predictions_wastenet_123k_baseline_ce_seed_{seed}.csv
-predictions_wastenet_123k_direct_kd_b4_seed_{seed}.csv
+predictions_wastenet_128k_baseline_ce_seed_{seed}.csv
+predictions_wastenet_128k_direct_kd_b4_seed_{seed}.csv
 predictions_wastenet_256k_baseline_ce_seed_{seed}.csv
 predictions_wastenet_256k_direct_kd_b4_seed_{seed}.csv
 ```
@@ -160,17 +160,17 @@ notebook_final_04_wastenet_teacher_assistant_kd.py
 
 Contents:
 
-- Load WasteNet-123K baseline checkpoint.
-- Fine-tune WasteNet-123K with KD from Focus-RCNet teacher assistant.
+- Load WasteNet-128K baseline checkpoint.
+- Fine-tune WasteNet-128K with KD from Focus-RCNet teacher assistant.
 - Load WasteNet-256K baseline checkpoint.
 - Fine-tune WasteNet-256K with KD from Focus-RCNet teacher assistant.
 
 Outputs:
 
 ```text
-wastenet_123k_final_ta_twostage_kd_seed_{seed}.pth
+wastenet_128k_final_ta_twostage_kd_seed_{seed}.pth
 wastenet_256k_final_ta_twostage_kd_seed_{seed}.pth
-predictions_wastenet_123k_ta_twostage_kd_seed_{seed}.csv
+predictions_wastenet_128k_ta_twostage_kd_seed_{seed}.csv
 predictions_wastenet_256k_ta_twostage_kd_seed_{seed}.csv
 ```
 
@@ -239,9 +239,9 @@ Recommended tests:
 Primary:
 
 ```text
-WasteNet-123K baseline CE
-vs WasteNet-123K direct KD
-vs WasteNet-123K teacher-assistant two-stage KD
+WasteNet-128K baseline CE
+vs WasteNet-128K direct KD
+vs WasteNet-128K teacher-assistant two-stage KD
 ```
 
 Secondary:
@@ -261,7 +261,7 @@ vs EfficientNet-B4 -> Focus-RCNet -> WasteNet
 
 Deployment interpretation:
 
-- WasteNet-123K is the main deployment candidate for under 200K parameters.
+- WasteNet-128K is the main deployment candidate for under 200K parameters.
 - WasteNet-256K is a capacity trade-off comparison.
 - EfficientNet-B4 and Focus-RCNet are training-time teachers, not deployment
   models.
