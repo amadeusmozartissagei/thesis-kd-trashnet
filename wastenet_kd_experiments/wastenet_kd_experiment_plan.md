@@ -31,6 +31,10 @@ dipakai secara strict.
 
 Total eksperimen baru: 6.
 
+Notebook 4 sudah difinalkan sebagai controlled exploratory run dengan 100 epoch
+untuk WasteNet. Plan Notebook 5 harus mengikuti konfigurasi final tersebut agar
+perbandingan tetap sejajar.
+
 ## Notebook Layout
 
 ### Notebook 4: WasteNet Baseline + Direct KD
@@ -65,6 +69,10 @@ training_history_wastenet_128k_baseline_ce.csv
 training_history_wastenet_128k_direct_kd_b4.csv
 training_history_wastenet_256k_baseline_ce.csv
 training_history_wastenet_256k_direct_kd_b4.csv
+predictions_wastenet_128k_baseline_ce.csv
+predictions_wastenet_128k_direct_kd_b4.csv
+predictions_wastenet_256k_baseline_ce.csv
+predictions_wastenet_256k_direct_kd_b4.csv
 wastenet_baseline_direct_kd_comparison.csv
 ```
 
@@ -104,10 +112,20 @@ Important interpretation:
 
 Input dependencies:
 
-- Focus-RCNet KD or two-stage KD checkpoint.
-- WasteNet-128K CE checkpoint from Notebook 4.
-- WasteNet-256K CE checkpoint from Notebook 4.
-- Same split indices used in Notebook 4.
+- Primary teacher assistant checkpoint:
+  `focus_rcnet_direct_kd_e200_bs16_t4_a05_best.pth`.
+- Optional teacher-assistant fallback or ablation checkpoint:
+  `focus_rcnet_twostage_kd_e200_bs16_t4_a05_best.pth`.
+- WasteNet-128K CE checkpoint from Notebook 4:
+  `wastenet_128k_baseline_ce_best.pth`.
+- WasteNet-256K CE checkpoint from Notebook 4:
+  `wastenet_256k_baseline_ce_best.pth`.
+- Notebook 4 comparison CSV, if attached:
+  `wastenet_baseline_direct_kd_comparison.csv`.
+- Same split indices used in Notebook 4. Load `train_indices` and `val_indices`
+  from the WasteNet CE checkpoint, then assert that both WasteNet CE
+  checkpoints and the Focus-RCNet teacher-assistant checkpoint use the same
+  split when those fields are available.
 
 Expected outputs:
 
@@ -116,19 +134,23 @@ wastenet_128k_ta_twostage_kd_best.pth
 wastenet_256k_ta_twostage_kd_best.pth
 training_history_wastenet_128k_ta_twostage_kd.csv
 training_history_wastenet_256k_ta_twostage_kd.csv
+predictions_wastenet_128k_ta_twostage_kd.csv
+predictions_wastenet_256k_ta_twostage_kd.csv
 wastenet_teacher_assistant_twostage_comparison.csv
+wastenet_all_core_experiments_comparison.csv
 ```
 
 ## Default Training Configuration
 
-Initial runs should stay close to the existing controlled protocol unless the
-final validation protocol is started immediately.
+Initial WasteNet runs should stay close to the finalized Notebook 4 controlled
+exploratory protocol unless the final validation protocol is started
+immediately.
 
 Recommended default:
 
 ```python
 IMG_SIZE = 160
-EPOCHS = 200
+EPOCHS = 100
 BATCH_SIZE = 16
 OPTIMIZER = "SGD"
 LR = 0.05
@@ -137,17 +159,22 @@ WEIGHT_DECAY = 1e-4
 SCHEDULER = "CosineAnnealingLR"
 KD_TEMPERATURE = 4
 KD_ALPHA = 0.5
+STAGE1_EPOCHS = 100
 STAGE2_EPOCHS = 50
 STAGE2_LR = 0.005
+USE_AMP = True
 ```
 
 Notes:
 
 - Direct KD trains WasteNet from initialization using KD loss.
-- Two-stage KD loads the WasteNet CE checkpoint before KD fine-tuning.
+- Two-stage KD loads the best WasteNet CE checkpoint from Notebook 4 before KD
+  fine-tuning; Stage 1 is not retrained inside Notebook 5.
 - Teacher models must be in `eval()` mode with all parameters frozen.
 - Save train and validation indices inside every checkpoint.
 - Save prediction-level CSV for later statistical testing.
+- Notebook 5 should save the teacher-assistant checkpoint path and the Stage 1
+  WasteNet checkpoint path inside each output checkpoint.
 
 ## Split And Validation Plan
 
@@ -206,6 +233,10 @@ ALPHAS = [0.1, 0.3, 0.5]
 
 Use validation results for hyperparameter choice. Do not use the independent
 test split for choosing temperature or alpha.
+
+Notebook 4 showed direct KD from EfficientNet-B4 underperforming CE for both
+WasteNet capacities. Finish Notebook 5 first before any alpha/temperature
+ablation, because teacher-assistant KD is the intended capacity-gap follow-up.
 
 ## Metrics To Report
 
@@ -282,4 +313,3 @@ The thesis narrative can position the new experiments as follows:
 4. The novelty is not just using KD, but testing whether two-stage /
    teacher-assistant KD is more suitable than direct KD when compressing toward
    under-200K parameters.
-
