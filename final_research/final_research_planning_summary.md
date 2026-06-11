@@ -115,15 +115,23 @@ Subjenis:
 - Two-stage KD: CE pretraining -> KD fine-tuning.
 - Teacher-assistant KD: EfficientNet-B4 -> Focus-RCNet -> WasteNet.
 
-### 5.3 Self-Distillation / CORD-CORSD
+### 5.3 Self-Distillation / FASDNet
 
 Self-distillation tidak bergantung pada teacher eksternal besar. Knowledge ditransfer dari model yang sama, misalnya dari classifier/layer terdalam ke classifier/layer dangkal.
 
-Catatan istilah:
+Metode acuan: FASDNet (Shi, C., Ding, M., Wang, L., & Pan, H., 2023). "Learn by Yourself: A Feature-Augmented Self-Distillation Convolutional Neural Network for Remote Sensing Scene Image Classification." Remote Sensing, 15(18), 4567.
 
-- Pastikan paper/metode yang dipakai adalah CORD atau CORSD.
-- Kandidat yang relevan untuk image classification adalah CORSD: Class-Oriented Relational Self Distillation.
-- CORSD memakai relational knowledge, structured pairs, relation networks, dan auxiliary classifiers.
+Komponen utama FASDNet:
+
+- Feature Augmentation Pyramid Module (FAPM): fusi fitur multi-level untuk memperkaya representasi.
+- Auxiliary classifiers dengan bottleneck convolution pada cabang intermediate.
+- Self-distillation dari layer terdalam ke auxiliary classifiers yang lebih dangkal.
+
+Adaptasi untuk penelitian ini:
+
+- FASDNet awalnya dirancang untuk remote sensing scene classification dengan backbone ResNet34.
+- Dalam penelitian ini, mekanisme self-distillation FASDNet diadaptasi ke arsitektur WasteNet untuk waste classification pada TrashNet.
+- Adaptasi perlu menyesuaikan FAPM dan penempatan auxiliary classifiers dengan arsitektur depthwise-separable WasteNet.
 
 Tujuan:
 
@@ -165,8 +173,8 @@ Final claim memakai 10 experiment groups. Pilot tuning boleh dilakukan sebelum f
 | R6 | WasteNet-256K baseline CE | None | WasteNet-256K | Baseline pembanding kapasitas |
 | R7 | WasteNet-256K direct KD | EfficientNet-B4 | WasteNet-256K | Menguji direct KD pada kapasitas lebih besar |
 | R8 | WasteNet-256K teacher-assistant KD | Focus-RCNet | WasteNet-256K | Pembanding TA-KD terhadap WasteNet-128K |
-| R9 | WasteNet-128K CORD/CORSD self-distillation | Self / auxiliary branches | WasteNet-128K | Pembanding tanpa external teacher untuk target ESP32 |
-| R10 | WasteNet-256K CORD/CORSD self-distillation | Self / auxiliary branches | WasteNet-256K | Pembanding self-distillation pada kapasitas lebih besar |
+| R9 | WasteNet-128K FASDNet self-distillation | Self / auxiliary branches | WasteNet-128K | Pembanding tanpa external teacher untuk target ESP32 |
+| R10 | WasteNet-256K FASDNet self-distillation | Self / auxiliary branches | WasteNet-256K | Pembanding self-distillation pada kapasitas lebih besar |
 
 Dependency chain:
 
@@ -182,11 +190,11 @@ R1 EfficientNet-B4 teacher
 
 R3 WasteNet-128K baseline CE
   -> R5 WasteNet-128K TA-KD
-  -> R9 WasteNet-128K CORD/CORSD
+  -> R9 WasteNet-128K FASDNet
 
 R6 WasteNet-256K baseline CE
   -> R8 WasteNet-256K TA-KD
-  -> R10 WasteNet-256K CORD/CORSD
+  -> R10 WasteNet-256K FASDNet
 ```
 
 Jika semua experiment groups final dijalankan dengan 5 seed:
@@ -244,18 +252,18 @@ STAGE2_LR_CANDIDATES = [0.001, 0.0005]
 - Untuk R7 dan R8, jangan full grid dulu. Pakai konfigurasi terbaik W128 sebagai starting point, tambah runner-up W128, dan anchor `T=4, alpha=0.5`.
 - Alpha kecil diprioritaskan untuk WasteNet karena archive menunjukkan `alpha=0.5` dapat membuat soft loss terlalu dominan.
 
-### 8.2 Pilot CORD/CORSD Self-Distillation
+### 8.2 Pilot FASDNet Self-Distillation
 
-CORD/CORSD tidak bergantung pada EfficientNet-B4 atau Focus-RCNet. Pilot dimulai dari WasteNet-128K karena ini klaim utama deployment.
+FASDNet self-distillation tidak bergantung pada EfficientNet-B4 atau Focus-RCNet. Pilot dimulai dari WasteNet-128K karena ini klaim utama deployment.
 
 Grid awal yang dibatasi:
 
 ```python
 AUX_LOSS_WEIGHTS = [0.1, 0.2]
-RELATION_LOSS_WEIGHTS = [0.01, 0.05]
+FAPM_LOSS_WEIGHTS = [0.01, 0.05]
 ```
 
-Jika implementasi CORD/CORSD memakai softened auxiliary logits, tambahkan:
+Jika implementasi FASDNet memakai softened auxiliary logits, tambahkan:
 
 ```python
 SELF_DISTILL_TEMPERATURES = [2, 4]
@@ -263,7 +271,7 @@ SELF_DISTILL_TEMPERATURES = [2, 4]
 
 Urutan self-distillation:
 
-1. Pilot R9 WasteNet-128K CORD/CORSD.
+1. Pilot R9 WasteNet-128K FASDNet.
 2. Pilih loss weight berdasarkan validation metric.
 3. Terapkan konfigurasi terbaik atau konfigurasi terdekat ke R10 WasteNet-256K sebagai secondary comparison.
 4. Bekukan konfigurasi sebelum final 5-seed run.
@@ -275,7 +283,7 @@ Flow yang disepakati:
 1. Buat split final 70/15/15.
 2. Train teacher/anchor yang dibutuhkan untuk pilot.
 3. Pilot tuning `T/alpha` untuk logits KD.
-4. Pilot tuning loss weight untuk CORD/CORSD.
+4. Pilot tuning loss weight untuk FASDNet.
 5. Freeze semua konfigurasi berdasarkan validation/k-fold result.
 6. Jalankan R1-R10 final dengan 5 seed memakai frozen config.
 7. Evaluasi independent test hanya sekali untuk final reporting.
@@ -382,7 +390,7 @@ Pertanyaan penelitian final dapat disusun sebagai:
 2. Apakah logits-based KD meningkatkan performa model ringan dibanding CE?
 3. Untuk Focus-RCNet, apakah direct KD atau two-stage KD lebih layak menjadi teacher assistant?
 4. Apakah teacher-assistant KD membantu student sangat kecil seperti WasteNet setelah `T`, `alpha`, dan stage-2 LR dituning?
-5. Apakah self-distillation CORD/CORSD lebih cocok untuk model kecil dibanding external teacher KD?
+5. Apakah self-distillation FASDNet lebih cocok untuk model kecil dibanding external teacher KD?
 6. Bagaimana trade-off akurasi, jumlah parameter, latency, dan risiko overfitting?
 
 Klaim final yang paling aman:
@@ -402,7 +410,7 @@ Urutan eksekusi yang disepakati:
 4. Pilih Focus-RCNet teacher assistant dengan membandingkan direct KD vs two-stage KD berdasarkan validation metric.
 5. Pilot W128 direct KD dengan small grid `T/alpha`.
 6. Pilot W128 TA-KD dengan small grid `T/alpha`, CE fine-tune control, dan stage-2 LR lebih kecil.
-7. Pilot W128 CORD/CORSD dengan grid loss weight kecil.
+7. Pilot W128 FASDNet dengan grid loss weight kecil.
 8. Untuk W256, gunakan konfigurasi terbaik W128, runner-up W128, dan anchor `T=4, alpha=0.5` sebagai limited secondary pilot.
 9. Freeze satu konfigurasi final untuk setiap experiment group.
 10. Jalankan R1-R10 final dengan 5 seed.
@@ -416,7 +424,7 @@ R2 Focus-RCNet teacher-assistant selection
 R3 WasteNet-128K CE
 R4 WasteNet-128K direct KD
 R5 WasteNet-128K TA-KD
-R9 WasteNet-128K CORD/CORSD
+R9 WasteNet-128K FASDNet
 ```
 
 WasteNet-256K tetap berguna, tetapi posisinya secondary capacity comparison.
@@ -441,11 +449,11 @@ Eksperimen lama tetap berguna, tetapi posisinya:
 
 - Gunakan 70/15/15 untuk klaim final.
 - Gunakan minimal 5 seed untuk eksperimen utama.
-- Final claim memakai R1-R10, termasuk WasteNet-128K dan WasteNet-256K CORD/CORSD.
-- Bagi penelitian menjadi dua jenis KD: logits-based KD dan self-distillation CORD/CORSD.
+- Final claim memakai R1-R10, termasuk WasteNet-128K dan WasteNet-256K FASDNet.
+- Bagi penelitian menjadi dua jenis KD: logits-based KD dan self-distillation FASDNet.
 - Lakukan pilot tuning sebelum final 5-seed run, lalu freeze konfigurasi.
 - Tune `temperature` dan `alpha` hanya untuk logits KD dengan validation/k-fold development set.
-- Tune loss weight CORD/CORSD secara terpisah dari logits KD.
+- Tune loss weight FASDNet secara terpisah dari logits KD.
 - Pilih Focus-RCNet teacher assistant dari direct KD vs two-stage KD, jangan mengunci two-stage secara asumtif.
 - Fokus deployment pada WasteNet-128K karena parameter di bawah 200 ribu.
 - Jangan menjadikan hasil WasteNet TA-KD lama sebagai klaim positif; gunakan sebagai alasan retuning.
