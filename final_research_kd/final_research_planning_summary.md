@@ -98,7 +98,55 @@ Strategi validasi:
 - Jalankan konfigurasi final dengan 5 seed.
 - Evaluasi independent test set satu kali untuk final reporting.
 
-### 4.1 R0: Final Data Protocol Setup
+### 4.1 Setup Kaggle Final
+
+Eksperimen final dijalankan di Kaggle Notebooks menggunakan PyTorch. Setup ini mengikuti setup Kaggle pada resource spec lama, tetapi split dataset diperbarui dari skema lama 70/30 menjadi protokol final 70/15/15.
+
+Compute environment:
+
+```python
+PLATFORM = "Kaggle Notebooks"
+FRAMEWORK = "PyTorch"
+
+GPU_AVAILABLE = "2x NVIDIA Tesla T4 (16GB VRAM each)"
+GPU_USED = "1x NVIDIA Tesla T4"
+MULTI_GPU = False
+
+OS = "Linux (Kaggle runtime)"
+CUDA = "auto-detected"
+
+USE_AMP = True
+```
+
+Dataset dan output path:
+
+```python
+DATASET = "TrashNet"
+DATASET_PATH = "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized"
+OUTPUT_DIR = "/kaggle/working/"
+
+TRAIN_SPLIT = 0.70
+VAL_SPLIT = 0.15
+TEST_SPLIT = 0.15
+```
+
+Catatan dataset:
+
+- Kaggle mirror yang digunakan berisi 2527 citra.
+- Paper melaporkan 2528 citra TrashNet, termasuk 483 citra plastic.
+- Kaggle mirror ini berisi 482 citra plastic, sehingga total menjadi 2527 citra.
+- Perbedaan jumlah data ini wajib ditulis sebagai dataset-source limitation, bukan error eksperimen.
+
+Aturan praktis Kaggle:
+
+- Semua notebook final dijalankan sequential di Kaggle.
+- Gunakan 1x Tesla T4 agar pengukuran runtime, latency, dan memory lebih konsisten.
+- Jangan mengaktifkan multi-GPU kecuali seluruh eksperimen final diulang dengan setup multi-GPU yang sama.
+- Gunakan AMP (`USE_AMP=True`) untuk training selama diterapkan konsisten pada semua run yang relevan.
+- Artefak R0 disimpan di bawah `/kaggle/working/final_research/r0_data_protocol/`.
+- Checkpoint, history CSV, prediction CSV, dan evaluation report dari R1-R10 disimpan di bawah `/kaggle/working/final_research/`.
+
+### 4.2 R0: Final Data Protocol Setup
 
 R0 adalah tahap persiapan protokol data, bukan eksperimen training model. R0 wajib selesai sebelum R1-R10 karena semua eksperimen final harus memakai split, class mapping, dan aturan evaluasi yang sama.
 
@@ -106,6 +154,7 @@ Tujuan R0:
 
 - Mengunci dataset TrashNet yang dipakai untuk final experiment.
 - Mengecek jumlah gambar per kelas dan mendeteksi file rusak/duplikat jika ada.
+- Mengecualikan exact duplicate image dengan conflicting label sebelum split.
 - Menetapkan class mapping final, misalnya urutan label dan indeks kelas.
 - Membuat stratified split 70/15/15 untuk train, validation, dan independent test.
 - Menyimpan split manifest agar semua run dapat direproduksi.
@@ -116,6 +165,11 @@ Output minimal R0:
 ```text
 class_mapping.json
 dataset_inventory.csv
+dataset_class_counts.csv
+final_dataset_class_counts.csv
+invalid_images.csv
+duplicate_candidates.csv
+excluded_duplicate_conflicts.csv
 split_manifest_seed_42.csv
 split_manifest_seed_123.csv
 split_manifest_seed_777.csv
@@ -132,6 +186,7 @@ image_path,label,class_id,split,seed
 
 Aturan split:
 
+- Exact duplicate image dengan label berbeda dikeluarkan dari dataset final untuk mencegah label ambiguity dan cross-split leakage.
 - Untuk setiap seed, semua model pada seed tersebut harus memakai split yang sama.
 - Validation set hanya dipakai untuk tuning dan checkpoint selection.
 - Independent test set hanya dipakai setelah konfigurasi final dibekukan.
@@ -274,15 +329,17 @@ R0 protocol setup = 1 setup stage
 
 ## 8. Pilot Hyperparameter Sebelum Final Run
 
-Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute, misalnya patience 15-20 epoch berdasarkan validation loss.
+Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute, terutama di Kaggle, misalnya patience 10-20 epoch berdasarkan validation loss atau validation accuracy.
 
 Prinsip utama:
 
 - Pilot memakai validation set.
+- Pilot/smoke test boleh memakai early stopping dan epoch lebih pendek untuk memastikan pipeline berjalan.
 - Independent test set tetap dikunci dan tidak disentuh.
 - Setelah konfigurasi dipilih, buat satu frozen config per experiment group.
 - Jangan memilih `T/alpha` berbeda-beda per seed.
 - Baseline CE dan EfficientNet-B4 teacher tidak memakai `T/alpha`.
+- Hasil pilot tidak dipakai sebagai klaim performa final.
 
 ### 8.1 Pilot Logits-Based KD
 
@@ -366,8 +423,25 @@ Aturan penting:
 
 Early stopping dibedakan berdasarkan fase:
 
-- Pilot tuning: early stopping boleh dipakai, misalnya patience 15-20 epoch berdasarkan validation loss.
+- Pilot/smoke test/tuning: early stopping boleh dipakai untuk menghemat waktu, misalnya patience 10-20 epoch berdasarkan validation loss atau validation accuracy. Pada fase ini epoch juga boleh dipendekkan, misalnya 5-10 epoch untuk debugging pipeline.
 - Final 5-seed run: early stopping tidak digunakan. Semua run dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy, agar setiap seed mendapat kesempatan training yang sama dan hasilnya fair untuk dibandingkan.
+
+Contoh mode pilot:
+
+```python
+RUN_PHASE = "pilot"
+EVALUATE_TEST = False
+EARLY_STOPPING = True
+PATIENCE = 10
+```
+
+Contoh mode final:
+
+```python
+RUN_PHASE = "final"
+EVALUATE_TEST = True
+EARLY_STOPPING = False
+```
 
 ## 10. Metrik Evaluasi dan Artefak
 

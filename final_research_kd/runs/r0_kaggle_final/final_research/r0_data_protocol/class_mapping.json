@@ -1,0 +1,31 @@
+{
+  "dataset_name": "TrashNet",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "source": "https://www.kaggle.com/datasets/feyzazkefe/trashnet",
+  "generated_at_utc": "2026-06-12T11:47:37.286006+00:00",
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "class_to_idx": {
+    "cardboard": 0,
+    "glass": 1,
+    "metal": 2,
+    "paper": 3,
+    "plastic": 4,
+    "trash": 5
+  },
+  "idx_to_class": {
+    "0": "cardboard",
+    "1": "glass",
+    "2": "metal",
+    "3": "paper",
+    "4": "plastic",
+    "5": "trash"
+  }
+}

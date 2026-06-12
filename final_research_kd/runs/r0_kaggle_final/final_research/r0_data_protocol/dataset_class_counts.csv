@@ -1,0 +1,7 @@
+label,class_id,num_images,expected_images,matches_expected
+cardboard,0,403,403,True
+glass,1,501,501,True
+metal,2,410,410,True
+paper,3,594,594,True
+plastic,4,482,482,True
+trash,5,137,137,True

@@ -1,0 +1,7 @@
+label,class_id,num_images
+cardboard,0,403
+glass,1,498
+metal,2,409
+paper,3,594
+plastic,4,480
+trash,5,137
