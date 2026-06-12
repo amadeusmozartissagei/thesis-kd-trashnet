@@ -143,8 +143,41 @@ Aturan praktis Kaggle:
 - Gunakan 1x Tesla T4 agar pengukuran runtime, latency, dan memory lebih konsisten.
 - Jangan mengaktifkan multi-GPU kecuali seluruh eksperimen final diulang dengan setup multi-GPU yang sama.
 - Gunakan AMP (`USE_AMP=True`) untuk training selama diterapkan konsisten pada semua run yang relevan.
-- Artefak R0 disimpan di bawah `/kaggle/working/final_research/r0_data_protocol/`.
-- Checkpoint, history CSV, prediction CSV, dan evaluation report dari R1-R10 disimpan di bawah `/kaggle/working/final_research/`.
+- Artefak R0 disimpan sebagai Kaggle input dan/atau run artifact di bawah struktur `final_research_kd/runs/r0_kaggle_final/`.
+- Checkpoint, history CSV, prediction CSV, dan evaluation report dari R1-R10 disimpan di bawah `/kaggle/working/final_research_kd/runs/`.
+
+Struktur output run:
+
+```text
+final_research_kd/
+  notebook0_r0_final_data_protocol_setup.ipynb
+  notebook1_r1_efficientnet_b4_teacher.ipynb
+  runs/
+    r0_kaggle_final/
+      notebook0-r0-final-data-protocol-setup_executed.ipynb
+      final_research/
+        r0_data_protocol/
+          class_mapping.json
+          split_manifest_seed_*.csv
+          ...
+    pilots/
+      R1/
+        r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/
+          notebook_executed.ipynb
+          config_*.json
+          artifact_manifest_*.json
+          training_history_*.csv
+          metrics_*.csv
+          predictions_*_val.csv
+          efficientnet_b4_teacher_*_best.pth
+    final/
+      R1/
+        seed_42/
+        seed_123/
+        seed_777/
+        seed_2026/
+        seed_3407/
+```
 
 ### 4.2 R0: Final Data Protocol Setup
 
@@ -442,6 +475,59 @@ RUN_PHASE = "final"
 EVALUATE_TEST = True
 EARLY_STOPPING = False
 ```
+
+### 9.1 Pilot Run Naming dan Setup Policy
+
+Setiap notebook eksperimen, misalnya R1, hanya menjalankan satu konfigurasi setup per run. Notebook tidak otomatis mencoba banyak setup sekaligus, kecuali nanti dibuat runner/grid khusus.
+
+Jika ingin mencoba setup pilot lain:
+
+1. Ubah konfigurasi yang ingin diuji, misalnya `PILOT_EPOCHS`, `PATIENCE`, `EARLY_STOPPING_MONITOR`, `LR`, `BATCH_SIZE`, atau parameter KD.
+2. Jalankan ulang notebook dengan `RUN_PHASE = "pilot"`.
+3. Notebook menyimpan hasil ke folder pilot baru berdasarkan `setup_id`.
+4. Bandingkan hasil pilot memakai validation metric dan training behavior.
+5. Pilih satu konfigurasi terbaik atau paling masuk akal.
+6. Freeze konfigurasi tersebut sebelum final 5-seed run.
+
+Contoh folder pilot R1:
+
+```text
+final_research_kd/runs/pilots/R1/
+  r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/
+  r1_pilot_b4_s42_e20_es-valacc-p8_img380_lr0p01_bs8/
+```
+
+Contoh makna `setup_id`:
+
+```text
+r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8
+```
+
+Artinya:
+
+- `r1`: experiment group R1.
+- `pilot`: fase pilot, bukan final claim.
+- `b4`: EfficientNet-B4.
+- `s42`: seed 42.
+- `e10`: 10 epoch.
+- `es-valloss-p5`: early stopping monitor validation loss dengan patience 5.
+- `img380`: input image 380x380.
+- `lr0p05`: learning rate 0.05.
+- `bs8`: batch size 8.
+
+Output pilot sebelumnya tidak ditimpa selama `setup_id` berbeda. Jika konfigurasi yang sama dijalankan ulang, output folder yang sama dapat tertimpa; karena itu, tambahkan suffix manual seperti `run2` hanya jika perlu membedakan rerun teknis.
+
+Final run tidak memakai nama setup panjang. Setelah konfigurasi dibekukan, hasil final disimpan berdasarkan experiment group dan seed:
+
+```text
+final_research_kd/runs/final/R1/seed_42/
+final_research_kd/runs/final/R1/seed_123/
+final_research_kd/runs/final/R1/seed_777/
+final_research_kd/runs/final/R1/seed_2026/
+final_research_kd/runs/final/R1/seed_3407/
+```
+
+Dengan aturan ini, pilot berfungsi sebagai ruang eksplorasi konfigurasi, sedangkan final run berfungsi sebagai evaluasi resmi dari konfigurasi yang sudah dibekukan.
 
 ## 10. Metrik Evaluasi dan Artefak
 
