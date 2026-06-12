@@ -52,7 +52,7 @@ Gunakan stratified split:
 Aturan penggunaan data:
 
 - Train set hanya untuk training.
-- Validation set untuk checkpoint selection, early stopping, dan hyperparameter tuning.
+- Validation set untuk checkpoint selection, early stopping (pilot), dan hyperparameter tuning.
 - Test set hanya untuk final reporting.
 - Test set tidak boleh dipakai untuk memilih model, epoch, temperature, alpha, atau konfigurasi training lain.
 
@@ -159,7 +159,7 @@ EfficientNet-Lite0 dapat tetap dipakai sebagai pembanding deployment-oriented, t
 
 ## 7. Rancangan Eksperimen Utama
 
-Final claim memakai 10 experiment groups. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation/k-fold, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
+Final claim memakai 10 experiment groups. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation set, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
 
 | ID | Eksperimen final | Teacher | Model akhir | Tujuan |
 | --- | --- | --- | --- | --- |
@@ -205,11 +205,11 @@ Jika compute terbatas, prioritas final claim adalah R1, R2, R3, R4, R5, dan R9. 
 
 ## 8. Pilot Hyperparameter Sebelum Final Seed
 
-Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan.
+Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute (misalnya patience 15-20 epoch berdasarkan validation loss).
 
 Prinsip utama:
 
-- Pilot memakai validation set atau k-fold pada development set.
+- Pilot memakai validation set.
 - Independent test set tetap dikunci dan tidak disentuh.
 - Setelah konfigurasi dipilih, buat satu frozen config per experiment group.
 - Jangan memilih `T/alpha` berbeda-beda per seed.
@@ -282,7 +282,7 @@ Flow yang disepakati:
 2. Train teacher/anchor yang dibutuhkan untuk pilot.
 3. Pilot tuning `T/alpha` untuk logits KD.
 4. Pilot tuning loss weight untuk FASDNet.
-5. Freeze semua konfigurasi berdasarkan validation/k-fold result.
+5. Freeze semua konfigurasi berdasarkan validation result.
 6. Jalankan R1-R10 final dengan 5 seed memakai frozen config.
 7. Evaluasi independent test hanya sekali untuk final reporting.
 
@@ -343,7 +343,12 @@ Semua test ini membutuhkan prediction CSV yang sudah didefinisikan di atas.
 
 ## 11. Analisis Overfitting dan Underfitting
 
-Early stopping tidak digunakan. Semua eksperimen dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy. Berdasarkan archive, gejala overfitting hanya muncul pada konfigurasi 200 epoch batch size 16 (val loss minimum di epoch 76, best accuracy di epoch 175 dengan train acc 99,38%). Konfigurasi 100 epoch batch size 8 atau batch size 16 tidak menunjukkan gejala tersebut.
+Early stopping dibedakan berdasarkan fase:
+
+- Pilot tuning: early stopping boleh dipakai (misalnya patience 15-20 epoch berdasarkan validation loss) untuk menghemat compute saat mencari konfigurasi terbaik.
+- Final 5-seed run: early stopping tidak digunakan. Semua run dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy, agar setiap seed mendapat kesempatan training yang sama dan hasilnya fair untuk dibandingkan.
+
+Berdasarkan archive, gejala overfitting hanya muncul pada konfigurasi 200 epoch batch size 16 (val loss minimum di epoch 76, best accuracy di epoch 175 dengan train acc 99,38%). Konfigurasi 100 epoch batch size 8 atau batch size 16 tidak menunjukkan gejala tersebut.
 
 Setiap run harus menyimpan indikator:
 
@@ -452,7 +457,7 @@ Seluruh eksperimen lama diposisikan sebagai preliminary/exploratory dan tidak me
 - Final claim memakai R1-R10, termasuk WasteNet-128K dan WasteNet-256K FASDNet.
 - Bagi penelitian menjadi dua jenis KD: logits-based KD dan self-distillation FASDNet.
 - Lakukan pilot tuning sebelum final 5-seed run, lalu freeze konfigurasi.
-- Tune `temperature` dan `alpha` hanya untuk logits KD dengan validation/k-fold development set.
+- Tune `temperature` dan `alpha` hanya untuk logits KD dengan validation set.
 - Tune loss weight FASDNet secara terpisah dari logits KD.
 - Pilih Focus-RCNet teacher assistant dari direct KD vs two-stage KD, jangan mengunci two-stage secara asumtif.
 - Fokus deployment pada WasteNet-128K karena parameter di bawah 200 ribu.
