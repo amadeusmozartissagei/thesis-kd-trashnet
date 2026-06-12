@@ -1,0 +1,17 @@
+{
+  "generated_at_utc": "2026-06-12T13:15:26.429231+00:00",
+  "experiment_id": "R1",
+  "seed": 42,
+  "run_phase": "pilot",
+  "setup_id": "r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8",
+  "output_dir": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/efficientnet_b4_teacher_r1_pilot_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/config_r1_pilot_seed_42.json",
+    "history": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/training_history_r1_pilot_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/metrics_r1_pilot_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/predictions_r1_pilot_seed_42_val.csv",
+    "test_predictions": null,
+    "training_curves": "/kaggle/working/final_research_kd/runs/pilots/R1/r1_pilot_b4_s42_e10_es-valloss-p5_img380_lr0p05_bs8/training_curves_r1_pilot_seed_42.png"
+  }
+}

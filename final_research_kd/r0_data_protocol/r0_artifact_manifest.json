@@ -1,0 +1,54 @@
+{
+  "stage": "R0 Final Data Protocol Setup",
+  "generated_at_utc": "2026-06-12T11:47:37.286006+00:00",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "output_dir": "/kaggle/working/final_research/r0_data_protocol",
+  "seeds": [
+    42,
+    123,
+    777,
+    2026,
+    3407
+  ],
+  "split_ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "raw_valid_images": 2527,
+  "excluded_duplicate_conflict_images": 6,
+  "num_images": 2521,
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "artifacts": [
+    "/kaggle/working/final_research/r0_data_protocol/class_mapping.json",
+    "/kaggle/working/final_research/r0_data_protocol/dataset_inventory.csv",
+    "/kaggle/working/final_research/r0_data_protocol/dataset_class_counts.csv",
+    "/kaggle/working/final_research/r0_data_protocol/final_dataset_class_counts.csv",
+    "/kaggle/working/final_research/r0_data_protocol/invalid_images.csv",
+    "/kaggle/working/final_research/r0_data_protocol/duplicate_candidates.csv",
+    "/kaggle/working/final_research/r0_data_protocol/duplicate_same_label_candidates.csv",
+    "/kaggle/working/final_research/r0_data_protocol/excluded_duplicate_conflicts.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_summary.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_totals.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_all_seeds.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_seed_42.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_seed_123.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_seed_777.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_seed_2026.csv",
+    "/kaggle/working/final_research/r0_data_protocol/split_manifest_seed_3407.csv"
+  ],
+  "notes": [
+    "R0 is not a training experiment.",
+    "Validation split is used for pilot tuning and checkpoint selection.",
+    "Independent test split is locked until final reporting.",
+    "Exact duplicate images with conflicting labels are excluded before splitting."
+  ]
+}

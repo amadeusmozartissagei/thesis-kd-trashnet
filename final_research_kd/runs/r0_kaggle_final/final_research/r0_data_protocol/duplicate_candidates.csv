@@ -1,7 +1,0 @@
-sample_id,image_path,relative_path,filename,extension,label,class_id,file_size_bytes,sha256,is_valid,width,height,mode,error
-trashnet_00421,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/glass/glass115.jpg,glass/glass115.jpg,glass115.jpg,.jpg,glass,1,8672,81546d1362d75fc60718e5852593c58f66f813e8c1e9d1eae6871fedb02e2868,True,512,384,RGB,
-trashnet_01305,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/metal/metal91.jpg,metal/metal91.jpg,metal91.jpg,.jpg,metal,2,8672,81546d1362d75fc60718e5852593c58f66f813e8c1e9d1eae6871fedb02e2868,True,512,384,RGB,
-trashnet_00488,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/glass/glass176.jpg,glass/glass176.jpg,glass176.jpg,.jpg,glass,1,16192,c41b99aec8a3257c8668a2144ebbaf8042018f0a85d88e22bf4e413b43693dd8,True,512,384,RGB,
-trashnet_01967,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/plastic/plastic152.jpg,plastic/plastic152.jpg,plastic152.jpg,.jpg,plastic,4,16192,c41b99aec8a3257c8668a2144ebbaf8042018f0a85d88e22bf4e413b43693dd8,True,512,384,RGB,
-trashnet_00724,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/glass/glass389.jpg,glass/glass389.jpg,glass389.jpg,.jpg,glass,1,15420,e971f4f8f50e960e454ea724cec922fc2988bbf4027aa48b553e139bb5890968,True,512,384,RGB,
-trashnet_02167,/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized/plastic/plastic332.jpg,plastic/plastic332.jpg,plastic332.jpg,.jpg,plastic,4,15420,e971f4f8f50e960e454ea724cec922fc2988bbf4027aa48b553e139bb5890968,True,512,384,RGB,
