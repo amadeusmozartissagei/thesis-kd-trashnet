@@ -1,23 +1,31 @@
 # Final Research Planning Summary
 
-## 1. Posisi Penelitian
+## 1. Posisi dan Tujuan Penelitian
 
 Penelitian ini tetap berangkat dari reimplementation paper Focus-RCNet:
 
 > Focus-RCNet: a lightweight recyclable waste classification algorithm based on focus and knowledge distillation.
 
-Tujuan utama bukan hanya mengejar angka paper secara persis, tetapi menyusun eksperimen yang lebih rapi untuk mengevaluasi:
+Tujuan utama penelitian bukan hanya mengejar angka paper secara persis, tetapi menyusun eksperimen yang lebih rapi untuk mengevaluasi:
 
 - Reimplementation Focus-RCNet pada dataset TrashNet.
 - Pengaruh knowledge distillation terhadap model ringan.
 - Perbandingan logits-based KD dan self-distillation.
 - Kelayakan model sangat kecil, terutama WasteNet-128K, untuk arah deployment ESP32.
 
-Eksperimen lama yang belum memakai independent test split hanya diposisikan sebagai exploratory result. Klaim final wajib memakai protokol baru dengan independent test split.
+Fokus final penelitian:
 
-## 2. Masalah dari Eksperimen Lama
+- Focus-RCNet menjadi reimplementation utama dari paper.
+- EfficientNet-B4 menjadi teacher utama dan referensi performa.
+- WasteNet-128K menjadi target utama deployment karena jumlah parameter di bawah 200 ribu.
+- WasteNet-256K menjadi pembanding kapasitas, bukan target utama deployment.
+- Hasil final wajib menggunakan protokol baru dengan independent test split.
 
-Eksperimen sebelumnya memberi banyak sinyal penting:
+## 2. Status dan Masalah Eksperimen Lama
+
+Seluruh eksperimen lama diposisikan sebagai preliminary/exploratory result, bukan klaim final. Eksperimen lama tetap berguna sebagai justifikasi desain eksperimen final, termasuk perlunya pilot tuning alpha, evidence bahwa teacher-assistant KD perlu retuning, dan evidence untuk Focus-RCNet teacher-assistant selection.
+
+Eksperimen sebelumnya memberi sinyal penting:
 
 - Focus-RCNet two-stage KD meningkatkan akurasi dibanding baseline pada controlled comparison.
 - Direct KD sensitif terhadap student dan bobot soft target.
@@ -33,13 +41,30 @@ Sinyal dari archive yang mempengaruhi desain final:
 - WasteNet teacher-assistant KD dengan `T=4, alpha=0.5` turun besar: WasteNet-128K sekitar 69,04%, WasteNet-256K sekitar 68,12%.
 - Karena itu, final rerun perlu pilot tuning sebelum 5-seed final, terutama untuk WasteNet dan terutama untuk TA-KD.
 
-Catatan interpretasi:
+Masalah utama eksperimen lama adalah belum memakai independent test split. Protokol train/test saja berisiko menghasilkan optimistic bias ketika validation/test dipakai berulang untuk memilih model, epoch, temperature, alpha, atau konfigurasi training lain, lalu hasil pada set yang sama tetap dilaporkan sebagai hasil akhir.
 
-- Protokol tanpa independent test split berisiko menghasilkan optimistic bias.
-- Bias ini muncul ketika validation set dipakai berulang untuk memilih model, epoch, temperature, alpha, atau konfigurasi training lain, lalu hasil pada set yang sama tetap dilaporkan sebagai hasil akhir.
-- Karena itu, eksperimen final tidak memakai skema train/test saja; eksperimen final harus memakai train/validation/test yang terpisah.
+Karena itu, eksperimen final harus memakai train/validation/test yang terpisah.
 
-## 3. Protokol Evaluasi Final
+## 3. Pertanyaan Penelitian dan Klaim Final
+
+Pertanyaan penelitian final dapat disusun sebagai:
+
+1. Apakah reimplementation Focus-RCNet dapat mendekati hasil paper pada TrashNet?
+2. Apakah logits-based KD meningkatkan performa model ringan dibanding CE?
+3. Untuk Focus-RCNet, apakah direct KD atau two-stage KD lebih layak menjadi teacher assistant?
+4. Apakah teacher-assistant KD membantu student sangat kecil seperti WasteNet setelah `T`, `alpha`, dan stage-2 LR dituning?
+5. Apakah self-distillation FASDNet lebih cocok untuk model kecil dibanding external teacher KD?
+6. Bagaimana trade-off akurasi, jumlah parameter, latency, dan risiko overfitting?
+
+Klaim final yang paling aman:
+
+- Focus-RCNet adalah reimplementation utama dari paper.
+- WasteNet-128K adalah kandidat utama untuk arah ESP32 karena parameter di bawah 200 ribu.
+- Logits-based KD dan self-distillation dibandingkan secara adil dengan split, seed, dan metrik yang sama.
+- Hasil lama membuktikan perlunya independent test split dan hyperparameter tuning.
+- Jangan menjadikan hasil WasteNet TA-KD lama sebagai klaim positif; gunakan sebagai alasan retuning.
+
+## 4. Protokol Evaluasi Final
 
 Gunakan stratified split:
 
@@ -52,7 +77,7 @@ Gunakan stratified split:
 Aturan penggunaan data:
 
 - Train set hanya untuk training.
-- Validation set untuk checkpoint selection, early stopping (pilot), dan hyperparameter tuning.
+- Validation set untuk checkpoint selection, early stopping pada pilot, dan hyperparameter tuning.
 - Test set hanya untuk final reporting.
 - Test set tidak boleh dipakai untuk memilih model, epoch, temperature, alpha, atau konfigurasi training lain.
 
@@ -64,24 +89,42 @@ SEEDS = [42, 123, 777, 2026, 3407]
 
 Minimal klaim utama dijalankan dengan 5 seed berbeda.
 
-## 4. Strategi Validasi
-
 Independent test set tetap digunakan untuk evaluasi akhir. K-Fold Cross Validation tidak digunakan karena keterbatasan komputasi dan ruang lingkup penelitian S1. Hyperparameter tuning dilakukan menggunakan validation set pada skema train-validation-test (70%-15%-15%).
 
-Strategi yang dipakai:
+Strategi validasi:
 
 - Pilot tuning dengan 1 seed pada validation set.
 - Pilih 2-3 konfigurasi terbaik berdasarkan validation metric.
 - Jalankan konfigurasi final dengan 5 seed.
 - Evaluasi independent test set satu kali untuk final reporting.
 
-## 5. Pembagian Jenis Knowledge Distillation
+## 5. Model yang Digunakan
 
-Eksperimen final dibagi berdasarkan jenis KD.
+### 5.1 Referensi dan Teacher
 
-### 5.1 Baseline CE
+| Model | Peran |
+| --- | --- |
+| EfficientNet-B4 | Teacher utama dan referensi performa |
+| Focus-RCNet | Reimplementation utama dari paper dan teacher assistant |
 
-Baseline tanpa distillation.
+### 5.2 Student Ringan
+
+| Model | Peran |
+| --- | --- |
+| WasteNet-128K | Kandidat utama deployment ESP32 karena parameternya di bawah 200 ribu |
+| WasteNet-256K | Pembanding kapasitas, bukan target utama ESP32 |
+
+### 5.3 Model Sekunder
+
+EfficientNet-Lite0 dapat tetap dipakai sebagai pembanding deployment-oriented, tetapi tidak perlu menjadi fokus final jika scope mulai melebar.
+
+## 6. Jenis Knowledge Distillation yang Diuji
+
+Eksperimen final dibagi menjadi baseline CE, logits-based KD, dan self-distillation.
+
+### 6.1 Baseline CE
+
+Baseline CE adalah training tanpa distillation.
 
 Tujuan:
 
@@ -89,7 +132,7 @@ Tujuan:
 - Menjawab apakah KD benar-benar memberi peningkatan.
 - Menjadi checkpoint awal untuk two-stage KD.
 
-### 5.2 Logits-Based KD / Vanilla KD
+### 6.2 Logits-Based KD / Vanilla KD
 
 Jenis KD klasik dengan soft logits teacher.
 
@@ -108,12 +151,12 @@ Subjenis:
 
 Strategi resolusi input untuk KD WasteNet:
 
-- Teacher (EfficientNet-B4) dilatih dan di-infer pada 380x380 agar soft target optimal.
-- Student (WasteNet) tetap dilatih pada 160x160.
+- Teacher EfficientNet-B4 dilatih dan di-infer pada 380x380 agar soft target optimal.
+- Student WasteNet tetap dilatih pada 160x160.
 - Setiap batch di-resize dua kali: 380x380 untuk teacher inference, 160x160 untuk student training.
 - Eksperimen lama di archive memakai resolusi tunggal 160x160 untuk keduanya, sehingga teacher kurang optimal. Final run memperbaiki ini dengan dual-resolution.
 
-### 5.3 Self-Distillation / FASDNet
+### 6.3 Self-Distillation / FASDNet
 
 Self-distillation tidak bergantung pada teacher eksternal besar. Knowledge ditransfer dari model yang sama, misalnya dari classifier/layer terdalam ke classifier/layer dangkal.
 
@@ -137,29 +180,11 @@ Tujuan:
 - Membandingkan external teacher KD dengan self-distillation.
 - Mengurangi ketergantungan pada EfficientNet-B4 saat target akhirnya adalah model kecil.
 
-## 6. Model yang Diprioritaskan
-
-### 6.1 Referensi dan Teacher
-
-| Model | Peran |
-| --- | --- |
-| EfficientNet-B4 | Teacher utama dan referensi performa |
-| Focus-RCNet | Reimplementation utama dari paper dan teacher assistant |
-
-### 6.2 Student Ringan
-
-| Model | Peran |
-| --- | --- |
-| WasteNet-128K | Kandidat utama deployment ESP32 karena parameternya di bawah 200 ribu |
-| WasteNet-256K | Pembanding kapasitas, bukan target utama ESP32 |
-
-### 6.3 Model Sekunder
-
-EfficientNet-Lite0 dapat tetap dipakai sebagai pembanding deployment-oriented, tetapi tidak perlu menjadi fokus final jika scope mulai melebar.
-
 ## 7. Rancangan Eksperimen Utama
 
 Final claim memakai 10 experiment groups. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation set, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
+
+Catatan penting: R2 bukan asumsi bahwa two-stage KD pasti paling baik. R2 adalah proses memilih konfigurasi Focus-RCNet KD terbaik, misalnya direct KD atau two-stage KD, berdasarkan validation metric.
 
 | ID | Eksperimen final | Teacher | Model akhir | Tujuan |
 | --- | --- | --- | --- | --- |
@@ -201,11 +226,9 @@ Jika semua experiment groups final dijalankan dengan 5 seed:
 10 experiment groups x 5 seeds = 50 final runs
 ```
 
-Jika compute terbatas, prioritas final claim adalah R1, R2, R3, R4, R5, dan R9. R6, R7, R8, dan R10 menjadi pembanding kapasitas sekunder.
+## 8. Pilot Hyperparameter Sebelum Final Run
 
-## 8. Pilot Hyperparameter Sebelum Final Seed
-
-Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute (misalnya patience 15-20 epoch berdasarkan validation loss).
+Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute, misalnya patience 15-20 epoch berdasarkan validation loss.
 
 Prinsip utama:
 
@@ -274,17 +297,21 @@ Urutan self-distillation:
 3. Terapkan konfigurasi terbaik atau konfigurasi terdekat ke R10 WasteNet-256K sebagai secondary comparison.
 4. Bekukan konfigurasi sebelum final 5-seed run.
 
-## 9. Strategi Tuning dan Final Run
+## 9. Strategi Eksekusi Final
 
 Flow yang disepakati:
 
-1. Buat split final 70/15/15.
-2. Train teacher/anchor yang dibutuhkan untuk pilot.
-3. Pilot tuning `T/alpha` untuk logits KD.
-4. Pilot tuning loss weight untuk FASDNet.
-5. Freeze semua konfigurasi berdasarkan validation result.
-6. Jalankan R1-R10 final dengan 5 seed memakai frozen config.
-7. Evaluasi independent test hanya sekali untuk final reporting.
+1. Buat stratified split 70/15/15 dan simpan indeks untuk semua seed.
+2. Jalankan pilot seed, misalnya seed 42, tanpa menyentuh independent test.
+3. Train anchor untuk pilot: EfficientNet-B4 teacher, kandidat Focus-RCNet KD, dan WasteNet CE baseline.
+4. Pilih Focus-RCNet teacher assistant dengan membandingkan direct KD vs two-stage KD berdasarkan validation metric.
+5. Pilot W128 direct KD dengan small grid `T/alpha`.
+6. Pilot W128 TA-KD dengan small grid `T/alpha`, CE fine-tune control, dan stage-2 LR lebih kecil.
+7. Pilot W128 FASDNet dengan grid loss weight kecil.
+8. Untuk W256, gunakan konfigurasi terbaik W128, runner-up W128, dan anchor `T=4, alpha=0.5` sebagai limited secondary pilot.
+9. Freeze satu konfigurasi final untuk setiap experiment group.
+10. Jalankan R1-R10 final dengan 5 seed memakai frozen config.
+11. Evaluasi independent test satu kali untuk final reporting.
 
 Aturan penting:
 
@@ -292,7 +319,12 @@ Aturan penting:
 - Jika suatu konfigurasi dipilih karena test result, hasilnya tidak valid sebagai klaim final.
 - Simpan semua konfigurasi, seed, split index, checkpoint metadata, dan prediction CSV.
 
-## 10. Metrik Evaluasi Konsisten
+Early stopping dibedakan berdasarkan fase:
+
+- Pilot tuning: early stopping boleh dipakai, misalnya patience 15-20 epoch berdasarkan validation loss.
+- Final 5-seed run: early stopping tidak digunakan. Semua run dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy, agar setiap seed mendapat kesempatan training yang sama dan hasilnya fair untuk dibandingkan.
+
+## 10. Metrik Evaluasi dan Artefak
 
 Laporkan per seed dan agregat:
 
@@ -329,27 +361,6 @@ prob_class_3,prob_class_4,prob_class_5,
 seed,model_id,split
 ```
 
-### 10.1 Statistical Testing
-
-Untuk perbandingan antar model pada test set yang sama, gunakan:
-
-- McNemar test: membandingkan apakah dua model berbeda secara signifikan pada gambar yang sama (apakah model A benar tapi model B salah lebih sering daripada sebaliknya).
-- Bootstrap confidence interval: estimasi interval kepercayaan 95% untuk accuracy dan F1 macro dengan resampling 1000-2000 kali dari prediction CSV.
-- Paired mean difference across 5 seeds: hitung selisih rata-rata metrik antar dua model di setiap seed, lalu laporkan mean ± std dari selisih tersebut.
-
-Jika banyak pasangan model dibandingkan, terapkan koreksi Holm-Bonferroni agar p-value tidak terlalu optimis.
-
-Semua test ini membutuhkan prediction CSV yang sudah didefinisikan di atas.
-
-## 11. Analisis Overfitting dan Underfitting
-
-Early stopping dibedakan berdasarkan fase:
-
-- Pilot tuning: early stopping boleh dipakai (misalnya patience 15-20 epoch berdasarkan validation loss) untuk menghemat compute saat mencari konfigurasi terbaik.
-- Final 5-seed run: early stopping tidak digunakan. Semua run dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy, agar setiap seed mendapat kesempatan training yang sama dan hasilnya fair untuk dibandingkan.
-
-Berdasarkan archive, gejala overfitting hanya muncul pada konfigurasi 200 epoch batch size 16 (val loss minimum di epoch 76, best accuracy di epoch 175 dengan train acc 99,38%). Konfigurasi 100 epoch batch size 8 atau batch size 16 tidak menunjukkan gejala tersebut.
-
 Setiap run harus menyimpan indikator:
 
 ```text
@@ -365,7 +376,23 @@ final_train_loss
 final_val_loss
 ```
 
-### 11.1 Overfitting
+## 11. Statistical Testing
+
+Untuk perbandingan antar model pada test set yang sama, gunakan:
+
+- McNemar test: membandingkan apakah dua model berbeda secara signifikan pada gambar yang sama.
+- Bootstrap confidence interval: estimasi interval kepercayaan 95% untuk accuracy dan F1 macro dengan resampling 1000-2000 kali dari prediction CSV.
+- Paired mean difference across 5 seeds: hitung selisih rata-rata metrik antar dua model di setiap seed, lalu laporkan mean +/- std dari selisih tersebut.
+
+Jika banyak pasangan model dibandingkan, terapkan koreksi Holm-Bonferroni agar p-value tidak terlalu optimis.
+
+Semua test ini membutuhkan prediction CSV yang sudah didefinisikan di atas.
+
+## 12. Analisis Overfitting, Underfitting, dan KD Degradation
+
+Berdasarkan archive, gejala overfitting hanya muncul pada konfigurasi 200 epoch batch size 16. Validation loss minimum terjadi di epoch 76, best accuracy di epoch 175, dan train accuracy mencapai 99,38%. Konfigurasi 100 epoch batch size 8 atau batch size 16 tidak menunjukkan gejala tersebut.
+
+### 12.1 Overfitting
 
 Indikasi overfitting:
 
@@ -379,7 +406,7 @@ Interpretasi yang aman:
 
 > Model menunjukkan gejala overfitting atau overconfidence, terutama ketika train accuracy mendekati 99-100% sementara validation loss meningkat.
 
-### 11.2 Underfitting
+### 12.2 Underfitting
 
 Indikasi underfitting:
 
@@ -388,7 +415,7 @@ Indikasi underfitting:
 - Train loss dan validation loss masih tinggi.
 - Model belum belajar representasi yang cukup.
 
-### 11.3 KD Degradation
+### 12.3 KD Degradation
 
 Indikasi KD degradation:
 
@@ -399,41 +426,15 @@ Indikasi KD degradation:
 
 Ini penting untuk WasteNet karena hasil lama TA-KD turun dari sekitar 79% ke sekitar 68-69%.
 
-## 12. Narasi Final yang Disarankan
+## 13. Prioritas Jika Compute Terbatas
 
-Pertanyaan penelitian final dapat disusun sebagai:
+Jika compute cukup, jalankan seluruh R1-R10:
 
-1. Apakah reimplementation Focus-RCNet dapat mendekati hasil paper pada TrashNet?
-2. Apakah logits-based KD meningkatkan performa model ringan dibanding CE?
-3. Untuk Focus-RCNet, apakah direct KD atau two-stage KD lebih layak menjadi teacher assistant?
-4. Apakah teacher-assistant KD membantu student sangat kecil seperti WasteNet setelah `T`, `alpha`, dan stage-2 LR dituning?
-5. Apakah self-distillation FASDNet lebih cocok untuk model kecil dibanding external teacher KD?
-6. Bagaimana trade-off akurasi, jumlah parameter, latency, dan risiko overfitting?
+```text
+R1-R10 x 5 seeds = 50 final runs
+```
 
-Klaim final yang paling aman:
-
-- Focus-RCNet adalah reimplementation utama dari paper.
-- WasteNet-128K adalah kandidat utama untuk arah ESP32 karena parameter di bawah 200 ribu.
-- Logits-based KD dan self-distillation dibandingkan secara adil dengan split, seed, dan metrik yang sama.
-- Hasil lama membuktikan perlunya independent test split dan hyperparameter tuning.
-
-## 13. Prioritas Eksekusi
-
-Urutan eksekusi yang disepakati:
-
-1. Buat stratified split 70/15/15 dan simpan indeks untuk semua seed.
-2. Jalankan pilot seed, misalnya seed 42, tanpa menyentuh independent test.
-3. Train anchor untuk pilot: EfficientNet-B4 teacher, kandidat Focus-RCNet KD, dan WasteNet CE baseline.
-4. Pilih Focus-RCNet teacher assistant dengan membandingkan direct KD vs two-stage KD berdasarkan validation metric.
-5. Pilot W128 direct KD dengan small grid `T/alpha`.
-6. Pilot W128 TA-KD dengan small grid `T/alpha`, CE fine-tune control, dan stage-2 LR lebih kecil.
-7. Pilot W128 FASDNet dengan grid loss weight kecil.
-8. Untuk W256, gunakan konfigurasi terbaik W128, runner-up W128, dan anchor `T=4, alpha=0.5` sebagai limited secondary pilot.
-9. Freeze satu konfigurasi final untuk setiap experiment group.
-10. Jalankan R1-R10 final dengan 5 seed.
-11. Evaluasi independent test satu kali untuk final reporting.
-
-Jika compute sangat terbatas, fokuskan final claim pada:
+Jika compute terbatas, prioritas final claim adalah:
 
 ```text
 R1 EfficientNet-B4 teacher
@@ -444,22 +445,25 @@ R5 WasteNet-128K TA-KD
 R9 WasteNet-128K FASDNet
 ```
 
-WasteNet-256K tetap berguna, tetapi posisinya secondary capacity comparison.
+WasteNet-256K tetap berguna, tetapi posisinya secondary capacity comparison:
 
-## 14. Status Eksperimen Lama
+```text
+R6 WasteNet-256K CE
+R7 WasteNet-256K direct KD
+R8 WasteNet-256K TA-KD
+R10 WasteNet-256K FASDNet
+```
 
-Seluruh eksperimen lama diposisikan sebagai preliminary/exploratory dan tidak menjadi klaim final. Eksperimen lama tetap berguna sebagai justifikasi desain eksperimen final, termasuk: perlunya pilot tuning alpha (Notebook 2B, 3C), evidence bahwa TA-KD perlu retuning (Notebook 5), dan evidence untuk Focus-RCNet teacher-assistant selection (200e-bs16 follow-up).
+## 14. Ringkasan Keputusan
 
-## 15. Ringkasan Keputusan
-
-- Gunakan 70/15/15 untuk klaim final.
+- Gunakan split 70/15/15 untuk klaim final.
 - Gunakan minimal 5 seed untuk eksperimen utama.
-- Final claim memakai R1-R10, termasuk WasteNet-128K dan WasteNet-256K FASDNet.
+- Final claim ideal memakai R1-R10.
+- Final claim minimal difokuskan pada R1, R2, R3, R4, R5, dan R9.
 - Bagi penelitian menjadi dua jenis KD: logits-based KD dan self-distillation FASDNet.
 - Lakukan pilot tuning sebelum final 5-seed run, lalu freeze konfigurasi.
 - Tune `temperature` dan `alpha` hanya untuk logits KD dengan validation set.
 - Tune loss weight FASDNet secara terpisah dari logits KD.
 - Pilih Focus-RCNet teacher assistant dari direct KD vs two-stage KD, jangan mengunci two-stage secara asumtif.
 - Fokus deployment pada WasteNet-128K karena parameter di bawah 200 ribu.
-- Jangan menjadikan hasil WasteNet TA-KD lama sebagai klaim positif; gunakan sebagai alasan retuning.
-- Jadikan overfitting/underfitting sebagai bagian resmi dari analisis, bukan catatan sampingan.
+- Jadikan overfitting/underfitting dan KD degradation sebagai bagian resmi dari analisis, bukan catatan sampingan.
