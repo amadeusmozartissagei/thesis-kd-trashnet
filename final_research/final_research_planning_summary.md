@@ -64,25 +64,16 @@ SEEDS = [42, 123, 777, 2026, 3407]
 
 Minimal klaim utama dijalankan dengan 5 seed berbeda.
 
-## 4. K-Fold dan Independent Test
+## 4. Strategi Validasi
 
-Cross-validation dipakai untuk validation/tuning, bukan untuk final test. Jangan lakukan k-fold pada seluruh dataset.
+Independent test set tetap digunakan untuk evaluasi akhir. K-Fold Cross Validation tidak digunakan karena keterbatasan komputasi dan ruang lingkup penelitian S1. Hyperparameter tuning dilakukan menggunakan validation set pada skema train-validation-test (70%-15%-15%).
 
-Skema final yang dikunci:
+Strategi yang dipakai:
 
-1. Untuk setiap random seed, kunci independent test set sebesar 15%.
-2. Sisanya 85% disebut development set.
-3. Lakukan Stratified K-Fold hanya pada development set untuk membentuk train fold dan validation fold.
-4. Gunakan validation fold untuk checkpoint selection, early stopping, dan pemilihan hyperparameter.
-5. Gunakan hasil rata-rata k-fold untuk memilih konfigurasi.
-6. Setelah konfigurasi final dipilih, evaluasi pada independent test set yang sejak awal tidak disentuh.
-
-Untuk scope S1, k-fold penuh bisa sangat mahal. Alternatif yang masih menjaga independent test split:
-
-- Pilot tuning dengan 1 seed.
-- Pilih 2-3 konfigurasi terbaik dari validation set.
+- Pilot tuning dengan 1 seed pada validation set.
+- Pilih 2-3 konfigurasi terbaik berdasarkan validation metric.
 - Jalankan konfigurasi final dengan 5 seed.
-- Laporkan independent test result.
+- Evaluasi independent test set satu kali untuk final reporting.
 
 ## 5. Pembagian Jenis Knowledge Distillation
 
@@ -114,6 +105,13 @@ Subjenis:
 - Direct KD: EfficientNet-B4 -> student.
 - Two-stage KD: CE pretraining -> KD fine-tuning.
 - Teacher-assistant KD: EfficientNet-B4 -> Focus-RCNet -> WasteNet.
+
+Strategi resolusi input untuk KD WasteNet:
+
+- Teacher (EfficientNet-B4) dilatih dan di-infer pada 380x380 agar soft target optimal.
+- Student (WasteNet) tetap dilatih pada 160x160.
+- Setiap batch di-resize dua kali: 380x380 untuk teacher inference, 160x160 untuk student training.
+- Eksperimen lama di archive memakai resolusi tunggal 160x160 untuk keduanya, sehingga teacher kurang optimal. Final run memperbaiki ini dengan dual-resolution.
 
 ### 5.3 Self-Distillation / FASDNet
 
@@ -331,7 +329,21 @@ prob_class_3,prob_class_4,prob_class_5,
 seed,model_id,split
 ```
 
+### 10.1 Statistical Testing
+
+Untuk perbandingan antar model pada test set yang sama, gunakan:
+
+- McNemar test: membandingkan apakah dua model berbeda secara signifikan pada gambar yang sama (apakah model A benar tapi model B salah lebih sering daripada sebaliknya).
+- Bootstrap confidence interval: estimasi interval kepercayaan 95% untuk accuracy dan F1 macro dengan resampling 1000-2000 kali dari prediction CSV.
+- Paired mean difference across 5 seeds: hitung selisih rata-rata metrik antar dua model di setiap seed, lalu laporkan mean ± std dari selisih tersebut.
+
+Jika banyak pasangan model dibandingkan, terapkan koreksi Holm-Bonferroni agar p-value tidak terlalu optimis.
+
+Semua test ini membutuhkan prediction CSV yang sudah didefinisikan di atas.
+
 ## 11. Analisis Overfitting dan Underfitting
+
+Early stopping tidak digunakan. Semua eksperimen dijalankan sampai epoch terakhir dan checkpoint terbaik dipilih berdasarkan best validation accuracy. Berdasarkan archive, gejala overfitting hanya muncul pada konfigurasi 200 epoch batch size 16 (val loss minimum di epoch 76, best accuracy di epoch 175 dengan train acc 99,38%). Konfigurasi 100 epoch batch size 8 atau batch size 16 tidak menunjukkan gejala tersebut.
 
 Setiap run harus menyimpan indikator:
 
@@ -431,19 +443,7 @@ WasteNet-256K tetap berguna, tetapi posisinya secondary capacity comparison.
 
 ## 14. Status Eksperimen Lama
 
-Eksperimen lama tetap berguna, tetapi posisinya:
-
-| Eksperimen lama | Status |
-| --- | --- |
-| Notebook 1 teacher | Preliminary teacher reference |
-| Notebook 2 Focus-RCNet | Exploratory controlled comparison |
-| Notebook 2B alpha ablation | Diagnostic |
-| Notebook 3 Lite0 controlled | Secondary comparison |
-| Notebook 3B Lite0 native | Deployment-oriented exploratory |
-| Notebook 3C Lite0 alpha ablation | Diagnostic |
-| Notebook 4 WasteNet baseline/direct KD | Preliminary WasteNet screening; direct KD `alpha=0.5` underperforms CE |
-| Notebook 5 WasteNet TA-KD | Negative ablation; evidence that `alpha=0.5` and/or stage-2 setup is too aggressive |
-| 200e-bs16 follow-up | Paper-protocol follow-up; evidence for Focus-RCNet teacher-assistant selection |
+Seluruh eksperimen lama diposisikan sebagai preliminary/exploratory dan tidak menjadi klaim final. Eksperimen lama tetap berguna sebagai justifikasi desain eksperimen final, termasuk: perlunya pilot tuning alpha (Notebook 2B, 3C), evidence bahwa TA-KD perlu retuning (Notebook 5), dan evidence untuk Focus-RCNet teacher-assistant selection (200e-bs16 follow-up).
 
 ## 15. Ringkasan Keputusan
 
