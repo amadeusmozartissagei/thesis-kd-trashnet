@@ -98,6 +98,45 @@ Strategi validasi:
 - Jalankan konfigurasi final dengan 5 seed.
 - Evaluasi independent test set satu kali untuk final reporting.
 
+### 4.1 R0: Final Data Protocol Setup
+
+R0 adalah tahap persiapan protokol data, bukan eksperimen training model. R0 wajib selesai sebelum R1-R10 karena semua eksperimen final harus memakai split, class mapping, dan aturan evaluasi yang sama.
+
+Tujuan R0:
+
+- Mengunci dataset TrashNet yang dipakai untuk final experiment.
+- Mengecek jumlah gambar per kelas dan mendeteksi file rusak/duplikat jika ada.
+- Menetapkan class mapping final, misalnya urutan label dan indeks kelas.
+- Membuat stratified split 70/15/15 untuk train, validation, dan independent test.
+- Menyimpan split manifest agar semua run dapat direproduksi.
+- Memastikan test set tidak dipakai untuk tuning, checkpoint selection, atau pemilihan konfigurasi.
+
+Output minimal R0:
+
+```text
+class_mapping.json
+dataset_inventory.csv
+split_manifest_seed_42.csv
+split_manifest_seed_123.csv
+split_manifest_seed_777.csv
+split_manifest_seed_2026.csv
+split_manifest_seed_3407.csv
+split_summary.csv
+```
+
+Isi minimal split manifest:
+
+```text
+image_path,label,class_id,split,seed
+```
+
+Aturan split:
+
+- Untuk setiap seed, semua model pada seed tersebut harus memakai split yang sama.
+- Validation set hanya dipakai untuk tuning dan checkpoint selection.
+- Independent test set hanya dipakai setelah konfigurasi final dibekukan.
+- R0 tidak menghasilkan accuracy, F1, atau metric performa model karena belum ada training.
+
 ## 5. Model yang Digunakan
 
 ### 5.1 Referensi dan Teacher
@@ -184,12 +223,13 @@ Tujuan:
 
 ## 7. Rancangan Eksperimen Utama
 
-Final claim memakai 10 experiment groups. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation set, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
+Final claim memakai 10 experiment groups, yaitu R1-R10. R0 tetap dicatat dalam rancangan karena R0 adalah fondasi data/protokol, tetapi R0 bukan training run dan tidak dihitung sebagai experiment group final. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation set, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
 
 Catatan penting: R2 bukan asumsi bahwa two-stage KD pasti paling baik. R2 adalah proses memilih konfigurasi Focus-RCNet KD terbaik, misalnya direct KD atau two-stage KD, berdasarkan validation metric.
 
 | ID | Eksperimen final | Teacher | Model akhir | Tujuan |
 | --- | --- | --- | --- | --- |
+| R0 | Final data protocol setup | None | None | Mengunci dataset, class mapping, split manifest, dan aturan evaluasi |
 | R1 | EfficientNet-B4 teacher | None | EfficientNet-B4 | Teacher utama dan referensi performa |
 | R2 | Focus-RCNet KD teacher-assistant selection | EfficientNet-B4 | Focus-RCNet | Memilih Focus-RCNet KD terbaik sebagai teacher assistant |
 | R3 | WasteNet-128K baseline CE | None | WasteNet-128K | Baseline utama under 200K parameter |
@@ -204,6 +244,9 @@ Catatan penting: R2 bukan asumsi bahwa two-stage KD pasti paling baik. R2 adalah
 Dependency chain:
 
 ```text
+R0 Final data protocol setup
+  -> R1-R10 semua experiment groups
+
 R1 EfficientNet-B4 teacher
   -> R2 Focus-RCNet teacher-assistant selection
       -> R5 WasteNet-128K TA-KD
@@ -225,6 +268,7 @@ R6 WasteNet-256K baseline CE
 Jika semua experiment groups final dijalankan dengan 5 seed:
 
 ```text
+R0 protocol setup = 1 setup stage
 10 experiment groups x 5 seeds = 50 final runs
 ```
 
@@ -302,7 +346,7 @@ Urutan self-distillation:
 
 Flow yang disepakati:
 
-1. Buat stratified split 70/15/15 dan simpan indeks untuk semua seed.
+1. Jalankan R0: buat dataset inventory, class mapping, stratified split 70/15/15, dan split manifest untuk semua seed.
 2. Jalankan pilot seed, misalnya seed 42, tanpa menyentuh independent test.
 3. Train anchor untuk pilot: EfficientNet-B4 teacher, kandidat Focus-RCNet KD, dan WasteNet CE baseline.
 4. Pilih Focus-RCNet teacher assistant dengan membandingkan direct KD vs two-stage KD berdasarkan validation metric.
@@ -432,12 +476,14 @@ Ini penting untuk WasteNet karena hasil lama TA-KD turun dari sekitar 79% ke sek
 Jika compute cukup, jalankan seluruh R1-R10:
 
 ```text
+R0 wajib selesai dulu
 R1-R10 x 5 seeds = 50 final runs
 ```
 
 Jika compute terbatas, prioritas final claim adalah:
 
 ```text
+R0 Final data protocol setup
 R1 EfficientNet-B4 teacher
 R2 Focus-RCNet teacher-assistant selection
 R3 WasteNet-128K CE
@@ -458,6 +504,7 @@ R10 WasteNet-256K CORD
 ## 14. Ringkasan Keputusan
 
 - Gunakan split 70/15/15 untuk klaim final.
+- Jalankan R0 terlebih dahulu untuk mengunci dataset, class mapping, split manifest, dan aturan evaluasi.
 - Gunakan minimal 5 seed untuk eksperimen utama.
 - Final claim ideal memakai R1-R10.
 - Final claim minimal difokuskan pada R1, R2, R3, R4, R5, dan R9.
