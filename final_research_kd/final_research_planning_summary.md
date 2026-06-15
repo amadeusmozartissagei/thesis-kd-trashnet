@@ -313,7 +313,7 @@ Tujuan:
 
 Final claim memakai 10 experiment groups, yaitu R1-R10. R0 tetap dicatat dalam rancangan karena R0 adalah fondasi data/protokol, tetapi R0 bukan training run dan tidak dihitung sebagai experiment group final. Pilot tuning boleh dilakukan sebelum final rerun, tetapi pilot bukan klaim final. Setelah konfigurasi dipilih dari validation set, konfigurasi dibekukan lalu semua experiment groups final dijalankan dengan 5 seed.
 
-Catatan penting: R2 bukan asumsi bahwa two-stage KD pasti paling baik. R2 adalah proses memilih konfigurasi Focus-RCNet KD terbaik, misalnya direct KD atau two-stage KD, berdasarkan validation metric.
+Catatan penting: R2 bukan asumsi bahwa two-stage KD pasti paling baik. R2 adalah proses memilih konfigurasi Focus-RCNet KD terbaik, misalnya direct KD atau two-stage KD, berdasarkan validation metric. Untuk menjaga interpretasi KD tetap fair, R2 juga menyimpan Focus-RCNet CE baseline sebagai control resmi, tetapi model assistant untuk jalur TA-KD tetap dipilih dari varian KD.
 
 | ID | Eksperimen final | Teacher | Model akhir | Tujuan |
 | --- | --- | --- | --- | --- |
@@ -360,6 +360,14 @@ R0 protocol setup = 1 setup stage
 10 experiment groups x 5 seeds = 50 final runs
 ```
 
+Catatan implementasi R2 final:
+
+- R2 final menjalankan dua varian Focus-RCNet dengan 5 seed: CE baseline control dan KD candidate terbaik.
+- Berdasarkan pilot R2 pada seed 42, varian KD yang dibekukan adalah direct KD dengan `T=4` dan `alpha=0.1`.
+- Two-stage KD tidak difinalkan karena pilot menunjukkan performa lebih rendah daripada direct KD dan CE baseline.
+- CE baseline R2 tidak menggantikan definisi R2 sebagai KD teacher-assistant selection, tetapi digunakan sebagai control untuk menilai apakah KD benar-benar memberi manfaat pada Focus-RCNet.
+- Setelah hasil test final R2 dibuka, tidak dilakukan tuning R2 tambahan agar independent test set tetap tidak berubah fungsi menjadi tuning signal.
+
 ## 8. Pilot Hyperparameter Sebelum Final Run
 
 Temperature, alpha, dan loss weight dicari sebelum final 5-seed run. Jangan memilih konfigurasi berdasarkan independent test. Pilot boleh memakai 1 seed terlebih dahulu, atau 2 seed jika compute memungkinkan. Early stopping boleh dipakai selama pilot untuk menghemat compute, terutama di Kaggle, misalnya patience 10-20 epoch berdasarkan validation loss atau validation accuracy.
@@ -388,7 +396,7 @@ R8 WasteNet-256K TA-KD
 
 Rekomendasi berdasarkan archive:
 
-- R2 tidak perlu grid besar dulu. Bandingkan Focus-RCNet direct KD dan Focus-RCNet two-stage KD dengan anchor `T=4, alpha=0.5`, lalu pilih teacher assistant berdasarkan validation metric.
+- R2 tidak perlu grid besar. Bandingkan Focus-RCNet CE baseline control, direct KD, dan two-stage KD pada seed pilot yang sama. Pilot R2 final menunjukkan direct KD dengan `T=4, alpha=0.1` sebagai kandidat KD terbaik, sedangkan two-stage KD tidak dipilih. CE baseline tetap dicatat sebagai control karena performanya kompetitif terhadap KD.
 - Untuk R4, jalankan small grid pada WasteNet-128K direct KD:
 
 ```python
@@ -438,8 +446,8 @@ Flow yang disepakati:
 
 1. Jalankan R0: buat dataset inventory, class mapping, stratified split 70/15/15, dan split manifest untuk semua seed.
 2. Jalankan pilot seed, misalnya seed 42, tanpa menyentuh independent test.
-3. Train anchor untuk pilot: EfficientNet-B4 teacher, kandidat Focus-RCNet KD, dan WasteNet CE baseline.
-4. Pilih Focus-RCNet teacher assistant dengan membandingkan direct KD vs two-stage KD berdasarkan validation metric.
+3. Train anchor untuk pilot: EfficientNet-B4 teacher, Focus-RCNet CE control, kandidat Focus-RCNet KD, dan WasteNet CE baseline.
+4. Pilih Focus-RCNet teacher assistant dengan membandingkan kandidat KD berdasarkan validation metric; untuk R2 final, direct KD `T=4, alpha=0.1` dipilih sebagai KD assistant, sementara Focus-RCNet CE baseline dipertahankan sebagai control.
 5. Pilot W128 direct KD dengan small grid `T/alpha`.
 6. Pilot W128 TA-KD dengan small grid `T/alpha`, CE fine-tune control, dan stage-2 LR lebih kecil.
 7. Pilot W128 CORD dengan grid loss weight kecil.
@@ -672,6 +680,7 @@ R10 WasteNet-256K CORD
 - Lakukan pilot tuning sebelum final 5-seed run, lalu freeze konfigurasi.
 - Tune `temperature` dan `alpha` hanya untuk logits KD dengan validation set.
 - Tune loss weight CORD secara terpisah dari logits KD.
-- Pilih Focus-RCNet teacher assistant dari direct KD vs two-stage KD, jangan mengunci two-stage secara asumtif.
+- Pilih Focus-RCNet teacher assistant dari kandidat KD, jangan mengunci two-stage secara asumtif. Berdasarkan R2 final, assistant KD yang dipakai untuk jalur TA-KD adalah Focus-RCNet direct KD `T=4, alpha=0.1`; Focus-RCNet CE baseline disimpan sebagai control, bukan pengganti definisi TA-KD.
 - Fokus deployment pada WasteNet-128K karena parameter di bawah 200 ribu.
 - Jadikan overfitting/underfitting dan KD degradation sebagai bagian resmi dari analisis, bukan catatan sampingan.
+- Jika compute cukup, WasteNet dengan teacher Focus-RCNet CE baseline boleh ditambahkan sebagai auxiliary control untuk memisahkan efek kualitas teacher dari efek teacher-assistant KD, tetapi klaim utama R5/R8 tetap memakai assistant KD R2.
