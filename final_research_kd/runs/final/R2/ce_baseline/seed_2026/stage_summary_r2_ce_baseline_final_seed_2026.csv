@@ -1,0 +1,2 @@
+stage,best_val_acc,best_epoch,epochs_ran
+ce_baseline,0.8544973544973545,76,100

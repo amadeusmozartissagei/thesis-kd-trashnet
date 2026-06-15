@@ -1,0 +1,17 @@
+{
+  "generated_at_utc": "2026-06-14T10:28:46.105160+00:00",
+  "experiment_id": "R1",
+  "seed": 3407,
+  "run_phase": "final",
+  "setup_id": "r1_final_b4_s3407_e100_img380_lr0p05_bs8",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/efficientnet_b4_teacher_r1_final_seed_3407_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/config_r1_final_seed_3407.json",
+    "history": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/training_history_r1_final_seed_3407.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/metrics_r1_final_seed_3407.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/predictions_r1_final_seed_3407_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/predictions_r1_final_seed_3407_test.csv",
+    "training_curves": "/kaggle/working/final_research_kd/runs/final/R1/seed_3407/training_curves_r1_final_seed_3407.png"
+  }
+}

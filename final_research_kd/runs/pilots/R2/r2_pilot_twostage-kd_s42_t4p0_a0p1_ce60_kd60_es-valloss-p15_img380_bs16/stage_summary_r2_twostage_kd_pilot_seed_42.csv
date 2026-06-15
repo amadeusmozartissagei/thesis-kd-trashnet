@@ -1,0 +1,3 @@
+stage,best_val_acc,best_epoch,epochs_ran
+ce_pretrain,0.8492063492063492,56,60
+kd_finetune,0.8518518518518519,3,16
