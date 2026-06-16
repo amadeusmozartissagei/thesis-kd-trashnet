@@ -1,0 +1,273 @@
+{
+  "experiment_id": "R5",
+  "experiment_name": "R5 WasteNet-128K Teacher-Assistant KD",
+  "seed": 42,
+  "run_phase": "pilot",
+  "setup_id": "r5_pilot_wn128_ta_kd_ta_t6p0_a0p05_lr0p0005_s42_lr0p0005_e60_es-valloss-p15_img160_assistant380_bs16",
+  "pilot_preset": "ta_t6p0_a0p05_lr0p0005",
+  "output_root": "/kaggle/working/final_research_kd/runs",
+  "output_dir": "/kaggle/working/final_research_kd/runs/pilots/R5/r5_pilot_wn128_ta_kd_ta_t6p0_a0p05_lr0p0005_s42_lr0p0005_e60_es-valloss-p15_img160_assistant380_bs16",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol/split_manifest_seed_42.csv",
+  "student_init_checkpoint_path": "/kaggle/input/datasets/hamzapratama/output-notebook3-r3-wastenet-128k-ce-baseline/final_research_kd/runs/final/R3/seed_42/wastenet_128k_ce_baseline_r3_final_seed_42_best.pth",
+  "assistant_checkpoint_path": "/kaggle/input/datasets/hamzapratama/output-notebook2-r2-focus-rcnet-kd-teacher-assista/final_research_kd/runs/final/R2/direct_kd/seed_42/focus_rcnet_teacher_assistant_r2_direct_kd_final_seed_42_best.pth",
+  "assistant_model_name": "Focus-RCNet",
+  "assistant_source_variant": "R2 direct_kd T=4 alpha=0.1",
+  "model_name": "WasteNet-128K",
+  "variant_id": "wastenet_128k",
+  "variant": {
+    "channels": [
+      16,
+      32,
+      64,
+      128,
+      192
+    ],
+    "repeats": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "expand_ratio": 2.0,
+    "classifier_hidden": 32,
+    "expected_params": 128086
+  },
+  "training_mode": "ta_kd",
+  "knowledge_distillation": true,
+  "kd_type": "logits_teacher_assistant",
+  "kd_temperature": 6.0,
+  "kd_alpha": 0.05,
+  "stage2_lr": 0.0005,
+  "pilot_grid_temperatures": [
+    2.0,
+    4.0,
+    6.0
+  ],
+  "pilot_grid_alphas": [
+    0.05,
+    0.1,
+    0.3
+  ],
+  "pilot_stage2_lrs": [
+    0.001,
+    0.0005
+  ],
+  "pilot_anchor": {
+    "temperature": 4.0,
+    "alpha": 0.5
+  },
+  "pilot_configs": {
+    "ce_finetune_lr0p001": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.001,
+      "priority": 0
+    },
+    "ce_finetune_lr0p0005": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.0005,
+      "priority": 1
+    },
+    "ta_t2p0_a0p05_lr0p001": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.001,
+      "priority": 2
+    },
+    "ta_t2p0_a0p1_lr0p001": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.001,
+      "priority": 3
+    },
+    "ta_t2p0_a0p3_lr0p001": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.001,
+      "priority": 4
+    },
+    "ta_t4p0_a0p05_lr0p001": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.001,
+      "priority": 5
+    },
+    "ta_t4p0_a0p1_lr0p001": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.001,
+      "priority": 6
+    },
+    "ta_t4p0_a0p3_lr0p001": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.001,
+      "priority": 7
+    },
+    "ta_t6p0_a0p05_lr0p001": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.001,
+      "priority": 8
+    },
+    "ta_t6p0_a0p1_lr0p001": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.001,
+      "priority": 9
+    },
+    "ta_t6p0_a0p3_lr0p001": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.001,
+      "priority": 10
+    },
+    "ta_t2p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 11
+    },
+    "ta_t2p0_a0p1_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.0005,
+      "priority": 12
+    },
+    "ta_t2p0_a0p3_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.0005,
+      "priority": 13
+    },
+    "ta_t4p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 14
+    },
+    "ta_t4p0_a0p1_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.0005,
+      "priority": 15
+    },
+    "ta_t4p0_a0p3_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.0005,
+      "priority": 16
+    },
+    "ta_t6p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 17
+    },
+    "ta_t6p0_a0p1_lr0p0005": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.0005,
+      "priority": 18
+    },
+    "ta_t6p0_a0p3_lr0p0005": {
+      "use_kd": true,
+      "temperature": 6.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.0005,
+      "priority": 19
+    },
+    "anchor_t4_a0p5_lr0p001": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.001,
+      "priority": 20
+    },
+    "anchor_t4_a0p5_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.0005,
+      "priority": 21
+    }
+  },
+  "pilot_queue": [
+    "ce_finetune_lr0p001",
+    "ce_finetune_lr0p0005",
+    "ta_t2p0_a0p05_lr0p001",
+    "ta_t2p0_a0p1_lr0p001",
+    "ta_t2p0_a0p3_lr0p001",
+    "ta_t4p0_a0p05_lr0p001",
+    "ta_t4p0_a0p1_lr0p001",
+    "ta_t4p0_a0p3_lr0p001",
+    "ta_t6p0_a0p05_lr0p001",
+    "ta_t6p0_a0p1_lr0p001",
+    "ta_t6p0_a0p3_lr0p001",
+    "ta_t2p0_a0p05_lr0p0005",
+    "ta_t2p0_a0p1_lr0p0005",
+    "ta_t2p0_a0p3_lr0p0005",
+    "ta_t4p0_a0p05_lr0p0005",
+    "ta_t4p0_a0p1_lr0p0005",
+    "ta_t4p0_a0p3_lr0p0005",
+    "ta_t6p0_a0p05_lr0p0005",
+    "ta_t6p0_a0p1_lr0p0005",
+    "ta_t6p0_a0p3_lr0p0005",
+    "anchor_t4_a0p5_lr0p001",
+    "anchor_t4_a0p5_lr0p0005"
+  ],
+  "student_img_size": 160,
+  "assistant_img_size": 380,
+  "epochs": 60,
+  "final_epochs": 100,
+  "pilot_epochs": 60,
+  "batch_size": 16,
+  "optimizer": "SGD",
+  "lr": 0.0005,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "scheduler": "CosineAnnealingLR",
+  "use_amp": true,
+  "early_stopping": true,
+  "evaluate_test": false,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "checkpoint_metric": "best_val_accuracy",
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "train_size": 1764,
+  "val_size": 378,
+  "test_size": 379,
+  "total_params": 128086,
+  "trainable_params": 128086,
+  "total_train_time_sec": 201.44483518600464
+}
