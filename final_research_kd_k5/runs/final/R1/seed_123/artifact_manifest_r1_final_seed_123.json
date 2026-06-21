@@ -1,0 +1,20 @@
+{
+  "generated_at_utc": "2026-06-20T19:00:05.413277+00:00",
+  "experiment_id": "R1",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "num_classes": 5,
+  "seed": 123,
+  "run_phase": "final",
+  "setup_id": "r1_k5_final_b4_s123_e100_img380_lr0p05_bs8",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/efficientnet_b4_teacher_r1_final_seed_123_best.pth",
+    "config": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/config_r1_final_seed_123.json",
+    "history": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/training_history_r1_final_seed_123.csv",
+    "metrics": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/metrics_r1_final_seed_123.csv",
+    "val_predictions": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/predictions_r1_final_seed_123_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/predictions_r1_final_seed_123_test.csv",
+    "training_curves": "/kaggle/working/final_research_kd_k5/runs/final/R1/seed_123/training_curves_r1_final_seed_123.png"
+  }
+}

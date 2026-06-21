@@ -1,0 +1,21 @@
+{
+  "generated_at_utc": "2026-06-21T05:33:30.574817+00:00",
+  "experiment_id": "R2",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "num_classes": 5,
+  "seed": 42,
+  "run_phase": "pilot",
+  "pilot_scenario": "convergence_lr0p03",
+  "setup_id": "r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/focus_rcnet_ce_r2_pilot_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/config_r2_pilot_seed_42.json",
+    "history": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/training_history_r2_pilot_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/metrics_r2_pilot_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/predictions_r2_pilot_seed_42_val.csv",
+    "test_predictions": null,
+    "training_curves": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16/training_curves_r2_pilot_seed_42.png"
+  }
+}

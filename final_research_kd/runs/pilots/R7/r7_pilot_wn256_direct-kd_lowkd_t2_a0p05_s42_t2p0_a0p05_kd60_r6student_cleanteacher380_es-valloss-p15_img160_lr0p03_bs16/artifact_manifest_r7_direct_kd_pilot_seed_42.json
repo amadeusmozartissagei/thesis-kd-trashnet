@@ -1,0 +1,23 @@
+{
+  "generated_at_utc": "2026-06-19T05:15:51.729540+00:00",
+  "experiment_id": "R7",
+  "seed": 42,
+  "run_phase": "pilot",
+  "training_mode": "direct_kd",
+  "pilot_preset": "lowkd_t2_a0p05",
+  "kd_temperature": 2.0,
+  "kd_alpha": 0.05,
+  "setup_id": "r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16",
+  "output_dir": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/wastenet_256k_direct_kd_r7_direct_kd_pilot_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/config_r7_direct_kd_pilot_seed_42.json",
+    "history": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/training_history_r7_direct_kd_pilot_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/metrics_r7_direct_kd_pilot_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/predictions_r7_direct_kd_pilot_seed_42_val.csv",
+    "test_predictions": null,
+    "val_confusion_matrix": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/confusion_matrix_val.png",
+    "test_confusion_matrix": null,
+    "training_curves": "/kaggle/working/final_research_kd/runs/pilots/R7/r7_pilot_wn256_direct-kd_lowkd_t2_a0p05_s42_t2p0_a0p05_kd60_r6student_cleanteacher380_es-valloss-p15_img160_lr0p03_bs16/training_curves_r7_direct_kd_pilot_seed_42.png"
+  }
+}

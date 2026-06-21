@@ -1,0 +1,145 @@
+{
+  "experiment_id": "R8",
+  "experiment_name": "R8 WasteNet-256K Teacher-Assistant KD",
+  "seed": 42,
+  "run_phase": "pilot",
+  "workflow_stage": "smoke",
+  "run_replicate": "01",
+  "setup_id": "r8_smoke_wn256_ta_kd_ta_t4p0_a0p05_lr0p0005_s42_lr0p0005_e5_limited_v1_rep01_img160_assistant380_bs16",
+  "pilot_preset": "ta_t4p0_a0p05_lr0p0005",
+  "rerun_tag": "limited_v1",
+  "smoke_preset": "ta_t4p0_a0p05_lr0p0005",
+  "confirmation_presets": [
+    "ta_t4p0_a0p05_lr0p0005",
+    "ta_t2p0_a0p3_lr0p0005",
+    "anchor_t4_a0p5_lr0p0005",
+    "ce_finetune_lr0p0005"
+  ],
+  "pilot_early_stopping": true,
+  "output_root": "/kaggle/working/final_research_kd/runs",
+  "output_dir": "/kaggle/working/final_research_kd/runs/pilots/R8/r8_smoke_wn256_ta_kd_ta_t4p0_a0p05_lr0p0005_s42_lr0p0005_e5_limited_v1_rep01_img160_assistant380_bs16",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol/split_manifest_seed_42.csv",
+  "student_init_checkpoint_path": "/kaggle/input/output-notebook6-r6-wastenet-256k-ce-baseline/final_research_kd/runs/final/R6/seed_42/wastenet_256k_ce_baseline_r6_final_seed_42_best.pth",
+  "student_init_checkpoint_sha256": "3a452a0dbe3590b67ba4fd8ec6d7a68c26405186e422599bf5e031a4fa9de131",
+  "assistant_checkpoint_path": "/kaggle/input/output-notebook2-r2-focus-rcnet-kd-teacher-assista/final_research_kd/runs/final/R2/direct_kd/seed_42/focus_rcnet_teacher_assistant_r2_direct_kd_final_seed_42_best.pth",
+  "assistant_checkpoint_sha256": "e9a94ae52ec88bbbd4dd48c9ba1032123bb0eb077a5d13ff4819a057a26ad795",
+  "split_manifest_sha256": "0c7645c21a4a2a53c407e0b3337d0f5083837fd4cf900bbea5ad58030b6af002",
+  "assistant_model_name": "Focus-RCNet",
+  "assistant_source_variant": "R2 direct_kd T=4 alpha=0.1",
+  "model_name": "WasteNet-256K",
+  "variant_id": "wastenet_256k",
+  "variant": {
+    "channels": [
+      16,
+      32,
+      72,
+      128,
+      224
+    ],
+    "repeats": [
+      1,
+      1,
+      2,
+      1
+    ],
+    "expand_ratio": 2.5,
+    "classifier_hidden": 0,
+    "expected_params": 256002
+  },
+  "training_mode": "ta_kd",
+  "knowledge_distillation": true,
+  "kd_type": "logits_teacher_assistant",
+  "kd_temperature": 4.0,
+  "kd_alpha": 0.05,
+  "stage2_lr": 0.0005,
+  "pilot_grid_temperatures": [
+    2.0,
+    4.0
+  ],
+  "pilot_grid_alphas": [
+    0.05,
+    0.3,
+    0.5
+  ],
+  "pilot_stage2_lrs": [
+    0.0005
+  ],
+  "pilot_anchor": {
+    "temperature": 4.0,
+    "alpha": 0.5
+  },
+  "pilot_configs": {
+    "ta_t4p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 0
+    },
+    "ta_t2p0_a0p3_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.0005,
+      "priority": 1
+    },
+    "anchor_t4_a0p5_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.0005,
+      "priority": 2
+    },
+    "ce_finetune_lr0p0005": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.0005,
+      "priority": 3
+    }
+  },
+  "pilot_queue": [
+    "ta_t4p0_a0p05_lr0p0005",
+    "ta_t2p0_a0p3_lr0p0005",
+    "anchor_t4_a0p5_lr0p0005",
+    "ce_finetune_lr0p0005"
+  ],
+  "student_img_size": 160,
+  "assistant_img_size": 380,
+  "epochs": 5,
+  "final_epochs": 100,
+  "pilot_epochs": 60,
+  "batch_size": 16,
+  "optimizer": "SGD",
+  "lr": 0.0005,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "scheduler": "CosineAnnealingLR",
+  "use_amp": true,
+  "deterministic": true,
+  "num_workers": 0,
+  "paired_augmentation": true,
+  "paired_augmentation_base_size": 380,
+  "early_stopping": true,
+  "evaluate_test": false,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "checkpoint_metric": "best_val_accuracy",
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "train_size": 1764,
+  "val_size": 378,
+  "test_size": 379,
+  "total_params": 256002,
+  "trainable_params": 256002,
+  "total_train_time_sec": 98.84353137016296
+}

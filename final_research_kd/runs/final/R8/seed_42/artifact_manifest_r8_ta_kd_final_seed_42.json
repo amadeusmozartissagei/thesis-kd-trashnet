@@ -1,0 +1,28 @@
+{
+  "generated_at_utc": "2026-06-19T11:58:36.192423+00:00",
+  "experiment_id": "R8",
+  "seed": 42,
+  "run_phase": "final",
+  "workflow_stage": "final",
+  "run_replicate": "01",
+  "training_mode": "ta_kd",
+  "pilot_preset": null,
+  "rerun_tag": null,
+  "kd_temperature": 4.0,
+  "kd_alpha": 0.5,
+  "stage2_lr": 0.0005,
+  "setup_id": "r8_final_wn256_ta_kd_s42_t4p0_a0p5_lr0p0005_e100_img160_bs16",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R8/seed_42",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/wastenet_256k_teacher_assistant_kd_r8_ta_kd_final_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/config_r8_ta_kd_final_seed_42.json",
+    "history": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/training_history_r8_ta_kd_final_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/metrics_r8_ta_kd_final_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/predictions_r8_ta_kd_final_seed_42_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/predictions_r8_ta_kd_final_seed_42_test.csv",
+    "val_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/confusion_matrix_val.png",
+    "test_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/confusion_matrix_test.png",
+    "training_curves": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/training_curves_r8_ta_kd_final_seed_42.png",
+    "reproducibility_fingerprint": "/kaggle/working/final_research_kd/runs/final/R8/seed_42/reproducibility_fingerprint_r8_ta_kd_final_seed_42.json"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "history_columns": [
+    "epoch",
+    "train_loss",
+    "train_acc",
+    "train_loss_soft",
+    "train_loss_hard",
+    "val_loss",
+    "val_acc",
+    "lr",
+    "is_best",
+    "early_stop_monitor",
+    "early_stop_value",
+    "early_stop_improved",
+    "epochs_without_improvement"
+  ],
+  "history_sha256_excluding_epoch_time": "ee43c4e6e146de918c22a74edacea176498abee258272cd975724d9d0c95c473",
+  "val_predictions_sha256": "1d8019fb37bb74e6b72db920ac3de6183e283fd47ad7d96b8b508a9e55411feb"
+}

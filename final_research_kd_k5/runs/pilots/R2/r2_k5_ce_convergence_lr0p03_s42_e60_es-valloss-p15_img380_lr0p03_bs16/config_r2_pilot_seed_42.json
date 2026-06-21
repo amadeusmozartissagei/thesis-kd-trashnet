@@ -1,0 +1,96 @@
+{
+  "experiment_id": "R2",
+  "experiment_name": "R2-K5 Focus-RCNet CE Pilot",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "protocol": "R0-K5 stratified 70/15/15",
+  "seed": 42,
+  "run_phase": "pilot",
+  "training_objective": "cross_entropy",
+  "teacher_required": false,
+  "teacher_checkpoint_loaded": false,
+  "pilot_scenario": "convergence_lr0p03",
+  "pilot_purpose": "conservative_lr_comparator",
+  "pilot_scenarios": {
+    "smoke": {
+      "epochs": 5,
+      "lr": 0.05,
+      "patience": 5,
+      "purpose": "pipeline_and_artifact_validation"
+    },
+    "convergence_lr0p05": {
+      "epochs": 60,
+      "lr": 0.05,
+      "patience": 15,
+      "purpose": "paper_anchored_primary_candidate"
+    },
+    "convergence_lr0p03": {
+      "epochs": 60,
+      "lr": 0.03,
+      "patience": 15,
+      "purpose": "conservative_lr_comparator"
+    }
+  },
+  "smoke_pilot_reference": {
+    "status": "passed",
+    "completed_on": "2026-06-21",
+    "best_epoch": 5,
+    "epochs_ran": 5,
+    "val_accuracy": 0.6759776536312849,
+    "val_macro_f1": 0.6608169977924945,
+    "val_loss": 0.9147570599390807
+  },
+  "completed_pilot_scenarios_before_this_run": [
+    "smoke",
+    "convergence_lr0p05"
+  ],
+  "pending_pilot_scenarios_before_this_run": [
+    "convergence_lr0p03"
+  ],
+  "setup_id": "r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16",
+  "output_root": "/kaggle/working/final_research_kd_k5/runs",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/pilots/R2/r2_k5_ce_convergence_lr0p03_s42_e60_es-valloss-p15_img380_lr0p03_bs16",
+  "dataset_dir": "/kaggle/input/datasets/kholiqbudiman/trashnet-k5-waste-classification",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebookef9706b43b/final_research_kd_k5/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebookef9706b43b/final_research_kd_k5/r0_data_protocol/split_manifest_seed_42.csv",
+  "model_name": "Focus-RCNet",
+  "model_source": "custom paper reimplementation",
+  "pretrained": false,
+  "initialization": "Kaiming Normal for Conv2d",
+  "img_size": 380,
+  "epochs_cap": 60,
+  "epochs_ran": 59,
+  "batch_size": 16,
+  "optimizer": "SGD",
+  "lr": 0.03,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "scheduler": "CosineAnnealingLR",
+  "loss": "CrossEntropyLoss",
+  "use_amp": true,
+  "early_stopping": true,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "checkpoint_metric": "best_val_accuracy",
+  "best_epoch": 43,
+  "best_val_accuracy": 0.8743016759776536,
+  "best_epoch_val_loss": 0.41642856264913547,
+  "best_epoch_train_mode_accuracy": 0.920863309352518,
+  "best_epoch_train_mode_accuracy_minus_val_accuracy": 0.04656163337486441,
+  "train_val_accuracy_difference_is_generalization_gap": false,
+  "test_locked": true,
+  "evaluate_test": false,
+  "num_classes": 5,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic"
+  ],
+  "train_size": 1668,
+  "val_size": 358,
+  "test_size": 358,
+  "total_params": 520117,
+  "trainable_params": 520117
+}

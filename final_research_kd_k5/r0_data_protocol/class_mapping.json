@@ -1,0 +1,31 @@
+{
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "dataset_dir": "/kaggle/input/datasets/kholiqbudiman/trashnet-k5-waste-classification",
+  "source": "https://www.kaggle.com/datasets/kholiqbudiman/trashnet-k5-waste-classification",
+  "upstream_source": "https://www.kaggle.com/datasets/feyzazkefe/trashnet",
+  "source_split_policy": "Ignore bundled 80/20 assignment; pool all images before resplitting",
+  "generated_at_utc": "2026-06-20T17:03:44.074826+00:00",
+  "num_classes": 5,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic"
+  ],
+  "class_to_idx": {
+    "cardboard": 0,
+    "glass": 1,
+    "metal": 2,
+    "paper": 3,
+    "plastic": 4
+  },
+  "idx_to_class": {
+    "0": "cardboard",
+    "1": "glass",
+    "2": "metal",
+    "3": "paper",
+    "4": "plastic"
+  }
+}
