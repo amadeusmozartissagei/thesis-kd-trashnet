@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\\\\\\\\R1\" -type d -name \"seed_*\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\" -type f \\\\\\( -name \"*metrics*\" -o -name \"*evaluation*\" -o -name \"*summary*\" \\\\\\))",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\" -type f -name \"*predictions*\" -o -name \"*per_class*\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\" -type f -name \"*per_class*\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\" -type f -name \"*summary*.json\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\\\\\\\\R3\" -type f -name \"*.json\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\pilots\" -type f -name \"*config*\")",
+      "Bash(find \"C:\\\\\\\\Users\\\\\\\\Pratama\\\\\\\\Documents\\\\\\\\hamza\\\\\\\\COLLEGE STUFF\\\\\\\\UNNES\\\\\\\\Thesis\\\\\\\\thesis-kd-trashnet\\\\\\\\final_research_kd\\\\\\\\runs\\\\\\\\final\" -type f -name \"*model*\" -o -name \"*params*\")"
+    ]
+  }
+}
