@@ -1,0 +1,2 @@
+stage,best_val_acc,best_epoch,epochs_ran
+direct_kd,0.8770949720670391,85,100

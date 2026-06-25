@@ -1,0 +1,4 @@
+preset,temperature,alpha,best_epoch,val_accuracy,val_f1_macro,val_auc,setup_id
+t2_a0p3,2.0,0.3,47,0.7877094972067039,0.7771850079744816,0.9523659922405374,r4_k5_pilot_wn128_direct-kd_t2_a0p3_s42_t2p0_a0p3_kd60_es-valloss-p15_img160_lr0p05_bs16
+t2_a0p05,2.0,0.05,59,0.7877094972067039,0.7841707921052151,0.9479436977785021,r4_k5_pilot_wn128_direct-kd_t2_a0p05_s42_t2p0_a0p05_kd60_es-valloss-p15_img160_lr0p05_bs16
+t2_a0p1,2.0,0.1,59,0.7849162011173184,0.7802316620428075,0.9462505388600908,r4_k5_pilot_wn128_direct-kd_t2_a0p1_s42_t2p0_a0p1_kd60_es-valloss-p15_img160_lr0p05_bs16

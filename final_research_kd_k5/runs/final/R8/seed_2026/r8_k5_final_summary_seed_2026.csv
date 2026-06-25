@@ -1,0 +1,3 @@
+preset,use_kd,temperature,alpha,stage2_lr,assistant_img_size,best_epoch,val_accuracy,val_f1_macro,test_accuracy,setup_id
+ta_t4_a0p5_lr1em4_av380,True,4.0,0.5,0.0001,380,36,0.8687150837988827,0.8682213384387054,0.8296089385474861,r8_k5_final_wn256_ta-kd_ta_t4_a0p5_lr1em4_av380_s2026_t4p0_a0p5_av380_lr0p0001_e100_img160_bs16
+ce_finetune_lr1em4,False,,,0.0001,380,3,0.8603351955307262,0.8595060908301606,0.8016759776536313,r8_k5_final_wn256_ce-finetune_ce_finetune_lr1em4_s2026_no-kd_lr0p0001_e100_img160_bs16

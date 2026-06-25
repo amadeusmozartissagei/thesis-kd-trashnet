@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-06-21T18:14:47.554953+00:00",
+  "experiment_id": "R5",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "seed": 42,
+  "run_phase": "pilot",
+  "training_mode": "ta_kd",
+  "pilot_preset": "ta_t2p0_a0p3_lr0p0005",
+  "kd_temperature": 2.0,
+  "kd_alpha": 0.3,
+  "stage2_lr": 0.0005,
+  "setup_id": "r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/wastenet_128k_r5_ta_kd_pilot_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/config_r5_ta_kd_pilot_seed_42.json",
+    "history": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/training_history_r5_ta_kd_pilot_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/metrics_r5_ta_kd_pilot_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/predictions_r5_ta_kd_pilot_seed_42_val.csv",
+    "test_predictions": null,
+    "val_confusion_matrix": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/confusion_matrix_val.png",
+    "test_confusion_matrix": null,
+    "training_curves": "/kaggle/working/final_research_kd_k5/runs/pilots/R5/r5_k5_pilot_wn128_ta-kd_ta_t2p0_a0p3_lr0p0005_s42_t2p0_a0p3_lr0p0005_e60_img160_assistant380_bs16/training_curves_r5_ta_kd_pilot_seed_42.png"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "experiment_id": "R2",
+  "experiment_name": "R2-K5 Focus-RCNet KD Teacher-Assistant Selection",
+  "seed": 777,
+  "run_phase": "final",
+  "r2_variant": "twostage_kd",
+  "setup_id": "r2_k5_final_twostage-kd_s777_t4p0_a0p1_ce100_kd100_img380_bs16",
+  "dataset_dir": "/kaggle/input/datasets/kholiqbudiman/trashnet-k5-waste-classification",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebookef9706b43b/final_research_kd_k5/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebookef9706b43b/final_research_kd_k5/r0_data_protocol/split_manifest_seed_777.csv",
+  "teacher_checkpoint_path": "/kaggle/input/output-notebook1-r1-k5-efficientnet-b4-teacher/final_research_kd_k5/runs/final/R1/seed_777/efficientnet_b4_teacher_r1_final_seed_777_best.pth",
+  "student_model_name": "Focus-RCNet",
+  "teacher_model_name": "EfficientNet-B4",
+  "img_size": 380,
+  "batch_size": 16,
+  "ce_epochs": 100,
+  "kd_epochs": 100,
+  "direct_lr": 0.05,
+  "stage1_lr": 0.05,
+  "stage2_lr": 0.001,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "kd_temperature": 4.0,
+  "kd_alpha": 0.1,
+  "early_stopping": false,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "evaluate_test": true,
+  "checkpoint_metric": "best_val_accuracy",
+  "selected_stage": "kd_finetune",
+  "selected_best_epoch": 11,
+  "selected_best_val_acc": 0.8938547486033519,
+  "train_size": 1668,
+  "val_size": 358,
+  "test_size": 358,
+  "num_classes": 5,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic"
+  ],
+  "total_params": 520117,
+  "trainable_params": 520117,
+  "total_time_sec": 2889.880873441696,
+  "stage_summaries": [
+    {
+      "stage": "ce_pretrain",
+      "best_val_acc": 0.8770949720670391,
+      "best_epoch": 92,
+      "epochs_ran": 100
+    },
+    {
+      "stage": "kd_finetune",
+      "best_val_acc": 0.8938547486033519,
+      "best_epoch": 11,
+      "epochs_ran": 100
+    }
+  ]
+}

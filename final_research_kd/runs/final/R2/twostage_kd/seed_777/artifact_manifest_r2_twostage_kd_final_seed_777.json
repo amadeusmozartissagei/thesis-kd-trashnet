@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-06-24T06:00:42.160079+00:00",
+  "experiment_id": "R2",
+  "seed": 777,
+  "run_phase": "final",
+  "r2_variant": "twostage_kd",
+  "setup_id": "r2_final_twostage-kd_s777_t4p0_a0p1_ce100_kd100_img380_bs16",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/focus_rcnet_teacher_assistant_r2_twostage_kd_final_seed_777_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/config_r2_twostage_kd_final_seed_777.json",
+    "history": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/training_history_r2_twostage_kd_final_seed_777.csv",
+    "stage_summary": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/stage_summary_r2_twostage_kd_final_seed_777.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/metrics_r2_twostage_kd_final_seed_777.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/predictions_r2_twostage_kd_final_seed_777_val.csv",
+    "training_curves": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/training_curves_r2_twostage_kd_final_seed_777.png",
+    "test_predictions": "/kaggle/working/final_research_kd/runs/final/R2/twostage_kd/seed_777/predictions_r2_twostage_kd_final_seed_777_test.csv"
+  }
+}

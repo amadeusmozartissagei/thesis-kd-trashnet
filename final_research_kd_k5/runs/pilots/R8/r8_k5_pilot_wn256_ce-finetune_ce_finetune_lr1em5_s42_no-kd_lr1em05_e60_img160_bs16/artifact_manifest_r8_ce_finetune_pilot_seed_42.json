@@ -1,0 +1,26 @@
+{
+  "generated_at_utc": "2026-06-22T09:44:13.583676+00:00",
+  "experiment_id": "R8",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "seed": 42,
+  "run_phase": "pilot",
+  "training_mode": "ce_finetune",
+  "pilot_preset": "ce_finetune_lr1em5",
+  "kd_temperature": null,
+  "kd_alpha": null,
+  "stage2_lr": 1e-05,
+  "setup_id": "r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/wastenet_256k_r8_ce_finetune_pilot_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/config_r8_ce_finetune_pilot_seed_42.json",
+    "history": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/training_history_r8_ce_finetune_pilot_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/metrics_r8_ce_finetune_pilot_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/predictions_r8_ce_finetune_pilot_seed_42_val.csv",
+    "test_predictions": null,
+    "val_confusion_matrix": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/confusion_matrix_val.png",
+    "test_confusion_matrix": null,
+    "training_curves": "/kaggle/working/final_research_kd_k5/runs/pilots/R8/r8_k5_pilot_wn256_ce-finetune_ce_finetune_lr1em5_s42_no-kd_lr1em05_e60_img160_bs16/training_curves_r8_ce_finetune_pilot_seed_42.png"
+  }
+}

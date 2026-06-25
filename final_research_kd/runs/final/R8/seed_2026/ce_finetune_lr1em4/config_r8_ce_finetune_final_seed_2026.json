@@ -1,0 +1,214 @@
+{
+  "experiment_id": "R8",
+  "experiment_name": "R8 WasteNet-256K Teacher-Assistant KD",
+  "dataset_name": "TrashNet",
+  "protocol": "R0 stratified 70/15/15",
+  "seed": 2026,
+  "run_phase": "final",
+  "setup_id": "r8_final_wn256_ce-finetune_ce_finetune_lr1em4_s2026_no-kd_lr0p0001_e100_img160_bs16",
+  "pilot_preset": null,
+  "output_root": "/kaggle/working/final_research_kd/runs",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R8/seed_2026/ce_finetune_lr1em4",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol/split_manifest_seed_2026.csv",
+  "split_manifest_sha256": "bbc7f1c14c45a07921ca8c369e10adfc7c883774ba27664fe97960eba574c79b",
+  "student_init_checkpoint_path": "/kaggle/input/output-notebook6-r6-wastenet-256k-ce-baseline/final_research_kd/runs/final/R6/seed_2026/wastenet_256k_ce_baseline_r6_final_seed_2026_best.pth",
+  "student_init_checkpoint_sha256": "e8d749b2a044306cb0a812b3564a8d77ce631bdf51f6260e94bba70f58b1ea3f",
+  "assistant_checkpoint_path": null,
+  "assistant_checkpoint_sha256": null,
+  "assistant_model_name": "Focus-RCNet",
+  "assistant_source_variant": "R2 Focus-RCNet CE baseline",
+  "model_name": "WasteNet-256K",
+  "variant_id": "wastenet_256k",
+  "variant": {
+    "channels": [
+      16,
+      32,
+      72,
+      128,
+      224
+    ],
+    "repeats": [
+      1,
+      1,
+      2,
+      1
+    ],
+    "expand_ratio": 2.5,
+    "classifier_hidden": 0,
+    "expected_params": 256002
+  },
+  "training_mode": "ce_finetune",
+  "knowledge_distillation": false,
+  "kd_type": "ce_finetune_control",
+  "kd_temperature": null,
+  "kd_alpha": null,
+  "stage2_lr": 0.0001,
+  "pilot_grid_temperatures": [
+    2.0,
+    4.0,
+    6.0
+  ],
+  "pilot_grid_alphas": [
+    0.05,
+    0.1,
+    0.3
+  ],
+  "pilot_stage2_lrs": [
+    0.001,
+    0.0005,
+    0.0001,
+    1e-05
+  ],
+  "pilot_anchor": {
+    "temperature": 4.0,
+    "alpha": 0.5
+  },
+  "pilot_configs": {
+    "ta_t4p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 0
+    },
+    "ta_t2p0_a0p3_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "stage2_lr": 0.0005,
+      "priority": 1
+    },
+    "ta_t2p0_a0p05_lr0p0005": {
+      "use_kd": true,
+      "temperature": 2.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.0005,
+      "priority": 2
+    },
+    "ta_t4p0_a0p1_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.1,
+      "stage2_lr": 0.0005,
+      "priority": 3
+    },
+    "ta_t4p0_a0p05_lr0p001": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.05,
+      "stage2_lr": 0.001,
+      "priority": 4
+    },
+    "anchor_t4_a0p5_lr0p0005": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.0005,
+      "priority": 5
+    },
+    "ce_finetune_lr0p001": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.001,
+      "priority": 6
+    },
+    "ce_finetune_lr0p0005": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.0005,
+      "priority": 7
+    },
+    "ce_finetune_lr1em4": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 0.0001,
+      "priority": 8
+    },
+    "ce_finetune_lr1em5": {
+      "use_kd": false,
+      "temperature": null,
+      "alpha": null,
+      "stage2_lr": 1e-05,
+      "priority": 9
+    },
+    "ta_t4_a0p5_lr1em4_av160": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.0001,
+      "assistant_img_size": 160,
+      "priority": 10
+    },
+    "ta_t4_a0p5_lr1em4_av380": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 0.0001,
+      "assistant_img_size": 380,
+      "priority": 11
+    },
+    "ta_t4_a0p5_lr1em5_av160": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 1e-05,
+      "assistant_img_size": 160,
+      "priority": 12
+    },
+    "ta_t4_a0p5_lr1em5_av380": {
+      "use_kd": true,
+      "temperature": 4.0,
+      "alpha": 0.5,
+      "stage2_lr": 1e-05,
+      "assistant_img_size": 380,
+      "priority": 13
+    }
+  },
+  "pilot_sweep": [
+    "ce_finetune_lr1em5",
+    "ta_t4_a0p5_lr1em5_av160",
+    "ta_t4_a0p5_lr1em5_av380",
+    "ce_finetune_lr1em4",
+    "ta_t4_a0p5_lr1em4_av160",
+    "ta_t4_a0p5_lr1em4_av380"
+  ],
+  "student_img_size": 160,
+  "assistant_img_size": 380,
+  "epochs": 100,
+  "final_epochs": 100,
+  "pilot_epochs": 60,
+  "batch_size": 16,
+  "optimizer": "SGD",
+  "lr": 0.0001,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "scheduler": "CosineAnnealingLR",
+  "use_amp": true,
+  "paired_augmentation": true,
+  "paired_augmentation_base_size": 380,
+  "early_stopping": false,
+  "evaluate_test": true,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "checkpoint_metric": "best_val_accuracy",
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "train_size": 1764,
+  "val_size": 378,
+  "test_size": 379,
+  "total_params": 256002,
+  "trainable_params": 256002,
+  "total_train_time_sec": 560.4566552639008
+}

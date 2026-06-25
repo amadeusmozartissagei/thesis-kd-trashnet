@@ -1,0 +1,2 @@
+preset,temperature,alpha,best_epoch,val_accuracy,val_f1_macro,val_auc,setup_id
+t2_a0p5,2.0,0.5,53,0.7905027932960894,0.7871792442122468,0.9544358301021869,r7_k5_pilot_wn256_direct-kd_t2_a0p5_s42_t2p0_a0p5_kd60_es-valloss-p15_img160_lr0p03_bs16

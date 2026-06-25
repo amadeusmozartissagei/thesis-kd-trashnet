@@ -1,0 +1,25 @@
+{
+  "generated_at_utc": "2026-06-23T08:32:46.284021+00:00",
+  "experiment_id": "R5",
+  "dataset_name": "TrashNet",
+  "seed": 3407,
+  "run_phase": "final",
+  "training_mode": "ta_kd",
+  "pilot_preset": null,
+  "kd_temperature": 4.0,
+  "kd_alpha": 0.5,
+  "stage2_lr": 1e-05,
+  "setup_id": "r5_final_wn128_ta-kd_ta_t4_a0p5_lr1em5_av160_s3407_t4p0_a0p5_av160_lr1em05_e100_img160_bs16",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/wastenet_128k_r5_ta_kd_final_seed_3407_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/config_r5_ta_kd_final_seed_3407.json",
+    "history": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/training_history_r5_ta_kd_final_seed_3407.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/metrics_r5_ta_kd_final_seed_3407.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/predictions_r5_ta_kd_final_seed_3407_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/predictions_r5_ta_kd_final_seed_3407_test.csv",
+    "val_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/confusion_matrix_val.png",
+    "test_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/confusion_matrix_test.png",
+    "training_curves": "/kaggle/working/final_research_kd/runs/final/R5/seed_3407/ta_t4_a0p5_lr1em5_av160/training_curves_r5_ta_kd_final_seed_3407.png"
+  }
+}
