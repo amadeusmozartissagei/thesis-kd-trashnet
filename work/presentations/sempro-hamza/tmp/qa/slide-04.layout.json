@@ -1,0 +1,522 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/0d9b9s",
+    "id": "0d9b9s",
+    "slide": 4,
+    "layoutId": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Helvetica Neue"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "1",
+      "name": "slide-title",
+      "bbox": [
+        42,
+        36,
+        980,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Celah riset: capacity gap pada student sangat kecil",
+      "textPreview": "Celah riset: capacity gap pada student sangat kecil",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Celah riset: capacity gap pada student sangat kecil"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Celah riset: capacity gap pada student sangat kecil",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Celah riset: capacity gap pada student sangat kecil",
+              "fontSize": 39,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "2",
+      "name": "slide-number",
+      "bbox": [
+        1184,
+        659,
+        54,
+        25
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 12.83,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 15,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 0.86,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Helvetica Neue",
+            "color": "#000000",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 15,
+              "typeface": "Helvetica Neue",
+              "color": "#000000",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "3",
+      "name": "left",
+      "bbox": [
+        42,
+        152,
+        520,
+        235
+      ],
+      "geometry": "rect",
+      "text": "Penelitian terdahulu seperti Focus-RCNet melaporkan akurasi sekitar 92% pada TrashNet dengan KD dari EfficientNet-B4. Namun, fokusnya belum pada perbandingan sistematis kapasitas teacher untuk student ultra-ringan.",
+      "textPreview": "Penelitian terdahulu seperti Focus-RCNet melaporkan akurasi sekitar 92% pada TrashNet dengan KD dari EfficientNet-B4. Namun, fokusnya bel...",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Penelitian terdahulu seperti Focus-RCNet"
+          },
+          {
+            "index": 2,
+            "text": "melaporkan akurasi sekitar 92% pada TrashNet"
+          },
+          {
+            "index": 3,
+            "text": "dengan KD dari EfficientNet-B4. Namun,"
+          },
+          {
+            "index": 4,
+            "text": "fokusnya belum pada perbandingan sistematis"
+          },
+          {
+            "index": 5,
+            "text": "kapasitas teacher untuk student ultra-ringan."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Penelitian terdahulu seperti Focus-RCNet melaporkan akurasi sekitar 92% pada TrashNet dengan KD dari EfficientNet-B4. Namun, fokusnya belum pada perbandingan sistematis kapasitas teacher untuk student ultra-ringan.",
+          "resolvedTextStyle": {
+            "fontSize": 26,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Penelitian terdahulu seperti Focus-RCNet melaporkan akurasi sekitar 92% pada TrashNet dengan KD dari EfficientNet-B4. Namun, fokusnya belum pada perbandingan sistematis kapasitas teacher untuk student ultra-ringan.",
+              "fontSize": 26,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "4",
+      "name": "right-panel",
+      "bbox": [
+        648,
+        126,
+        590,
+        425
+      ],
+      "geometry": "rect",
+      "fillColor": "#EDEDED",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "5",
+      "name": "gap-label",
+      "bbox": [
+        690,
+        160,
+        360,
+        28
+      ],
+      "geometry": "rect",
+      "text": "Kebaruan yang diuji",
+      "textPreview": "Kebaruan yang diuji",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Helvetica Neue",
+        "color": "#555555",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Kebaruan yang diuji"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Kebaruan yang diuji",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Helvetica Neue",
+            "color": "#555555",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Kebaruan yang diuji",
+              "fontSize": 15,
+              "typeface": "Helvetica Neue",
+              "color": "#555555",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "6",
+      "name": "gap-points",
+      "bbox": [
+        690,
+        210,
+        500,
+        280
+      ],
+      "geometry": "rect",
+      "text": "- Menggunakan WasteNet-128K dan WasteNet-256K sebagai target student ringan.\n- Membandingkan large-teacher, teacher-assistant, dan self-distillation secara terkontrol.\n- Menggunakan dua ruang label: K6 dan K5 tanpa kelas trash.\n- Memvalidasi selisih performa dengan uji statistik.",
+      "textPreview": "- Menggunakan WasteNet-128K dan WasteNet-256K sebagai target student ringan. | - Membandingkan large-teacher, teacher-assistant, dan self...",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 9,
+        "lines": [
+          {
+            "index": 1,
+            "text": "- Menggunakan WasteNet-128K dan"
+          },
+          {
+            "index": 2,
+            "text": "WasteNet-256K sebagai target student ringan."
+          },
+          {
+            "index": 3,
+            "text": "- Membandingkan large-teacher,"
+          },
+          {
+            "index": 4,
+            "text": "teacher-assistant, dan self-distillation secara"
+          },
+          {
+            "index": 5,
+            "text": "terkontrol."
+          },
+          {
+            "index": 6,
+            "text": "- Menggunakan dua ruang label: K6 dan K5 tanpa"
+          },
+          {
+            "index": 7,
+            "text": "kelas trash."
+          },
+          {
+            "index": 8,
+            "text": "- Memvalidasi selisih performa dengan uji"
+          },
+          {
+            "index": 9,
+            "text": "statistik."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "- Menggunakan WasteNet-128K dan WasteNet-256K sebagai target student ringan.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Menggunakan WasteNet-128K dan WasteNet-256K sebagai target student ringan.",
+              "fontSize": 24,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "- Membandingkan large-teacher, teacher-assistant, dan self-distillation secara terkontrol.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Membandingkan large-teacher, teacher-assistant, dan self-distillation secara terkontrol.",
+              "fontSize": 24,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "- Menggunakan dua ruang label: K6 dan K5 tanpa kelas trash.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Menggunakan dua ruang label: K6 dan K5 tanpa kelas trash.",
+              "fontSize": 24,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "- Memvalidasi selisih performa dengan uji statistik.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Memvalidasi selisih performa dengan uji statistik.",
+              "fontSize": 24,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

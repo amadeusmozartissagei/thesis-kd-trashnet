@@ -1,0 +1,1355 @@
+SOURCE: C:\Users\Pratama\Downloads\smpro\sempro-hamza-1.pdf
+PAGES: 38
+
+===== PAGE 1 =====
+KNOWLEDGE DISTILLATION BERBASIS TEACHER-ASSISTANT
+UNTUK MODEL RINGAN WASTENET PADA KLASIFIKASI CITRA
+SAMPAH TRASHNET DENGAN PERBANDINGAN LARGE-TEACHER,
+ASSISTANT, DAN SELF-DISTILLATION
+Skripsi
+diajukan sebagai salah satu syarat untuk memperoleh gelar
+Sarjana Komputer
+oleh
+Hamza Pratama
+4611422068
+PROGRAM STUDI SARJANA TEKNIK INFORMATIKA
+FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM
+UNIVERSITAS NEGERI SEMARANG
+SEMARANG, 2026
+
+===== PAGE 2 =====
+KEMENTERIAN PENDIDIKAN TINGGI, SAINS, DAN TEKNOLOGI Gedung D12, Dekanat FMIPA
+UNIVERSITAS NEGERI SEMARANG UNNES Kampus Sekaran,
+Gunungpati, Kota Semarang 50229
+FAKULTAS MATEMATIKA DAN ILMU Telp. (024) 86008700 Ext. 400
+Laman:
+PENGETAHUAN ALAM https://mipa.unnes.ac.id
+Surel: mipa@mail.unnes.ac.id
+PROGRAM STUDI SARJANA TEKNIK INFORMATIKA
+PERNYATAAN SIAP SEMINAR PROPOSAL SKRIPSI
+Yang bertanda tangan di bawah ini
+Nama : Kholiq Budiman, S.Pd., M.Kom.
+NIP : 199209242019031013
+Sebagai Pembimbing skripsi mahasiswa:
+Nama : Hamza Praama
+NIM : 4611422068
+Prodi : Teknik Informatika
+Topik : Knowledge Distillation
+Menyatakan bahwa proposal skripsi mahasiswa tersebut di atas telah siap untuk
+diseminarkan.
+Semarang, 30 Juni 2026
+Pembimbing,
+Kholiq Budiman, S.Pd., M.Kom.
+NIP 199209242019031013
+ii
+
+===== PAGE 3 =====
+DAFTAR ISI
+PERNYATAAN SIAP SEMINAR PROPOSAL SKRIPSI ................................................ ii
+DAFTAR ISI ...................................................................................................................... iii
+DAFTAR TABEL ............................................................................................................... v
+DAFTAR GAMBAR ......................................................................................................... vi
+BAB 1 ................................................................................................................................. 1
+1.1 Latar Belakang ................................................................................................... 1
+1.2 Batasan Masalah ................................................................................................ 2
+1.3 Rumusan Masalah ............................................................................................. 3
+1.4 Tujuan Penelitian ............................................................................................... 3
+1.5 Manfaat Penelitian ............................................................................................. 3
+1.5.1 Manfaat Praktis ............................................................................................. 3
+1.5.2 Manfaat Teoritis ............................................................................................ 4
+1.6 Kebaruan Penelitian ........................................................................................... 4
+BAB 2 ................................................................................................................................. 7
+2.1 Tinjauan Pustaka ............................................................................................... 7
+2.2 Landasan Teori .................................................................................................. 9
+2.2.1 Klasifikasi Citra Sampah ............................................................................... 9
+2.2.2 Deep Learning ............................................................................................... 9
+2.2.3 Convolutional Neural Network (CNN) ....................................................... 10
+2.2.4 Transfer Learning ........................................................................................ 11
+2.2.5 Arsitektur Model ......................................................................................... 11
+2.2.6 Knowledge Distillation ............................................................................... 12
+2.2.7 Teacher-Assistant Knowledge Distillation .................................................. 13
+2.2.8 Self-Distillation (Born-Again Networks) .................................................... 14
+2.2.9 Preprocessing Citra ..................................................................................... 14
+2.2.10 Data Augmentation ................................................................................. 15
+2.2.11 Dataset TrashNet ..................................................................................... 15
+2.2.12 Evaluasi Model Klasifikasi ..................................................................... 16
+2.2.13 Uji Statistik ............................................................................................. 18
+BAB 3 ............................................................................................................................... 19
+3.1 Pendekatan, Jenis, dan Prosedur Penelitian ..................................................... 19
+3.1.1 Pendekatan Penelitian ................................................................................. 19
+3.1.2 Jenis Penelitian ............................................................................................ 19
+3.1.3 Prosedur Penelitian ...................................................................................... 20
+3.2 Lokasi dan Waktu Penelitian ........................................................................... 21
+iii
+
+===== PAGE 4 =====
+3.3 Subjek Penelitian/Sampel dan Populasi........................................................... 22
+3.4 Data dan Sumber Data ..................................................................................... 22
+3.5 Teknik Pengumpulan Data .............................................................................. 22
+3.6 Teknik Keabsahan Data ................................................................................... 23
+3.7 Teknik Analisis Data ....................................................................................... 23
+3.7.1 Import Dataset ............................................................................................. 24
+3.7.2 Preprocessing .............................................................................................. 24
+3.7.3 Data Splitting .............................................................................................. 25
+3.7.4 Data Augmentation ..................................................................................... 25
+3.7.5 Arsitektur Model ......................................................................................... 25
+3.7.6 Knowledge Distillation ................................................................................ 26
+3.7.7 Training Model ............................................................................................ 27
+3.7.8 Model Evaluation ........................................................................................ 27
+3.7.9 Uji Statistik.................................................................................................. 28
+3.7.10 Skenario Pengujian ................................................................................. 28
+DAFTAR PUSTAKA ....................................................................................................... 30
+LAMPIRAN ...................................................................................................................... 32
+iv
+
+===== PAGE 5 =====
+DAFTAR TABEL
+Tabel 1.1 Kebaruan Penelitian ............................................................................................ 5
+Tabel 2.1 Ringkasan Penelitian Terdahulu .......................................................................... 8
+Tabel 3.1 Confusion Matrix .............................................................................................. 27
+Tabel 3.2 Skenario Pengujian Model ................................................................................ 28
+v
+
+===== PAGE 6 =====
+DAFTAR GAMBAR
+Gambar 2.1 Arsitektur Dasar Convolutional Neural Network .......................................... 10
+Gambar 2.2 Skema Knowledge Distillation ..................................................................... 12
+Gambar 2.3 Strategi Distilasi pada Kurva Capacity Gap .................................................. 14
+Gambar 2.4 Ilustrasi Teknik Data Augmentation .............................................................. 15
+Gambar 2.5 Distribusi Jumlah Citra per Kelas pada Dataset TrashNet ............................ 16
+Gambar 3.1 Diagram Alir Prosedur Penelitian ................................................................. 20
+Gambar 3.2 Diagram Alir Teknik Analisis Data ............................................................... 24
+Gambar 3.3 Arsitektur Model Guru, Asisten, dan Student ............................................... 26
+vi
+
+===== PAGE 7 =====
+BAB 1
+PENDAHULUAN
+1.1 Latar Belakang
+Pengelolaan sampah merupakan salah satu permasalahan lingkungan yang
+paling mendesak, baik di Indonesia maupun di tingkat global. Volume timbulan
+sampah terus meningkat seiring pertumbuhan penduduk, urbanisasi, dan perubahan
+pola konsumsi masyarakat, sementara kapasitas pengolahan dan tingkat daur ulang
+masih relatif rendah. Salah satu tahap kunci dalam upaya daur ulang adalah
+pemilahan sampah berdasarkan jenis materialnya, seperti kertas, plastik, logam, dan
+kaca. Ketepatan pemilahan menentukan efektivitas proses daur ulang selanjutnya,
+namun hingga saat ini sebagian besar pemilahan masih dilakukan secara manual.
+Pemilahan sampah secara manual memiliki sejumlah keterbatasan, antara lain
+membutuhkan tenaga kerja yang besar, rentan terhadap kesalahan, serta kurang
+konsisten dan tidak efisien untuk volume sampah yang besar. Oleh karena itu,
+dibutuhkan sistem pemilahan otomatis yang mampu mengenali jenis sampah secara
+cepat dan akurat. Perkembangan teknologi computer vision dan deep learning
+membuka peluang untuk membangun sistem klasifikasi citra sampah otomatis yang
+dapat menjadi dasar bagi tempat sampah pintar (smart bin) maupun lini pemilahan
+otomatis pada fasilitas pengolahan sampah.
+Salah satu pendekatan yang banyak digunakan dalam klasifikasi citra adalah
+Convolutional Neural Network (CNN), yang terbukti mampu mengekstraksi fitur
+visual secara hierarkis dan mencapai akurasi tinggi pada berbagai tugas pengenalan
+citra. Dalam domain klasifikasi sampah, dataset TrashNet yang diperkenalkan oleh
+Thung dan Yang (2016) menjadi salah satu tolok ukur yang umum digunakan.
+Dataset ini memuat citra sampah yang dikelompokkan ke dalam enam kelas, yaitu
+cardboard, glass, metal, paper, plastic, dan trash, sehingga banyak dimanfaatkan
+untuk menguji berbagai arsitektur klasifikasi citra sampah.
+Meskipun arsitektur CNN modern mampu mencapai akurasi yang tinggi,
+model-model tersebut umumnya memiliki jumlah parameter yang sangat besar dan
+kebutuhan komputasi yang berat. Hal ini menjadi kendala ketika model akan
+diterapkan pada perangkat dengan sumber daya terbatas, seperti perangkat
+embedded, mobile, maupun edge device yang menjadi target penerapan tempat
+sampah pintar. Terdapat trade-off antara akurasi dan ukuran model, sehingga
+diperlukan model yang ringan namun tetap memiliki performa yang memadai.
+Untuk menjawab kebutuhan tersebut, berbagai teknik kompresi model
+dikembangkan, salah satunya adalah knowledge distillation (KD). Knowledge
+distillation yang diperkenalkan oleh Hinton dkk. (2015) merupakan teknik
+mentransfer pengetahuan dari sebuah model besar (teacher) kepada model yang
+lebih kecil (student) melalui soft target, yaitu distribusi probabilitas keluaran
+teacher yang mengandung informasi tambahan atau dark knowledge. Dengan
+demikian, student dapat mencapai performa yang lebih baik dibandingkan jika
+1
+
+===== PAGE 8 =====
+2
+dilatih langsung hanya dari label keras (hard label), sambil tetap mempertahankan
+ukuran yang ringan.
+Namun, efektivitas knowledge distillation tidak selalu terjamin. Cho dan
+Hariharan (2019) menunjukkan bahwa ketika selisih kapasitas antara teacher dan
+student terlalu besar (capacity gap), proses distilasi justru dapat menurunkan
+performa student. Untuk mengatasi hal tersebut, Mirzadeh dkk. (2020)
+mengusulkan skema teacher-assistant knowledge distillation (TA-KD), yaitu
+menyisipkan model perantara berkapasitas menengah (teacher assistant) sebagai
+jembatan antara teacher besar dan student kecil, sehingga pengetahuan dapat
+ditransfer secara lebih bertahap.
+Selain skema teacher-assistant, terdapat pula pendekatan self-distillation, di
+antaranya Born-Again Networks (BAN) yang diperkenalkan oleh Furlanello dkk.
+(2018), yaitu student dilatih dengan teacher yang memiliki arsitektur dan kapasitas
+yang sama dengan dirinya dari generasi sebelumnya. Dengan adanya tiga jenis
+teacher tersebut, yaitu teacher besar, teacher berkapasitas menengah (assistant),
+dan teacher berkapasitas sama (self), muncul pertanyaan jenis teacher manakah
+yang paling efektif untuk membantu student yang berukuran sangat ringan.
+Salah satu penelitian terkini yang menjadi acuan utama penelitian ini adalah
+Focus-RCNet (Zheng dkk., 2023), yaitu model klasifikasi sampah daur ulang yang
+ringan dengan knowledge distillation dari teacher EfficientNet-B4 pada dataset
+TrashNet dan mencapai akurasi sekitar 92%. Meskipun demikian, sebagian besar
+penelitian terdahulu yang menggunakan dataset TrashNet, termasuk Focus-RCNet,
+masih berfokus pada peningkatan akurasi tanpa membandingkan secara sistematis
+pengaruh kapasitas teacher terhadap student yang sangat ringan. Selain itu,
+pengaruh capacity gap dalam knowledge distillation umumnya diuji pada dataset
+berskala besar seperti CIFAR maupun ImageNet, dan belum banyak diteliti pada
+model ultra-ringan untuk klasifikasi sampah. Hal inilah yang menjadi celah yang
+melatarbelakangi penelitian ini.
+Berdasarkan uraian tersebut, penelitian ini mengembangkan model ringan
+WasteNet (dengan kisaran 128 ribu hingga 256 ribu parameter) untuk klasifikasi
+citra sampah TrashNet melalui knowledge distillation, serta membandingkan tiga
+jenis teacher berdasarkan kapasitasnya, yaitu large-teacher (EfficientNet-B4),
+assistant (Focus-RCNet; Zheng dkk., 2023), dan self-distillation (Born-Again
+Networks). Penelitian ini juga menerapkan pengujian statistik untuk memvalidasi
+perbedaan performa terhadap baseline tanpa distilasi, dan dilakukan pada dua ruang
+label, yaitu enam kelas penuh dan varian lima kelas, guna menguji konsistensi
+temuan.
+1.2 Batasan Masalah
+Agar penelitian ini terarah dan terukur, penulis menetapkan batasan masalah
+sebagai berikut:
+
+===== PAGE 9 =====
+3
+1. Dataset yang digunakan adalah TrashNet (Thung & Yang, 2016) berupa
+citra sampah, dengan dua ruang label yang diuji, yaitu enam kelas penuh
+(cardboard, glass, metal, paper, plastic, trash) dan varian lima kelas tanpa
+kelas trash.
+2. Arsitektur model dibatasi pada student ringan WasteNet (sekitar 128 ribu
+dan 256 ribu parameter), teacher assistant Focus-RCNet (Zheng dkk., 2023;
+sekitar 520 ribu parameter), dan teacher besar EfficientNet-B4.
+3. Metode distilasi dibatasi pada response-based knowledge distillation
+(berbasis soft target) dengan tiga jenis teacher, yaitu large-teacher,
+teacher-assistant, dan self-distillation (Born-Again Networks).
+4. Evaluasi performa model menggunakan metrik klasifikasi seperti
+accuracy, precision, recall, dan F1-score, serta uji statistik berupa paired
+t-test, uji Wilcoxon, dan uji McNemar.
+5. Seluruh eksperimen dijalankan menggunakan Kaggle sebagai workspace.
+1.3 Rumusan Masalah
+Berdasarkan latar belakang yang telah dipaparkan, rumusan masalah dalam
+penelitian ini adalah sebagai berikut:
+1. Bagaimana membangun model ringan WasteNet untuk klasifikasi citra
+sampah TrashNet menggunakan knowledge distillation?
+2. Bagaimana pengaruh kapasitas teacher, yaitu large-teacher (EfficientNet-
+B4), assistant (Focus-RCNet), dan self-distillation (Born-Again Networks),
+terhadap performa student WasteNet, dan jenis teacher manakah yang
+paling efektif?
+3. Bagaimana performa model yang dihasilkan jika dievaluasi secara statistik
+dibandingkan dengan baseline tanpa knowledge distillation?
+1.4 Tujuan Penelitian
+Sejalan dengan rumusan masalah tersebut, penelitian ini memiliki tujuan
+sebagai berikut:
+1. Membangun model ringan WasteNet untuk klasifikasi citra sampah
+TrashNet menggunakan knowledge distillation.
+2. Menganalisis pengaruh kapasitas teacher (large-teacher, assistant, dan self-
+distillation) terhadap performa student WasteNet serta menentukan jenis
+teacher yang paling efektif untuk student berkapasitas kecil.
+3. Mengevaluasi performa model yang dihasilkan secara statistik
+dibandingkan dengan baseline tanpa knowledge distillation.
+1.5 Manfaat Penelitian
+1.5.1 Manfaat Praktis
+1. Menghasilkan model klasifikasi citra sampah yang ringan dan efisien
+sehingga berpotensi diterapkan pada perangkat dengan sumber daya
+
+===== PAGE 10 =====
+4
+terbatas, seperti smart bin maupun perangkat embedded, untuk
+mendukung pemilahan sampah otomatis.
+2. Memberikan rekomendasi pemilihan strategi knowledge distillation
+yang sesuai dalam pengembangan model ringan untuk tugas
+klasifikasi citra.
+1.5.2 Manfaat Teoritis
+1. Memberikan kontribusi keilmuan mengenai pengaruh capacity gap
+antara teacher dan student dalam knowledge distillation, khususnya
+pada skema teacher-assistant.
+2. Menambah referensi akademik mengenai perbandingan large-
+teacher, teacher-assistant, dan self-distillation pada pengembangan
+model ringan untuk klasifikasi citra sampah.
+1.6 Kebaruan Penelitian
+Penelitian ini secara khusus dikembangkan dari Focus-RCNet (Zheng dkk.,
+2023), sebuah model klasifikasi sampah daur ulang yang ringan dengan knowledge
+distillation pada dataset TrashNet. Selain itu, penelitian ini juga berakar pada
+rangkaian studi mengenai knowledge distillation, mulai dari konsep awal oleh
+Hinton dkk. (2015), temuan Cho dan Hariharan (2019) mengenai capacity gap,
+skema teacher-assistant oleh Mirzadeh dkk. (2020), hingga self-distillation melalui
+Born-Again Networks oleh Furlanello dkk. (2018). Sebagian besar studi capacity
+gap tersebut diuji pada dataset berskala besar seperti CIFAR dan ImageNet dengan
+student berukuran sedang. Kebaruan penelitian ini terletak pada penggunaan ulang
+Focus-RCNet sebagai teacher-assistant sekaligus perbandingan terkontrol ketiga
+jenis teacher pada student ultra-ringan WasteNet untuk klasifikasi citra sampah
+TrashNet, yang masih jarang dikaji.
+Penelitian yang paling berkaitan dengan penelitian ini adalah Focus-RCNet
+yang dikembangkan oleh Zheng dkk. (2023), yaitu algoritma klasifikasi sampah
+daur ulang yang ringan berbasis modul Focus dan knowledge distillation. Model
+tersebut diuji pada dataset TrashNet dengan enam kelas dan mencapai akurasi
+sekitar 92% setelah proses distilasi menggunakan EfficientNet-B4 sebagai teacher.
+Meskipun sudah tergolong ringan, Focus-RCNet masih memiliki jumlah parameter
+yang jauh lebih besar dibandingkan student yang ditargetkan pada penelitian ini,
+dan belum membandingkan pengaruh kapasitas teacher yang berbeda terhadap
+performa student.
+Penelitian yang dilakukan oleh Hinton dkk. (2015) memperkenalkan konsep
+knowledge distillation, yaitu mentransfer pengetahuan dari teacher besar ke student
+kecil melalui soft target dengan parameter suhu (temperature). Pendekatan ini
+berhasil meningkatkan performa student, namun belum secara khusus membahas
+kondisi ketika selisih kapasitas antara teacher dan student sangat besar.
+Cho dan Hariharan (2019) menelaah keterbatasan knowledge distillation dan
+menemukan bahwa teacher yang terlalu besar tidak selalu menghasilkan student
+
+===== PAGE 11 =====
+5
+yang lebih baik akibat adanya capacity gap. Mereka menyarankan penghentian
+pelatihan teacher lebih awal (early stopping) untuk memperkecil selisih kapasitas,
+namun pengujian dilakukan pada dataset citra umum, bukan pada tugas klasifikasi
+sampah dengan student ultra-ringan.
+Mirzadeh dkk. (2020) mengusulkan teacher-assistant knowledge distillation
+(TA-KD) dengan menyisipkan model perantara berkapasitas menengah untuk
+menjembatani teacher besar dan student kecil. Skema ini terbukti efektif pada
+dataset CIFAR dan ImageNet, tetapi belum diterapkan secara luas pada model
+dengan parameter sangat kecil untuk klasifikasi citra sampah.
+Furlanello dkk. (2018) memperkenalkan Born-Again Networks (BAN), yaitu
+skema self-distillation dengan teacher berkapasitas sama dengan student dari
+generasi sebelumnya, yang mampu meningkatkan performa sekaligus berperan
+sebagai regularisasi. Namun, efektivitas BAN pada student yang sangat ringan dan
+pada dataset berskala kecil seperti TrashNet masih belum banyak dieksplorasi.
+Ringkasan penelitian-penelitian terdahulu yang telah diuraikan di atas
+disajikan pada Tabel 1.1 berikut.
+Tabel 1.1 Kebaruan Penelitian
+Fokus
+Peneliti Metode Dataset Kelemahan
+Utama
+Zheng dkk. Focus- TrashNet Klasifikasi Parameter masih
+(2023) RCNet (6 kelas) sampah relatif besar;
+(Focus + ringan, KD belum
+knowledge dari membandingkan
+distillation) EfficientNet kapasitas teacher
+-B4 (akurasi
+~92%)
+Hinton dkk. Knowledge MNIST, Transfer Belum membahas
+(2015) distillation speech dark capacity gap pada
+(soft target) recognitio knowledge student yang
+n dari teacher sangat kecil
+ke student
+Cho & Early- CIFAR- Mengatasi Tidak diuji pada
+Hariharan stopped KD 100, capacity model ultra-
+(2019) ImageNet gap dengan ringan untuk
+early klasifikasi
+stopping sampah
+Mirzadeh dkk. Teacher- CIFAR- Menjembata Belum diterapkan
+(2020) assistant 10/100, ni teacher pada student
+KD (TA- ImageNet besar dan berparameter
+KD) student sangat kecil untuk
+kecil citra sampah
+
+===== PAGE 12 =====
+6
+Furlanello dkk. Born-Again CIFAR- Self- Belum
+(2018) Networks 10/100, distillation dieksplorasi pada
+(self- Penn berkapasitas student ringan
+distillation) Treebank sama dan dan dataset kecil
+regularisasi seperti TrashNet
+Berangkat dari telaah penelitian sebelumnya, khususnya Focus-RCNet (Zheng
+dkk., 2023), penelitian ini mengusulkan klasifikasi citra sampah TrashNet
+menggunakan model ringan WasteNet melalui knowledge distillation dengan
+membandingkan tiga jenis teacher berdasarkan kapasitasnya, yaitu large-teacher
+(EfficientNet-B4), teacher-assistant (Focus-RCNet), dan self-distillation (Born-
+Again Networks), serta memvalidasi hasilnya menggunakan uji statistik pada dua
+ruang label (lima dan enam kelas). Pendekatan inilah yang membedakan penelitian
+ini dari studi-studi sebelumnya.
+
+===== PAGE 13 =====
+BAB 2
+KAJIAN PUSTAKA
+2.1 Tinjauan Pustaka
+Penelitian ini dikembangkan dari sejumlah penelitian terdahulu yang memiliki
+keterkaitan dengan metode, dataset, serta objek penelitian yang digunakan.
+Penelusuran literatur bertujuan untuk memahami posisi penelitian terhadap karya-
+karya sebelumnya sekaligus menetapkan batasan dan arah pengembangan yang
+dilakukan. Beberapa penelitian yang relevan dengan klasifikasi citra sampah dan
+knowledge distillation diuraikan sebagai berikut.
+Penelitian yang dilakukan oleh Thung dan Yang (2016) memperkenalkan
+dataset TrashNet sebagai tolok ukur untuk klasifikasi citra sampah yang dapat
+didaur ulang. Dataset tersebut terdiri atas 2.527 citra yang dikelompokkan ke dalam
+enam kelas, yaitu cardboard, glass, metal, paper, plastic, dan trash. Pada penelitian
+tersebut, Thung dan Yang membandingkan metode Support Vector Machine (SVM)
+dengan fitur SIFT dan Convolutional Neural Network (CNN), dan memperoleh
+akurasi terbaik sekitar 63% menggunakan SVM, sedangkan CNN belum optimal
+akibat keterbatasan data. Penelitian ini menjadi dasar bagi banyak studi klasifikasi
+sampah berikutnya, termasuk penelitian yang diusulkan, yang menggunakan
+dataset TrashNet sebagai data utama.
+Penelitian yang dilakukan oleh Zheng dkk. (2023) mengusulkan Focus-RCNet,
+yaitu model ringan untuk klasifikasi sampah daur ulang yang memadukan modul
+Focus dan knowledge distillation. Modul Focus digunakan untuk mereduksi
+dimensi spasial citra tanpa kehilangan informasi penting, sedangkan mekanisme
+atensi SimAM tanpa parameter ditambahkan untuk memperkuat representasi fitur.
+Model Focus-RCNet kemudian disempurnakan melalui knowledge distillation
+dengan guru EfficientNet-B4 untuk lebih memampatkan ukuran model; secara
+keseluruhan Focus-RCNet mencapai akurasi terbaik sekitar 92,2% pada dataset
+TrashNet. Penelitian tersebut menjadi rujukan utama penelitian ini, yang
+mereimplementasikan Focus-RCNet sebagai model asisten (teacher assistant)
+sekaligus memanfaatkan EfficientNet-B4 sebagai guru besar.
+Penelitian yang dilakukan oleh Hinton dkk. (2015) memperkenalkan konsep
+knowledge distillation sebagai teknik kompresi model dengan cara melatih model
+student berukuran kecil untuk menirukan distribusi probabilitas keluaran (soft
+label) model guru yang lebih besar. Distribusi soft label yang dihaluskan
+menggunakan parameter suhu (temperature) membawa dark knowledge, yaitu
+informasi kemiripan antarkelas yang tidak terdapat pada label keras. Hinton dkk.
+menunjukkan bahwa student yang dilatih dengan soft label dapat memperoleh
+performa yang mendekati guru meskipun memiliki kapasitas yang jauh lebih kecil.
+Konsep ini menjadi landasan teoretis bagi seluruh strategi distilasi yang
+dibandingkan pada penelitian ini.
+7
+
+===== PAGE 14 =====
+8
+Penelitian yang dilakukan oleh Cho dan Hariharan (2019) mengkaji efektivitas
+knowledge distillation secara empiris dan menemukan bahwa guru berkapasitas
+sangat besar tidak selalu menghasilkan student yang lebih baik. Mereka
+mengidentifikasi adanya capacity gap, yaitu selisih kapasitas yang terlalu besar
+antara guru dan student yang justru menghambat transfer pengetahuan. Sebagai
+solusi, Cho dan Hariharan menyarankan penghentian dini pelatihan guru atau
+penggunaan guru dengan kapasitas yang lebih sepadan. Temuan ini menjadi
+motivasi utama penelitian ini dalam membandingkan beberapa jenis guru pada
+kurva capacity gap.
+Penelitian yang dilakukan oleh Mirzadeh dkk. (2020) mengusulkan teacher-
+assistant knowledge distillation (TA-KD) untuk mengatasi permasalahan capacity
+gap. Pendekatan ini menyisipkan satu model perantara berkapasitas menengah
+(teacher assistant) yang menjembatani selisih kapasitas antara guru besar dan
+student. Hasil eksperimen pada beberapa dataset menunjukkan bahwa distilasi
+bertahap melalui asisten menghasilkan student yang lebih akurat dibandingkan
+distilasi langsung dari guru besar. Pendekatan TA-KD ini menjadi metode inti pada
+penelitian yang diusulkan, dengan Focus-RCNet berperan sebagai asisten.
+Penelitian yang dilakukan oleh Furlanello dkk. (2018) memperkenalkan Born-
+Again Networks (BAN), yaitu bentuk self-distillation yang menggunakan guru
+dengan arsitektur dan kapasitas yang sama dengan student. Pada pendekatan ini,
+model dilatih secara berurutan antargenerasi, dengan model generasi sebelumnya
+bertindak sebagai guru bagi generasi berikutnya. Furlanello dkk. menunjukkan
+bahwa student hasil distilasi dapat menyamai bahkan melampaui performa gurunya
+meskipun memiliki kapasitas yang identik. Pendekatan BAN ini digunakan pada
+penelitian ini sebagai titik ujung kurva capacity gap, yaitu kondisi saat kapasitas
+guru sama dengan student. Ringkasan penelitian terdahulu disajikan pada Tabel 2.1.
+Tabel 2.1 Ringkasan Penelitian Terdahulu
+No Penulis (Tahun) Metode/Dataset Fokus Utama
+Memperkenalkan dataset
+SVM, CNN /
+1 Thung & Yang (2016) TrashNet sebagai tolok ukur
+TrashNet
+klasifikasi sampah
+Model ringan dengan modul
+Focus-RCNet +
+2 Zheng dkk. (2023) Focus, SimAM, dan distilasi
+KD / TrashNet
+(akurasi ±92,2%)
+Memperkenalkan distilasi
+Knowledge
+3 Hinton dkk. (2015) pengetahuan melalui soft label
+Distillation
+dan temperature
+Cho & Hariharan Mengidentifikasi capacity gap
+4 Analisis KD
+(2019) antara guru dan student
+Menyisipkan asisten menengah
+5 Mirzadeh dkk. (2020) TA-KD
+untuk menjembatani capacity gap
+Born-Again Self-distillation dengan guru
+6 Furlanello dkk. (2018)
+Networks berkapasitas sama
+
+===== PAGE 15 =====
+9
+Berdasarkan penelitian-penelitian tersebut, terlihat bahwa knowledge
+distillation telah terbukti efektif untuk mengompresi model, namun pengaruh jenis
+dan kapasitas guru terhadap keberhasilan distilasi pada model sangat ringan untuk
+klasifikasi citra sampah belum dikaji secara menyeluruh dalam satu kerangka
+eksperimen. Penelitian ini mengisi celah tersebut dengan membandingkan tiga jenis
+guru, yaitu guru besar, asisten menengah, dan guru berkapasitas sama, di sepanjang
+kurva capacity gap pada model ringan WasteNet.
+2.2 Landasan Teori
+2.2.1 Klasifikasi Citra Sampah
+Klasifikasi citra sampah merupakan proses pengelompokan citra sampah ke
+dalam kategori jenis material tertentu secara otomatis menggunakan model
+komputasi. Pemilahan sampah berdasarkan jenis materialnya merupakan langkah
+penting dalam proses daur ulang, karena material yang tercampur dapat
+menurunkan kualitas hasil daur ulang dan menyulitkan proses pengolahan (Thung
+& Yang, 2016). Secara konvensional, pemilahan sampah dilakukan secara manual
+oleh manusia, yang membutuhkan waktu, tenaga, serta berisiko terhadap kesehatan
+pekerja. Oleh karena itu, sistem klasifikasi citra sampah otomatis berbasis visi
+komputer menjadi solusi yang menjanjikan untuk meningkatkan efisiensi dan
+akurasi pemilahan sampah.
+Dalam beberapa tahun terakhir, pendekatan berbasis deep learning menjadi
+metode dominan dalam klasifikasi citra sampah karena kemampuannya
+mempelajari fitur visual secara otomatis dari data citra (Zheng dkk., 2023). Model
+klasifikasi dilatih untuk mengenali pola visual yang membedakan jenis material,
+seperti tekstur kertas, transparansi kaca, atau kilau logam. Meskipun demikian,
+penerapan model deep learning pada perangkat dengan keterbatasan komputasi,
+seperti perangkat tepi (edge device), masih menghadapi tantangan akibat besarnya
+ukuran dan kebutuhan komputasi model. Hal inilah yang mendorong
+pengembangan model ringan yang tetap akurat melalui teknik kompresi seperti
+knowledge distillation.
+2.2.2 Deep Learning
+Deep learning merupakan cabang pembelajaran mesin yang menggunakan
+jaringan saraf tiruan dengan banyak lapisan tersembunyi untuk mempelajari
+representasi data secara hierarkis (LeCun dkk., 2015). Arsitektur deep learning
+tersusun atas lapisan masukan, beberapa lapisan tersembunyi, dan lapisan keluaran
+yang saling terhubung melalui bobot dan fungsi aktivasi nonlinier (Goodfellow
+dkk., 2016). Penambahan lapisan tersembunyi memungkinkan model
+mengekstraksi fitur dari tingkat rendah hingga tingkat abstrak secara bertahap dari
+data masukan (Schmidhuber, 2015). Struktur berlapis inilah yang membedakan
+deep learning dari jaringan saraf dangkal serta menjadikannya unggul dalam
+menangani data berdimensi tinggi seperti citra.
+
+===== PAGE 16 =====
+10
+Pada tahap pelatihan, deep learning memperbarui bobot jaringan melalui
+mekanisme propagasi balik (backpropagation) dengan meminimalkan fungsi
+kerugian (loss function) yang mengukur kesalahan prediksi model (Goodfellow
+dkk., 2016). Keberhasilan deep learning dalam tugas pengenalan citra berskala
+besar mulai menonjol sejak diperkenalkannya arsitektur AlexNet pada kompetisi
+ImageNet (Krizhevsky dkk., 2012). Sejak saat itu, berbagai arsitektur deep
+learning, khususnya Convolutional Neural Network, berkembang pesat dan
+menjadi standar dalam tugas klasifikasi citra. Kemampuan mempelajari fitur secara
+otomatis tanpa rekayasa fitur manual menjadikan deep learning sangat relevan
+untuk klasifikasi citra sampah.
+2.2.3 Convolutional Neural Network (CNN)
+Convolutional Neural Network (CNN) merupakan arsitektur deep learning
+yang dirancang khusus untuk memproses data citra dengan memanfaatkan struktur
+spasialnya (O’Shea & Nash, 2015). CNN bekerja dengan menerapkan operasi
+konvolusi menggunakan kernel pada citra masukan untuk mengekstraksi fitur lokal,
+seperti tepi dan pola sederhana (LeCun dkk., 1998). Proses konvolusi
+memungkinkan jaringan mempelajari representasi fitur secara bertahap dari tingkat
+rendah hingga tingkat yang lebih abstrak (Goodfellow dkk., 2016). Pendekatan ini
+menjadikan CNN lebih efisien dibandingkan jaringan saraf fully connected dalam
+menangani data citra berdimensi tinggi (Krizhevsky dkk., 2012).
+Arsitektur CNN umumnya tersusun atas beberapa lapisan utama, yaitu
+convolutional layer, fungsi aktivasi, pooling layer, dan fully connected layer,
+sebagaimana ditunjukkan pada Gambar 2.1.
+Gambar 2.1 Arsitektur Dasar Convolutional Neural Network
+Convolutional layer berfungsi mengekstraksi fitur spasial dari citra masukan
+melalui operasi konvolusi dengan ukuran kernel tertentu (LeCun dkk., 1998).
+Fungsi aktivasi, seperti Rectified Linear Unit (ReLU), digunakan untuk
+memperkenalkan nonlinieritas sehingga jaringan mampu mempelajari pola yang
+lebih kompleks (Nair & Hinton, 2010). Pooling layer, seperti max pooling,
+mereduksi dimensi feature map sekaligus mempertahankan informasi penting,
+sehingga meningkatkan efisiensi komputasi dan ketahanan terhadap variasi posisi
+objek (Goodfellow dkk., 2016). Setelah ekstraksi fitur, fully connected layer
+
+===== PAGE 17 =====
+11
+menggabungkan fitur yang telah dipelajari untuk menghasilkan keluaran berupa
+prediksi kelas (O’Shea & Nash, 2015).
+2.2.4 Transfer Learning
+Transfer learning merupakan pendekatan pembelajaran mesin yang
+memanfaatkan pengetahuan dari model yang telah dilatih pada dataset berskala
+besar untuk diterapkan pada tugas atau domain yang berbeda namun masih
+berkaitan (Pan & Yang, 2010). Pendekatan ini banyak digunakan pada deep
+learning karena pelatihan jaringan dari awal membutuhkan data dalam jumlah besar
+serta sumber daya komputasi yang tinggi (Goodfellow dkk., 2016). Dengan
+memanfaatkan model pralatih (pretrained model), proses pelatihan dapat dipercepat
+dan performa model dapat ditingkatkan, khususnya ketika data pelatihan terbatas.
+Oleh karena itu, transfer learning menjadi strategi yang umum diterapkan dalam
+berbagai aplikasi visi komputer modern.
+Dalam visi komputer, transfer learning umumnya diterapkan menggunakan
+model pralatih yang dilatih pada dataset ImageNet yang terdiri atas lebih dari satu
+juta citra dengan ribuan kelas objek (Russakovsky dkk., 2015). Lapisan awal model
+pralatih telah mempelajari representasi fitur umum, seperti tepi, sudut, dan tekstur,
+yang dapat ditransfer ke berbagai tugas klasifikasi citra lainnya. Pada penelitian ini,
+model guru EfficientNet-B4 memanfaatkan bobot pralatih ImageNet agar mampu
+menghasilkan representasi fitur yang kaya meskipun jumlah data TrashNet relatif
+terbatas (Tan & Le, 2019). Pengetahuan dari guru pralatih inilah yang kemudian
+ditransfer ke model student ringan melalui mekanisme knowledge distillation.
+2.2.5 Arsitektur Model
+Penelitian ini melibatkan tiga peran model dengan kapasitas yang berbeda
+dalam skema knowledge distillation, yaitu guru besar, asisten menengah, dan
+student ringan. Ketiga model tersebut digunakan untuk menguji pengaruh kapasitas
+guru terhadap keberhasilan transfer pengetahuan ke model student. Penjelasan
+masing-masing arsitektur diuraikan sebagai berikut.
+Model guru besar yang digunakan adalah EfficientNet-B4, yaitu arsitektur
+CNN yang dikembangkan dengan pendekatan compound scaling yang
+menyeimbangkan kedalaman, lebar, dan resolusi jaringan secara proporsional (Tan
+& Le, 2019). EfficientNet-B4 memiliki sekitar 17,6 juta parameter dan dilatih
+menggunakan bobot pralatih ImageNet, sehingga mampu menghasilkan
+representasi fitur dengan performa tertinggi sekaligus menjadi batas atas kinerja
+pada penelitian ini. Kapasitasnya yang besar menjadikannya sumber pengetahuan
+pada skema distilasi langsung dari guru besar, sekaligus menjadi titik berkapasitas
+terbesar pada kurva capacity gap yang dibandingkan dalam penelitian ini.
+Model asisten yang digunakan adalah Focus-RCNet, yaitu model ringan
+berkapasitas menengah dengan sekitar 520 ribu parameter yang
+
+===== PAGE 18 =====
+12
+direimplementasikan dari penelitian Zheng dkk. (2023). Focus-RCNet memadukan
+modul Focus untuk mereduksi dimensi spasial citra secara efisien dengan
+mekanisme atensi SimAM tanpa parameter untuk memperkuat representasi fitur.
+Dalam penelitian ini, Focus-RCNet berperan sebagai guru perantara (teacher
+assistant) yang menjembatani selisih kapasitas antara guru besar dan student ringan,
+sesuai dengan pendekatan TA-KD.
+Model student yang menjadi sasaran akhir penelitian ini adalah WasteNet, yaitu
+model CNN ringan yang dirancang khusus untuk klasifikasi citra sampah pada
+perangkat dengan keterbatasan komputasi. WasteNet diimplementasikan dalam dua
+varian kapasitas, yaitu WasteNet-128K dengan sekitar 128 ribu parameter dan
+WasteNet-256K dengan sekitar 256 ribu parameter, untuk menganalisis pengaruh
+kapasitas student terhadap efektivitas distilasi. Ukurannya yang sangat kecil
+menjadikan WasteNet efisien untuk diterapkan secara nyata, namun sekaligus
+menuntut strategi pelatihan yang tepat agar tetap memperoleh akurasi yang
+memadai.
+2.2.6 Knowledge Distillation
+Knowledge distillation merupakan teknik kompresi model yang melatih model
+student berukuran kecil untuk menirukan keluaran model guru yang lebih besar
+(Hinton dkk., 2015). Selain mempelajari label sebenarnya melalui hard label,
+student juga mempelajari distribusi probabilitas keluaran guru (soft label) yang
+dihaluskan menggunakan parameter suhu (temperature). Distribusi soft label
+tersebut membawa dark knowledge, yaitu informasi kemiripan antarkelas yang
+tidak terdapat pada hard label. Skema umum proses knowledge distillation dari
+guru ke student ditunjukkan pada Gambar 2.2.
+Gambar 2.2 Skema Knowledge Distillation
+Distribusi soft label diperoleh dengan menghaluskan keluaran lapisan akhir
+(logit) menggunakan fungsi softmax yang dimodifikasi dengan parameter suhu T,
+sebagaimana dirumuskan pada Persamaan (2.1). Semakin besar nilai T, semakin
+
+===== PAGE 19 =====
+13
+halus distribusi probabilitas yang dihasilkan, sehingga informasi kemiripan
+antarkelas menjadi lebih menonjol (Hinton dkk., 2015).
+𝑧
+𝑒𝑥𝑝 ( 𝑖)
+𝑇
+𝑞 = (2.1)
+𝑖 𝑧
+∑ 𝑒𝑥𝑝 ( 𝑗 )
+𝑗 𝑇
+dengan q merupakan probabilitas kelas ke-i hasil pelunakan, z dan z adalah
+i i j
+nilai *logit* untuk kelas ke-i dan ke-j, serta T adalah parameter suhu (temperature)
+yang mengontrol tingkat pelunakan distribusi (Hinton dkk., 2015).
+Fungsi kerugian total pada knowledge distillation merupakan kombinasi
+berbobot antara cross-entropy terhadap label sebenarnya dan divergensi Kullback-
+Leibler terhadap soft label guru, dengan koefisien pembobotan alfa, sebagaimana
+ditunjukkan pada Persamaan (2.2).
+𝐿 = (1 − 𝛼)𝐿 + 𝛼𝑇2𝐷 (𝑝 ∥ 𝑝 ) (2.2)
+𝐾𝐷 𝐶𝐸 𝐾𝐿 𝑡 𝑠
+dengan L merupakan fungsi kerugian total knowledge distillation, L adalah
+KD CE
+fungsi cross-entropy terhadap label sebenarnya, D adalah divergensi Kullback-
+KL
+Leibler terhadap soft label guru, α adalah koefisien pembobotan (0 ≤ α ≤ 1), T
+adalah parameter suhu, serta p dan p merupakan distribusi probabilitas keluaran
+t s
+guru dan student (Hinton dkk., 2015).
+2.2.7 Teacher-Assistant Knowledge Distillation
+Teacher-assistant knowledge distillation (TA-KD) merupakan pengembangan
+dari knowledge distillation yang dirancang untuk mengatasi permasalahan capacity
+gap antara guru dan student (Mirzadeh dkk., 2020). Capacity gap terjadi ketika
+selisih kapasitas antara guru besar dan student terlalu jauh, sehingga student
+kesulitan menirukan keluaran guru dan transfer pengetahuan menjadi tidak optimal
+(Cho & Hariharan, 2019). Untuk mengatasinya, TA-KD menyisipkan satu atau
+lebih model perantara berkapasitas menengah yang disebut asisten (teacher
+assistant) di antara guru dan student. Dalam skema aslinya, distilasi dilakukan
+secara bertahap, yaitu dari guru besar ke asisten, kemudian dari asisten ke student.
+Dengan adanya asisten berkapasitas menengah, selisih kapasitas pada setiap
+tahap distilasi menjadi lebih kecil, sehingga pengetahuan dapat ditransfer secara
+lebih efektif (Mirzadeh dkk., 2020). Pada penelitian ini, Focus-RCNet berkapasitas
+menengah dilatih secara mandiri dengan label keras dan berperan sebagai guru
+langsung bagi student WasteNet. Posisi ketiga strategi distilasi yang dibandingkan,
+yaitu distilasi langsung dari guru besar, distilasi melalui asisten menengah, dan self-
+distillation dengan guru berkapasitas sama, di sepanjang kurva capacity gap
+diilustrasikan pada Gambar 2.3.
+
+===== PAGE 20 =====
+14
+Gambar 2.3 Strategi Distilasi pada Kurva Capacity Gap
+2.2.8 Self-Distillation (Born-Again Networks)
+Self-distillation merupakan varian knowledge distillation yang menggunakan
+model dengan arsitektur dan kapasitas yang sama sebagai guru bagi dirinya sendiri
+(Furlanello dkk., 2018). Pendekatan Born-Again Networks (BAN) menerapkan
+distilasi secara berurutan antargenerasi, yaitu model generasi pertama dilatih secara
+konvensional, kemudian menjadi guru bagi model generasi kedua yang memiliki
+arsitektur identik, dan seterusnya. Meskipun guru dan student memiliki kapasitas
+yang sama, soft label dari guru tetap membawa informasi tambahan yang
+membantu student mencapai performa yang setara atau bahkan lebih baik.
+Furlanello dkk. (2018) menunjukkan bahwa efek self-distillation sebagian
+besar berasal dari fungsi regularisasi soft label yang menghaluskan target pelatihan
+dan mengurangi overfitting. Pada penelitian ini, pendekatan BAN ditempatkan
+sebagai titik ujung kurva capacity gap, yaitu kondisi saat kapasitas guru sama
+dengan student, dengan WasteNet generasi sebelumnya bertindak sebagai guru bagi
+WasteNet generasi berikutnya. Perbandingan BAN terhadap distilasi dari guru besar
+dan asisten menengah memungkinkan analisis menyeluruh mengenai pengaruh
+kapasitas guru terhadap efektivitas distilasi.
+2.2.9 Preprocessing Citra
+Preprocessing citra merupakan tahap penyiapan data citra sebelum digunakan
+pada pelatihan dan pengujian model deep learning (Gonzalez & Woods, 2018).
+Tahap ini bertujuan menyeragamkan karakteristik citra serta memastikan
+kesesuaian format masukan dengan kebutuhan arsitektur jaringan. Pada klasifikasi
+citra sampah, preprocessing umumnya meliputi konversi kanal warna ke format
+RGB dan penyesuaian ukuran citra (resizing) agar seragam, karena model CNN
+hanya menerima masukan dengan dimensi tertentu (Krizhevsky dkk., 2012).
+
+===== PAGE 21 =====
+15
+Penyeragaman ukuran citra juga membantu mengurangi beban komputasi tanpa
+menghilangkan pola visual utama yang dibutuhkan untuk klasifikasi.
+Tahap preprocessing berikutnya adalah normalisasi nilai piksel untuk
+menyamakan skala intensitas citra serta mempercepat dan menstabilkan proses
+konvergensi pelatihan (Goodfellow dkk., 2016). Normalisasi umumnya dilakukan
+dengan menyesuaikan distribusi nilai piksel menggunakan nilai rata-rata dan
+simpangan baku, sebagaimana dirumuskan pada Persamaan (2.3).
+𝑥 − 𝜇
+𝑥′ = (2.3)
+𝜎
+dengan x′ merupakan nilai piksel hasil normalisasi, x adalah nilai piksel asli, μ
+adalah nilai rata-rata, dan σ adalah simpangan baku (Gonzalez & Woods, 2018).
+Pada penelitian ini, nilai rata-rata dan simpangan baku yang digunakan mengikuti
+statistik dataset ImageNet agar konsisten dengan bobot pralatih model guru.
+2.2.10 Data Augmentation
+Data augmentation merupakan teknik untuk meningkatkan jumlah dan variasi
+data pelatihan dengan menerapkan transformasi tertentu pada data yang sudah ada
+tanpa mengubah labelnya (Shorten & Khoshgoftaar, 2019). Teknik ini penting
+dalam deep learning karena performa model sangat dipengaruhi oleh keragaman
+data pelatihan (Goodfellow dkk., 2016). Pada dataset dengan jumlah citra terbatas
+seperti TrashNet, data augmentation membantu model mempelajari representasi
+fitur yang lebih robust serta mengurangi risiko overfitting (Perez & Wang, 2017).
+Augmentasi umumnya diterapkan hanya pada data latih, sehingga data validasi dan
+data uji tetap merepresentasikan kondisi citra asli.
+Berbagai teknik data augmentation yang umum digunakan pada klasifikasi
+citra antara lain pencerminan (flip), penyesuaian kecerahan dan kontras, serta
+penghapusan sebagian wilayah citra secara acak (coarse dropout) (Buslaev dkk.,
+2020). Transformasi tersebut bertujuan mensimulasikan variasi kondisi nyata saat
+pengambilan citra, seperti perbedaan orientasi objek dan pencahayaan. Contoh
+penerapan beberapa teknik data augmentation pada sebuah citra ditunjukkan pada
+Gambar 2.4.
+Gambar 2.4 Ilustrasi Teknik Data Augmentation
+2.2.11 Dataset TrashNet
+Dataset TrashNet merupakan dataset publik citra sampah yang diperkenalkan
+oleh Thung dan Yang (2016) dari Universitas Stanford dan telah banyak digunakan
+sebagai tolok ukur dalam penelitian klasifikasi sampah. Dataset ini berisi 2.527 citra
+
+===== PAGE 22 =====
+16
+yang telah dilabeli dan diklasifikasikan ke dalam enam kelas, yaitu cardboard
+(kardus), glass (kaca), metal (logam), paper (kertas), plastic (plastik), dan trash
+(sampah lain). Setiap citra diambil dengan latar belakang putih dan pencahayaan
+yang dikontrol, sehingga memberikan kondisi yang representatif untuk tugas
+klasifikasi citra sampah. Dataset bersifat open-access dan tersedia dalam varian
+dataset-resized yang telah diseragamkan ukurannya.
+Distribusi jumlah citra pada setiap kelas dataset TrashNet tidak sepenuhnya
+seimbang, sebagaimana ditunjukkan pada Gambar 2.5. Kelas paper memiliki
+jumlah citra terbanyak, sedangkan kelas trash memiliki jumlah citra paling sedikit
+karena bersifat heterogen sebagai kategori penampung.
+Gambar 2.5 Distribusi Jumlah Citra per Kelas pada Dataset TrashNet
+(Thung & Yang, 2016)
+Karena karakteristiknya yang heterogen dan jumlahnya yang jauh lebih sedikit,
+kelas trash berpotensi menyulitkan proses klasifikasi. Oleh karena itu, penelitian
+ini menggunakan dua skema label, yaitu skema enam kelas (K6) yang
+mempertahankan seluruh kelas dan skema lima kelas (K5) yang menghilangkan
+kelas trash. Penggunaan kedua skema ini bertujuan untuk menganalisis pengaruh
+keberadaan kelas penampung terhadap performa dan efektivitas distilasi pada
+model ringan WasteNet.
+2.2.12 Evaluasi Model Klasifikasi
+Evaluasi model merupakan tahap penting untuk mengukur kinerja sistem
+klasifikasi citra sampah secara objektif. Evaluasi tidak hanya bertujuan mengetahui
+ketepatan prediksi model, tetapi juga menilai kemampuan model membedakan
+setiap kelas secara seimbang, terutama pada dataset dengan distribusi kelas yang
+tidak seimbang (Sokolova & Lapalme, 2009). Oleh karena itu, evaluasi pada
+penelitian ini dilakukan menggunakan beberapa metrik klasifikasi yang umum
+digunakan, yaitu confusion matrix, accuracy, precision, recall, dan F1-score
+(Powers, 2011).
+
+===== PAGE 23 =====
+17
+2.2.14.1 Confusion Matrix
+Confusion matrix merupakan tabel evaluasi yang menggambarkan
+perbandingan antara label aktual dan label hasil prediksi model, sehingga
+memberikan informasi rinci mengenai jumlah prediksi benar dan salah pada setiap
+kelas (Sokolova & Lapalme, 2009). Karena penelitian ini bersifat multikelas,
+evaluasi dilakukan secara one-vs-rest dengan empat komponen utama untuk setiap
+kelas, yaitu:
+• True Positive (TP): jumlah citra suatu kelas yang diprediksi benar
+sebagai kelas tersebut;
+• True Negative (TN): jumlah citra bukan kelas tersebut yang diprediksi
+benar sebagai bukan kelas tersebut;
+• False Positive (FP): jumlah citra bukan kelas tersebut yang keliru
+diprediksi sebagai kelas tersebut;
+• False Negative (FN): jumlah citra suatu kelas yang keliru diprediksi
+sebagai kelas lain.
+Confusion matrix menjadi dasar dalam perhitungan metrik evaluasi lainnya dan
+penting untuk memahami jenis kesalahan yang dilakukan model (Chicco & Jurman,
+2020).
+2.2.14.2 Accuracy
+Accuracy mengukur proporsi prediksi yang benar terhadap keseluruhan data
+uji dan sering digunakan sebagai indikator awal performa model klasifikasi
+(Powers, 2011). Nilai accuracy dihitung menggunakan Persamaan (2.4).
+𝑇𝑃 + 𝑇𝑁
+𝐴𝑐𝑐𝑢𝑟𝑎𝑐𝑦 = (2.4)
+𝑇𝑃 + 𝑇𝑁 + 𝐹𝑃 + 𝐹𝑁
+Meskipun mudah dipahami, accuracy sebaiknya tidak digunakan sebagai satu-
+satunya indikator pada dataset dengan distribusi kelas tidak seimbang, karena dapat
+memberikan gambaran yang menyesatkan (Sokolova & Lapalme, 2009).
+2.2.14.3 Precision
+Precision menunjukkan tingkat ketepatan model dalam memprediksi suatu
+kelas dengan membandingkan jumlah prediksi benar terhadap seluruh prediksi
+positif yang dihasilkan model untuk kelas tersebut (Powers, 2011). Nilai precision
+yang tinggi menandakan rendahnya kesalahan false positive. Nilai precision
+dihitung menggunakan Persamaan (2.5).
+𝑇𝑃
+𝑃𝑟𝑒𝑐𝑖𝑠𝑖𝑜𝑛 = (2.5)
+𝑇𝑃 + 𝐹𝑃
+2.2.14.4 Recall
+Recall atau sensitivitas mengukur kemampuan model dalam mendeteksi
+seluruh citra yang sebenarnya termasuk dalam suatu kelas (Sokolova & Lapalme,
+2009). Nilai recall yang tinggi menandakan rendahnya kesalahan false negative.
+Nilai recall dihitung menggunakan Persamaan (2.6).
+
+===== PAGE 24 =====
+18
+𝑇𝑃
+𝑅𝑒𝑐𝑎𝑙𝑙 = (2.6)
+𝑇𝑃 + 𝐹𝑁
+2.2.14.5 F1-Score
+F1-score merupakan metrik yang menggabungkan precision dan recall dalam
+satu nilai rata-rata harmonis, sehingga memberikan keseimbangan antara ketepatan
+prediksi dan kemampuan deteksi (Powers, 2011). Metrik ini sangat sesuai untuk
+dataset dengan distribusi kelas tidak seimbang karena mempertimbangkan false
+positive dan false negative secara bersamaan (Chicco & Jurman, 2020). Nilai F1-
+score dihitung menggunakan Persamaan (2.7).
+𝑃𝑟𝑒𝑐𝑖𝑠𝑖𝑜𝑛 × 𝑅𝑒𝑐𝑎𝑙𝑙
+𝐹1 − 𝑆𝑐𝑜𝑟𝑒 = 2 × (2.7)
+𝑃𝑟𝑒𝑐𝑖𝑠𝑖𝑜𝑛 + 𝑅𝑒𝑐𝑎𝑙𝑙
+Karena penelitian ini melibatkan klasifikasi multikelas, metrik utama yang
+digunakan adalah accuracy dan macro F1-score, yaitu rata-rata F1-score seluruh
+kelas yang memberi bobot setara pada setiap kelas tanpa mempertimbangkan
+jumlah sampelnya. Penggunaan macro F1-score bertujuan memberikan gambaran
+performa yang adil terhadap kelas dengan jumlah sampel lebih sedikit, seperti kelas
+trash.
+2.2.13 Uji Statistik
+Uji statistik digunakan untuk memastikan bahwa perbedaan performa
+antarskenario distilasi tidak terjadi secara kebetulan, melainkan benar-benar
+signifikan secara statistik (Dietterich, 1998). Dalam membandingkan dua model
+klasifikasi, diperlukan uji yang sesuai dengan sifat data hasil eksperimen agar
+kesimpulan yang ditarik dapat dipertanggungjawabkan. Penelitian ini
+menggunakan kombinasi beberapa uji statistik yang saling melengkapi, baik pada
+tingkat antar-seed maupun pada tingkat sampel uji (Demšar, 2006).
+Pada tingkat antar-seed, digunakan paired t-test dan Wilcoxon signed-rank test
+yang membandingkan akurasi lima seed pada dua skenario yang identik kecuali
+pada satu faktor yang diuji. Paired t-test mengasumsikan distribusi normal pada
+selisih kedua skenario, sedangkan Wilcoxon signed-rank test merupakan uji
+nonparametrik yang tidak bergantung pada asumsi tersebut sehingga lebih robust
+terhadap jumlah sampel yang kecil (Demšar, 2006). Penggunaan kedua uji secara
+bersamaan bertujuan memperkuat keabsahan kesimpulan.
+Pada tingkat sampel uji, digunakan McNemar test dengan koreksi kontinuitas
+yang membandingkan pola benar-salah dua model pada data uji yang sama
+(Dietterich, 1998). Uji ini berfokus pada sampel-sampel yang diklasifikasikan
+berbeda oleh kedua model, sehingga sesuai untuk membandingkan dua
+pengklasifikasi pada satu himpunan data uji. Tingkat signifikansi yang digunakan
+pada seluruh pengujian adalah 0,05, dan suatu strategi distilasi dinyatakan unggul
+hanya apabila keunggulannya konsisten pada berbagai uji yang diterapkan.
+
+===== PAGE 25 =====
+BAB 3
+METODE PENELITIAN
+3.1 Pendekatan, Jenis, dan Prosedur Penelitian
+Bab ini menjelaskan metodologi penelitian yang digunakan dalam
+pengembangan model ringan untuk klasifikasi citra sampah berbasis knowledge
+distillation. Metodologi penelitian disusun secara sistematis untuk memastikan
+bahwa proses penelitian dapat dilakukan secara terstruktur, terukur, dan dapat
+dipertanggungjawabkan secara ilmiah. Pembahasan pada bab ini mencakup
+pendekatan penelitian, jenis penelitian, serta prosedur penelitian yang digunakan
+dari tahap awal hingga evaluasi model. Metodologi yang tepat sangat penting untuk
+mendukung pencapaian tujuan penelitian yang telah dirumuskan pada Bab I.
+3.1.1 Pendekatan Penelitian
+Pendekatan penelitian merupakan kerangka metodologis yang mendasari
+pelaksanaan suatu studi ilmiah, mencakup pola pikir, strategi, serta prosedur yang
+diterapkan mulai dari perumusan masalah hingga penarikan kesimpulan (Sugiyono,
+2015). Pendekatan ini berperan penting dalam menentukan cara data dikumpulkan,
+diolah, dianalisis, dan diinterpretasikan untuk menjawab tujuan penelitian.
+Penelitian ini menggunakan pendekatan kuantitatif, karena data yang dianalisis
+berupa citra sampah yang direpresentasikan dalam bentuk nilai numerik dan
+dievaluasi menggunakan metrik statistik yang terukur.
+Pendekatan kuantitatif dipilih karena penelitian ini menggunakan angka dan
+statistik untuk mengumpulkan data yang presisi dan terukur, di mana metode
+kuantitatif memungkinkan pengukuran variabel secara sistematis dan pengujian
+hipotesis (Sugiyono, 2015). Penelitian ini berfokus pada pengukuran performa
+model deep learning dalam melakukan klasifikasi citra secara objektif. Citra
+sampah diolah melalui proses komputasi untuk menghasilkan keluaran berupa
+prediksi kelas, yang selanjutnya dievaluasi menggunakan metrik seperti accuracy,
+precision, recall, dan F1-score, serta diperkuat dengan uji signifikansi statistik
+untuk membandingkan antarskenario. Penggunaan pendekatan kuantitatif pada
+penelitian berbasis deep learning telah banyak diterapkan dan terbukti efektif dalam
+analisis citra (Goodfellow dkk., 2016).
+3.1.2 Jenis Penelitian
+Jenis penelitian yang digunakan dalam penelitian ini adalah penelitian
+eksperimental yang bersifat komparatif. Penelitian eksperimental dilakukan dengan
+cara membangun, melatih, dan menguji model deep learning untuk
+mengklasifikasikan citra sampah berdasarkan kelas yang telah ditentukan. Jenis
+penelitian ini dipilih karena memberikan keleluasaan bagi peneliti untuk
+mengevaluasi pengaruh berbagai strategi knowledge distillation serta jenis guru
+terhadap kinerja model student yang ringan.
+19
+
+===== PAGE 26 =====
+Melalui pendekatan eksperimental, penelitian ini membandingkan beberapa
+strategi distilasi secara head-to-head, yaitu direct knowledge distillation dari guru
+besar, teacher-assistant knowledge distillation dari guru menengah, serta self-
+distillation dengan guru berkapasitas sama. Seluruh skenario dilatih dan dievaluasi
+menggunakan dataset, protokol pembagian data, dan konfigurasi pelatihan yang
+identik, sehingga perbedaan performa yang diperoleh benar-benar disebabkan oleh
+perbedaan strategi distilasi yang diuji, bukan oleh faktor lain.
+3.1.3 Prosedur Penelitian
+Prosedur penelitian ini dirancang secara sistematis untuk menghasilkan model
+student ringan dengan kinerja optimal sesuai dengan tujuan penelitian. Tahapan
+penelitian diawali dengan studi literatur, dilanjutkan dengan perumusan masalah,
+pengumpulan dan pengelolaan data, perancangan dan pelatihan model, evaluasi
+serta analisis hasil, dan diakhiri dengan penarikan kesimpulan. Seluruh rangkaian
+prosedur penelitian disajikan secara ringkas dalam bentuk diagram alir pada
+Gambar 3.1.
+Gambar 3.1 Diagram Alir Prosedur Penelitian
+3.1.3.1 Studi Literatur
+Studi literatur merupakan tahap awal penelitian yang bertujuan untuk
+memperoleh pemahaman teoretis dan empiris terkait klasifikasi citra sampah, deep
+learning, serta knowledge distillation. Pada tahap ini dilakukan penelusuran
+terhadap artikel jurnal ilmiah, prosiding konferensi, dan publikasi penelitian
+terdahulu yang relevan. Fokus kajian diarahkan pada metode distilasi pengetahuan,
+fenomena capacity gap antara guru dan student, serta teknik kompresi model. Hasil
+studi literatur digunakan sebagai dasar dalam menentukan pendekatan dan
+metodologi yang diterapkan.
+3.1.3.2 Perumusan Masalah
+Perumusan masalah dilakukan berdasarkan hasil studi literatur yang telah
+dianalisis secara kritis. Tahap ini bertujuan untuk mendefinisikan permasalahan
+penelitian secara jelas dan terukur, khususnya keterbatasan transfer pengetahuan
+20
+
+===== PAGE 27 =====
+dari guru berkapasitas besar ke student ringan akibat capacity gap. Rumusan
+masalah menjadi acuan utama dalam menentukan tujuan, ruang lingkup, serta
+strategi distilasi yang akan dibandingkan dalam penelitian.
+3.1.3.3 Pengumpulan dan Pengelolaan Data
+Tahap pengumpulan dan pengelolaan data dilakukan dengan memanfaatkan
+dataset publik citra sampah TrashNet yang telah banyak digunakan dalam penelitian
+sebelumnya. Setelah data dikumpulkan, dilakukan pengelolaan data yang meliputi
+penghapusan duplikat, pembagian data ke dalam himpunan latih, validasi, dan uji,
+serta penyusunan manifest per-seed agar pembagian data bersifat deterministik dan
+dapat direplikasi. Pengelolaan data yang baik bertujuan untuk memastikan data siap
+digunakan dan menghasilkan evaluasi yang objektif.
+3.1.3.4 Perancangan dan Pelatihan Model
+Tahap ini meliputi perancangan tiga peran model, yaitu guru besar
+(EfficientNet-B4), asisten berkapasitas menengah (Focus-RCNet), dan student
+ringan (WasteNet), serta pelatihan seluruh skenario distilasi. Setiap student dilatih
+menggunakan strategi distilasi yang berbeda dengan konfigurasi pelatihan yang
+identik untuk menjamin objektivitas perbandingan. Proses pelatihan dilakukan
+secara berulang pada lima seed untuk memperoleh hasil yang stabil dan dapat diuji
+secara statistik.
+3.1.3.5 Evaluasi dan Analisis
+Model yang telah dilatih dievaluasi menggunakan data uji untuk mengukur
+performa klasifikasi secara objektif berdasarkan accuracy dan macro F1-score.
+Hasil setiap skenario kemudian dibandingkan dan diuji signifikansinya
+menggunakan uji statistik berpasangan. Tahap analisis bertujuan untuk mengetahui
+strategi distilasi dan jenis guru yang paling efektif dalam meningkatkan kinerja
+student ringan.
+3.1.3.6 Kesimpulan dan Saran
+Tahap kesimpulan dan saran merupakan tahap akhir penelitian. Kesimpulan
+disusun berdasarkan hasil analisis dan evaluasi model, dengan merangkum temuan
+utama mengenai pengaruh kapasitas guru terhadap keberhasilan distilasi. Selain itu,
+disusun pula saran sebagai rekomendasi untuk penelitian selanjutnya, sehingga
+penelitian diharapkan memberikan kontribusi akademik dan praktis di bidang
+kompresi model untuk klasifikasi citra sampah.
+3.2 Lokasi dan Waktu Penelitian
+Penelitian ini dilaksanakan di lingkungan akademik Program Studi Teknik
+Informatika, Universitas Negeri Semarang, dengan seluruh proses pengolahan data,
+eksperimen model, dan penyusunan laporan dilakukan menggunakan sumber daya
+komputasi awan. Implementasi model dan eksperimen dilakukan menggunakan
+bahasa pemrograman Python dengan framework deep learning PyTorch beserta
+21
+
+===== PAGE 28 =====
+pustaka timm dan Albumentations, serta dijalankan pada lingkungan Kaggle
+Notebook yang menyediakan akselerator GPU.
+Adapun waktu pelaksanaan penelitian berlangsung sejak September 2025
+hingga Juni 2026, yang mencakup tahap perumusan topik, studi literatur,
+penyusunan metodologi, implementasi dan pelatihan model, evaluasi performa,
+hingga analisis hasil dan penyelesaian dokumen skripsi. Rentang waktu ini dipilih
+agar seluruh proses penelitian dapat dilakukan secara bertahap, terukur, dan
+sistematis sesuai standar akademik yang ditetapkan oleh Universitas Negeri
+Semarang.
+3.3 Subjek Penelitian/Sampel dan Populasi
+Proses klasifikasi citra sampah menggunakan model deep learning ringan
+menjadi subjek utama pada penelitian ini. Subjek ini memiliki relevansi tinggi
+dalam mendukung sistem pemilahan sampah otomatis yang efisien, khususnya pada
+perangkat dengan keterbatasan komputasi. Tujuan penelitian ini adalah
+mengembangkan model student ringan WasteNet yang akurat melalui knowledge
+distillation, sehingga dapat membedakan jenis sampah secara cepat dan konsisten.
+Populasi penelitian mencakup seluruh citra sampah yang tersedia dalam dataset
+publik TrashNet, dengan enam kategori jenis sampah. Sampel penelitian terdiri atas
+subset citra yang dipilih secara sistematis dari populasi tersebut dan dibagi ke dalam
+data latih, validasi, dan uji. Untuk menganalisis pengaruh jumlah kelas, penelitian
+ini menggunakan dua skema label, yaitu skema enam kelas (K6) dan skema lima
+kelas (K5) yang menghilangkan kelas trash.
+3.4 Data dan Sumber Data
+Sumber data dalam penelitian ini berasal dari dataset publik TrashNet yang
+diperkenalkan oleh Thung dan Yang (2016) dari Universitas Stanford. Dataset ini
+berisi 2.527 citra sampah yang telah dilabeli dan diklasifikasikan ke dalam enam
+kelas, yaitu cardboard (kardus), glass (kaca), metal (logam), paper (kertas), plastic
+(plastik), dan trash (sampah lain). Setiap citra diambil dengan latar belakang putih
+dan pencahayaan yang dikontrol, sehingga memberikan kondisi yang representatif
+untuk tugas klasifikasi citra sampah.
+Dataset TrashNet bersifat open-access dan dapat diunduh melalui platform
+Kaggle, sehingga memungkinkan replikasi dan validasi penelitian secara terbuka.
+Penelitian ini menggunakan varian dataset-resized yang telah diseragamkan
+ukurannya. Berdasarkan dataset enam kelas tersebut, disusun dua skema label, yaitu
+K6 yang mempertahankan seluruh enam kelas dan K5 yang menghilangkan kelas
+trash karena bersifat heterogen sebagai kategori penampung. Kedua skema diproses
+dengan protokol yang identik kecuali pada jumlah kelas.
+3.5 Teknik Pengumpulan Data
+22
+
+===== PAGE 29 =====
+Pengumpulan data dilakukan melalui proses eksplorasi dan seleksi dataset
+publik citra sampah yang telah divalidasi dalam berbagai penelitian klasifikasi
+sampah. Berdasarkan hasil kajian literatur, dipilih dataset TrashNet sebagai sumber
+data utama karena telah menjadi tolok ukur (benchmark) dan memiliki label kelas
+yang jelas. Proses pengunduhan dataset dilakukan secara langsung melalui platform
+penyedia dataset publik, kemudian data diperiksa untuk memastikan kelengkapan,
+konsistensi format citra, serta kesesuaian label.
+Setelah pengunduhan, dilakukan pemeriksaan duplikasi untuk menghapus citra
+yang identik maupun berkonflik antarlabel, sehingga setiap citra hanya muncul satu
+kali pada satu himpunan data. Selanjutnya disusun berkas manifest yang mencatat
+identitas, lintasan, label, serta himpunan (latih/validasi/uji) untuk setiap citra pada
+masing-masing seed. Penyusunan manifest ini menjamin bahwa pembagian data
+bersifat deterministik dan identik di seluruh skenario distilasi, sehingga
+perbandingan antarmodel menjadi adil.
+3.6 Teknik Keabsahan Data
+Validitas dan reliabilitas dataset TrashNet diperkuat oleh pemanfaatannya
+secara luas sebagai tolok ukur standar dalam berbagai penelitian klasifikasi citra
+sampah sejak diperkenalkan oleh Thung dan Yang (2016). Konsistensi penggunaan
+dataset ini pada banyak penelitian menunjukkan bahwa data yang digunakan
+memiliki tingkat keabsahan yang tinggi dan layak dijadikan dasar pengembangan
+model. Selain itu, keabsahan proses penelitian dijaga melalui protokol pembagian
+data yang deterministik, pengulangan eksperimen pada lima seed, serta evaluasi
+pada data uji yang sepenuhnya terpisah dari proses pelatihan.
+3.7 Teknik Analisis Data
+Teknik analisis data dalam penelitian ini dilakukan melalui serangkaian
+tahapan komputasional yang bertujuan untuk membangun, melatih, dan
+mengevaluasi model klasifikasi citra sampah secara sistematis. Analisis data
+diawali dengan import dataset, dilanjutkan dengan preprocessing untuk
+menyeragamkan format citra, kemudian pembagian data, augmentasi, perancangan
+arsitektur model, penerapan knowledge distillation, pelatihan, evaluasi, hingga
+pengujian signifikansi statistik.
+Seluruh tahapan dirancang agar setiap skenario distilasi dilatih dan dievaluasi
+pada kondisi yang identik, sehingga perbedaan performa benar-benar
+mencerminkan pengaruh strategi distilasi dan jenis guru. Tahap akhir teknik analisis
+data adalah penyusunan skenario pengujian untuk membandingkan performa
+antarmodel secara menyeluruh. Seluruh tahapan tersebut disajikan dalam bentuk
+diagram alir pada Gambar 3.2.
+23
+
+===== PAGE 30 =====
+Gambar 3.2 Diagram Alir Teknik Analisis Data
+3.7.1 Import Dataset
+Tahap import dataset merupakan langkah awal dalam alur penelitian
+sebagaimana ditunjukkan pada diagram alir. Pada tahap ini, seluruh citra sampah
+dimuat ke dalam lingkungan pemrograman Python menggunakan pustaka
+pengolahan citra dan deep learning. Pemuatan data dilakukan berdasarkan berkas
+manifest hasil tahap pengumpulan data, yang memetakan setiap citra ke label dan
+himpunannya. Pada tahap ini juga dilakukan pengecekan awal terhadap struktur
+direktori, jumlah data pada setiap kelas, serta kesesuaian antara citra dan label untuk
+memastikan dataset siap diproses.
+3.7.2 Preprocessing
+Tahap preprocessing merupakan proses penyiapan citra sampah sebelum
+digunakan pada pelatihan dan pengujian model. Preprocessing bertujuan untuk
+menyeragamkan karakteristik citra serta memastikan kesesuaian format masukan
+dengan kebutuhan arsitektur jaringan. Secara garis besar, proses preprocessing yang
+dilakukan meliputi konversi kanal warna, penyesuaian ukuran citra, dan normalisasi
+nilai piksel.
+• Konversi RGB, yaitu memastikan seluruh citra berada dalam tiga kanal
+warna (RGB) agar kompatibel dengan arsitektur jaringan yang
+mengharapkan masukan tiga kanal.
+• Resizing, yaitu penyesuaian ukuran citra mengikuti kebutuhan masing-
+masing model. Citra masukan model guru dan asisten diubah ke ukuran
+380 x 380 piksel, sedangkan citra masukan model student WasteNet
+diubah ke ukuran 160 x 160 piksel untuk menjaga efisiensi komputasi.
+• Normalization, yaitu penskalaan nilai piksel menggunakan nilai rata-
+rata dan simpangan baku ImageNet. Normalisasi ini menstabilkan dan
+24
+
+===== PAGE 31 =====
+mempercepat konvergensi selama pelatihan serta mengurangi risiko
+ketidakstabilan gradien.
+3.7.3 Data Splitting
+Tahap data splitting dilakukan untuk membagi dataset citra sampah ke dalam
+beberapa subset yang digunakan pada proses pelatihan dan evaluasi model.
+Pembagian data bertujuan untuk mengukur kemampuan generalisasi model
+terhadap data yang belum pernah dilihat sebelumnya. Pembagian dilakukan secara
+stratified sehingga proporsi setiap kelas terjaga pada seluruh himpunan, dengan
+proporsi sebagai berikut:
+• 70% data latih (training set);
+• 15% data validasi (validation set);
+• 15% data uji (testing set).
+Pembagian data dilakukan secara deterministik berdasarkan seed dan dicatat
+dalam berkas manifest, sehingga seluruh skenario distilasi menggunakan komposisi
+data yang persis sama. Himpunan validasi digunakan untuk pemilihan checkpoint
+terbaik, sedangkan himpunan uji hanya digunakan satu kali pada tahap pelaporan
+akhir untuk menjaga objektivitas evaluasi.
+3.7.4 Data Augmentation
+Tahap data augmentation dilakukan untuk meningkatkan variasi data latih serta
+mengurangi risiko overfitting. Augmentasi diterapkan hanya pada data latih,
+sehingga data validasi dan data uji tetap merepresentasikan kondisi citra asli tanpa
+modifikasi. Transformasi acak diterapkan pada setiap batch selama pelatihan,
+sehingga model memperoleh variasi data yang berbeda pada setiap epoch.
+Transformasi yang digunakan meliputi:
+• Horizontal Flip, yaitu pencerminan citra secara horizontal dengan
+peluang 0,5;
+• Vertical Flip, yaitu pencerminan citra secara vertikal dengan peluang
+0,5;
+• Random Brightness Contrast, yaitu penyesuaian kecerahan dan kontras
+citra secara acak untuk mensimulasikan variasi pencahayaan;
+• Coarse Dropout, yaitu penghapusan sebagian wilayah citra secara acak
+untuk mendorong model mempelajari fitur yang lebih kuat dan tidak
+bergantung pada satu wilayah tertentu.
+3.7.5 Arsitektur Model
+Penelitian ini melibatkan tiga peran model dengan kapasitas berbeda yang
+berperan dalam skema knowledge distillation. Ketiganya digunakan untuk menguji
+pengaruh kapasitas guru terhadap keberhasilan transfer pengetahuan ke model
+student yang ringan. Arsitektur masing-masing model dijelaskan sebagai berikut:
+• Guru besar (EfficientNet-B4), yaitu model berkapasitas besar dengan
+sekitar 17,6 juta parameter yang dilatih menggunakan bobot pralatih
+25
+
+===== PAGE 32 =====
+ImageNet. Model ini berperan sebagai sumber pengetahuan dengan
+performa tertinggi sekaligus batas atas kinerja.
+• Asisten (Focus-RCNet), yaitu model berkapasitas menengah dengan
+sekitar 520 ribu parameter. Model ini berperan sebagai guru perantara
+(teacher assistant) yang menjembatani selisih kapasitas antara guru
+besar dan student.
+• Student (WasteNet), yaitu model ringan yang menjadi sasaran akhir
+penelitian. Dua varian kapasitas digunakan, yaitu WasteNet-128K
+(sekitar 128 ribu parameter) dan WasteNet-256K (sekitar 256 ribu
+parameter), untuk menganalisis pengaruh kapasitas student terhadap
+efektivitas distilasi.
+Gambar 3.3 Arsitektur Model Guru, Asisten, dan Student
+3.7.6 Knowledge Distillation
+Knowledge distillation merupakan teknik kompresi model yang melatih model
+student berukuran kecil untuk menirukan keluaran model guru yang lebih besar
+(Hinton et al., 2015). Selain mempelajari label sebenarnya melalui hard label,
+student juga mempelajari distribusi probabilitas keluaran guru (soft label) yang
+dihaluskan menggunakan parameter suhu (temperature). Distribusi soft label
+tersebut membawa dark knowledge, yaitu informasi kemiripan antarkelas yang
+tidak terdapat pada hard label. Fungsi kerugian total merupakan kombinasi
+berbobot antara cross-entropy terhadap label sebenarnya dan divergensi Kullback-
+Leibler terhadap soft label guru, dengan koefisien pembobotan alfa, sebagaimana
+ditunjukkan pada Persamaan (3.1).
+𝐿 = (1 − 𝛼)𝐿 + 𝛼𝑇2𝐷 (𝑝 ∥ 𝑝 )
+𝐾𝐷 𝐶𝐸 𝐾𝐿 𝑡 𝑠
+dengan L merupakan fungsi kerugian total knowledge distillation, L
+KD CE
+adalah fungsi cross-entropy terhadap label sebenarnya, D adalah divergensi
+KL
+Kullback-Leibler terhadap soft label guru, α adalah koefisien pembobotan (0 ≤ α ≤
+1), T adalah parameter suhu (temperature), serta p dan p merupakan distribusi
+t s
+probabilitas keluaran guru dan student.
+26
+
+===== PAGE 33 =====
+Untuk menguji pengaruh kapasitas guru, penelitian ini membandingkan tiga
+strategi distilasi. Pertama, direct knowledge distillation yang mendistilasi
+pengetahuan langsung dari guru besar EfficientNet-B4 ke student (Hinton et al.,
+2015). Kedua, teacher-assistant knowledge distillation (TA-KD) yang
+menggunakan asisten berkapasitas menengah Focus-RCNet sebagai guru perantara
+untuk mengurangi capacity gap antara guru dan student (Mirzadeh et al., 2020).
+Ketiga, self-distillation dengan pendekatan Born-Again Networks (BAN) yang
+menggunakan model berkapasitas sama, yaitu WasteNet generasi sebelumnya,
+sebagai guru (Furlanello et al., 2018). Ketiga strategi ini ditempatkan pada satu
+kurva capacity gap untuk menguji hipotesis bahwa guru berkapasitas menengah
+lebih efektif dibandingkan guru besar maupun guru berkapasitas sama (Cho &
+Hariharan, 2019).
+3.7.7 Training Model
+Tahap pelatihan model merupakan proses pembelajaran utama dalam
+penelitian ini. Seluruh model dilatih menggunakan optimizer Stochastic Gradient
+Descent (SGD) dengan momentum 0,9 dan weight decay sebesar 1x10-4, serta
+penjadwalan laju pembelajaran cosine annealing. Pelatihan dilakukan selama 100
+epoch tanpa early stopping, dengan pemilihan checkpoint terbaik berdasarkan
+akurasi tertinggi pada data validasi. Untuk meningkatkan efisiensi, pelatihan
+memanfaatkan automatic mixed precision.
+Guna memperoleh hasil yang stabil dan dapat diuji secara statistik, setiap
+skenario dilatih secara berulang menggunakan lima seed (42, 123, 777, 2026, dan
+3407). Pada strategi TA-KD, pelatihan dilakukan dalam dua tahap (two-stage),
+yaitu pralatih menggunakan cross-entropy yang dilanjutkan dengan penyetelan
+halus menggunakan distilasi. Seluruh konfigurasi pelatihan dijaga identik di semua
+skenario, kecuali pada faktor yang sedang diuji, sehingga perbedaan performa
+benar-benar mencerminkan pengaruh strategi distilasi.
+3.7.8 Model Evaluation
+Evaluasi model dilakukan menggunakan model terbaik yang diperoleh
+berdasarkan performa pada data validasi, kemudian diuji pada data uji yang
+sepenuhnya terpisah dari proses pelatihan. Kinerja model dievaluasi menggunakan
+confusion matrix yang menyajikan perbandingan antara kelas aktual dan kelas hasil
+prediksi. Untuk pendekatan multikelas, evaluasi dilakukan secara one-vs-rest
+dengan komponen True Positive (TP), False Positive (FP), False Negative (FN),
+dan True Negative (TN) sebagaimana ditunjukkan pada Tabel 3.1.
+Tabel 3.1 Confusion Matrix
+Aktual Positif Aktual Negatif
+Prediksi Positif True Positive (TP) False Positive (FP)
+Prediksi Negatif False Negative (FN) True Negative (TN)
+27
+
+===== PAGE 34 =====
+Berdasarkan confusion matrix tersebut, dihitung metrik evaluasi berupa
+accuracy, precision, recall, dan F1-score. Mengingat penelitian ini melibatkan
+klasifikasi multikelas, metrik utama yang digunakan adalah accuracy dan macro
+F1-score, yaitu rata-rata F1-score seluruh kelas yang memberi bobot setara pada
+setiap kelas tanpa mempertimbangkan jumlah sampelnya. Penggunaan macro F1-
+score bertujuan untuk memberikan gambaran performa yang adil terhadap kelas
+dengan jumlah sampel lebih sedikit.
+3.7.9 Uji Statistik
+Untuk memastikan bahwa perbedaan performa antarskenario tidak terjadi
+secara kebetulan, dilakukan pengujian signifikansi statistik. Penelitian ini
+menggunakan dua jenis uji yang saling melengkapi. Pertama, uji berpasangan antar-
+seed berupa paired t-test dan Wilcoxon signed-rank test yang membandingkan
+akurasi lima seed pada dua skenario yang identik kecuali pada satu faktor. Kedua,
+McNemar test dengan koreksi kontinuitas yang membandingkan pola benar-salah
+pada tingkat sampel uji.
+Penggunaan beberapa uji statistik sekaligus bertujuan untuk memperkuat
+keabsahan kesimpulan, sehingga suatu strategi distilasi dinyatakan unggul hanya
+apabila keunggulannya konsisten pada berbagai uji. Tingkat signifikansi yang
+digunakan adalah 0,05. Pendekatan pengujian statistik untuk membandingkan
+model klasifikasi ini sejalan dengan praktik yang dianjurkan dalam literatur
+(Dietterich, 1998; Demšar, 2006).
+3.7.10 Skenario Pengujian
+Dalam rangka melakukan validasi empiris terhadap efektivitas strategi distilasi,
+penelitian ini menerapkan mekanisme pengujian komparatif (benchmarking)
+dengan membandingkan beberapa skenario pelatihan model. Skenario dirancang di
+sepanjang kurva capacity gap, mulai dari baseline tanpa distilasi, distilasi dari guru
+besar, distilasi dari asisten menengah, hingga self-distillation dari guru berkapasitas
+sama. Seluruh skenario dilatih dan dievaluasi menggunakan dataset serta skema
+pembagian data yang identik. Ringkasan skenario pengujian disajikan pada Tabel
+3.2.
+Tabel 3.2 Skenario Pengujian Model
+Kode Model (Student) Guru (Soft-label) Peran dalam Penelitian
+R1 EfficientNet-B4 - (Cross-Entropy) Guru besar / batas atas
+R2 Focus-RCNet - (Cross-Entropy) Asisten menengah
+R3 WasteNet-128K - (Cross-Entropy) Baseline 128K
+R4 WasteNet-128K EfficientNet-B4 Direct KD (Hinton)
+R5 WasteNet-128K Focus-RCNet TA-KD 128K
+R6 WasteNet-256K - (Cross-Entropy) Baseline 256K
+R7 WasteNet-256K EfficientNet-B4 Direct KD (Hinton)
+R8 WasteNet-256K Focus-RCNet TA-KD 256K (metode inti)
+WasteNet-256K (gen.
+R9 WasteNet-256K Self-distillation (BAN)
+sebelumnya)
+28
+
+===== PAGE 35 =====
+Setiap skenario dilatih pada dua skema label, yaitu K6 (enam kelas) dan K5
+(lima kelas), serta diulang pada lima seed. Sebagai pembanding, setiap strategi
+distilasi (R4, R5, R7, dan R8) memiliki skenario kontrol berpasangan tanpa distilasi
+yang menonaktifkan komponen KD namun mempertahankan konfigurasi dan
+jadwal pelatihan yang identik, sehingga efek distilasi diukur sebagai selisih
+berpasangan terhadap kontrol tersebut. Perbandingan performa difokuskan pada
+accuracy dan macro F1-score, kemudian diuji signifikansinya menggunakan uji
+statistik berpasangan. Hasil dari skenario pengujian ini selanjutnya digunakan
+untuk menentukan strategi distilasi terbaik yang akan dibahas secara mendalam
+pada bab berikutnya.
+29
+
+===== PAGE 36 =====
+DAFTAR PUSTAKA
+Buslaev, A., Iglovikov, V. I., Khvedchenya, E., Parinov, A., Druzhinin, M., &
+Kalinin, A. A. (2020). Albumentations: Fast and flexible image
+augmentations. Information, 11(2), 125.
+https://doi.org/10.3390/info11020125
+Chicco, D., & Jurman, G. (2020). The advantages of the Matthews correlation
+coefficient (MCC) over F1 score and accuracy in binary classification
+evaluation. BMC Genomics, 21(1), 6. https://doi.org/10.1186/s12864-019-
+6413-7
+Cho, J. H., & Hariharan, B. (2019). On the efficacy of knowledge distillation.
+Proceedings of the IEEE/CVF International Conference on Computer
+Vision (ICCV), 4794–4802. https://doi.org/10.1109/ICCV.2019.00489
+Demšar, J. (2006). Statistical comparisons of classifiers over multiple data sets.
+Journal of Machine Learning Research, 7, 1–30.
+Dietterich, T. G. (1998). Approximate statistical tests for comparing supervised
+classification learning algorithms. Neural Computation, 10(7), 1895–1923.
+https://doi.org/10.1162/089976698300017197
+Furlanello, T., Lipton, Z. C., Tschannen, M., Itti, L., & Anandkumar, A. (2018).
+Born-again neural networks. Proceedings of the 35th International
+Conference on Machine Learning (ICML), PMLR 80, 1607–1616.
+Gonzalez, R. C., & Woods, R. E. (2018). Digital image processing (4th ed.).
+Pearson.
+Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep learning. MIT Press.
+Hinton, G., Vinyals, O., & Dean, J. (2015). Distilling the knowledge in a neural
+network. arXiv preprint arXiv:1503.02531.
+https://doi.org/10.48550/arXiv.1503.02531
+Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). ImageNet classification with
+deep convolutional neural networks. Advances in Neural Information
+Processing Systems (NeurIPS), 25, 1097–1105.
+LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. Nature, 521(7553),
+436–444. https://doi.org/10.1038/nature14539
+LeCun, Y., Bottou, L., Bengio, Y., & Haffner, P. (1998). Gradient-based learning
+applied to document recognition. Proceedings of the IEEE, 86(11), 2278–
+2324. https://doi.org/10.1109/5.726791
+Mirzadeh, S. I., Farajtabar, M., Li, A., Levine, N., Matsukawa, A., & Ghasemzadeh,
+H. (2020). Improved knowledge distillation via teacher assistant.
+Proceedings of the AAAI Conference on Artificial Intelligence, 34(04),
+5191–5198. https://doi.org/10.1609/aaai.v34i04.5963
+Nair, V., & Hinton, G. E. (2010). Rectified linear units improve restricted
+Boltzmann machines. Proceedings of the 27th International Conference on
+Machine Learning (ICML), 807–814.
+30
+
+===== PAGE 37 =====
+O’Shea, K., & Nash, R. (2015). An introduction to convolutional neural networks.
+arXiv preprint arXiv:1511.08458.
+https://doi.org/10.48550/arXiv.1511.08458
+Pan, S. J., & Yang, Q. (2010). A survey on transfer learning. IEEE Transactions on
+Knowledge and Data Engineering, 22(10), 1345–1359.
+https://doi.org/10.1109/TKDE.2009.191
+Perez, L., & Wang, J. (2017). The effectiveness of data augmentation in image
+classification using deep learning. arXiv preprint arXiv:1712.04621.
+https://doi.org/10.48550/arXiv.1712.04621
+Powers, D. M. W. (2011). Evaluation: From precision, recall and F-measure to
+ROC, informedness, markedness and correlation. Journal of Machine
+Learning Technologies, 2(1), 37–63.
+Russakovsky, O., Deng, J., Su, H., Krause, J., Satheesh, S., Ma, S., Huang, Z.,
+Karpathy, A., Khosla, A., Bernstein, M., Berg, A. C., & Fei-Fei, L. (2015).
+ImageNet large scale visual recognition challenge. International Journal of
+Computer Vision, 115(3), 211–252. https://doi.org/10.1007/s11263-015-
+0816-y
+Schmidhuber, J. (2015). Deep learning in neural networks: An overview. Neural
+Networks, 61, 85–117. https://doi.org/10.1016/j.neunet.2014.09.003
+Shorten, C., & Khoshgoftaar, T. M. (2019). A survey on image data augmentation
+for deep learning. Journal of Big Data, 6(1), 60.
+https://doi.org/10.1186/s40537-019-0197-0
+Sokolova, M., & Lapalme, G. (2009). A systematic analysis of performance
+measures for classification tasks. Information Processing & Management,
+45(4), 427–437. https://doi.org/10.1016/j.ipm.2009.03.002
+Sugiyono. (2015). Metode penelitian kuantitatif, kualitatif, dan R&D. Alfabeta.
+Tan, M., & Le, Q. (2019). EfficientNet: Rethinking model scaling for convolutional
+neural networks. Proceedings of the 36th International Conference on
+Machine Learning (ICML), PMLR 97, 6105–6114.
+Thung, G., & Yang, M. (2016). Classification of trash for recyclability status
+[Laporan proyek CS229]. Stanford University.
+Zheng, D., Wang, R., Duan, Y., Pang, P. C., & Tan, T. (2023). Focus-RCNet: A
+lightweight recyclable waste classification algorithm based on focus and
+knowledge distillation. Visual Computing for Industry, Biomedicine, and
+Art, 6(1), Article 19. https://doi.org/10.1186/s42492-023-00146-3
+31
+
+===== PAGE 38 =====
+LAMPIRAN
+Penulis Bernama lengkap Hamza Pratama, lahir di
+Boyolali pada 20 November 2003. Penulis merupakan
+anak pertama dari pasangan Bapak Mochammad
+Yasin dan Ibu Ega Sri Sundari Legawati. Pendidikan
+dasar diselesaikan oleh penulis di SD Negeri
+Purwoyoso 01 Semarang, Jawa Tengah pada tahun
+2016, kemudian melanjutkan ke SMP Negeri 18
+Semarang, Jawa Tengah dan diselesaikan pada tahun
+2019. Setelah itu penulis melanjutkan pendidikan di
+SMA Negeri 8 Semarang, Jawa Tengah dengan jurusan Ilmu Pengetahuan Alam
+(IPA) dan lulus pada tahun 2022.
+Pada tahun 2022, penulis melanjutkan studi jenjang S1 di Universitas
+Negeri Semarang, tepatnya di Program Studi Teknik Informatika yang berada di
+bawah naungan Fakultas Matematika dan Ilmu Pengetahuan Alam (FMIPA).
+Selama masa perkuliahan, penulis aktif mengembangkan minat pada bidang
+Machine Learning dan Web Development. Penulis juga pernah berkesempatan
+magang sebagai AI Engineer di PT APLIKANUSA LINTASARTA.
+Penulis menyadari bahwa penyusunan karya tulis ini masih memiliki
+banyak kekurangan. Oleh karena itu, saran dan kritik yang membangun sangat
+diharapkan untuk membantu penulis meningkatkan kualitas karya ini. Penulis dapat
+dihubungi melalui email hamzapratama000@gmail.com.
+32

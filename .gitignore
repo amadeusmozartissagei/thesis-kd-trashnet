@@ -18,3 +18,10 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Working files (thesis writing) - snapshot & aset besar, tidak perlu di-versioning
+work/*_BACKUP_*.docx
+work/demo_images/
+work/demo_images_final/
+work/demo_images_combined/
+node_modules/

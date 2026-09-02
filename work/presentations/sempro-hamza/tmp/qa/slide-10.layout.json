@@ -1,0 +1,602 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/z4n8hb",
+    "id": "z4n8hb",
+    "slide": 10,
+    "layoutId": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Helvetica Neue"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "1",
+      "name": "slide-title",
+      "bbox": [
+        42,
+        36,
+        980,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Teknik analisis data dan konfigurasi pelatihan",
+      "textPreview": "Teknik analisis data dan konfigurasi pelatihan",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Teknik analisis data dan konfigurasi pelatihan"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Teknik analisis data dan konfigurasi pelatihan",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Teknik analisis data dan konfigurasi pelatihan",
+              "fontSize": 39,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "2",
+      "name": "slide-number",
+      "bbox": [
+        1184,
+        659,
+        54,
+        25
+      ],
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 12.83,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 15,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 0.86,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Helvetica Neue",
+            "color": "#000000",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 15,
+              "typeface": "Helvetica Neue",
+              "color": "#000000",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "3",
+      "name": "pipeline-left",
+      "bbox": [
+        42,
+        150,
+        560,
+        390
+      ],
+      "geometry": "rect",
+      "text": "- Preprocessing: RGB, resize 380x380 untuk guru/asisten dan 160x160 untuk WasteNet.\n- Augmentasi hanya pada data latih: flip, brightness/contrast, dan coarse dropout.\n- Optimizer SGD momentum 0,9, weight decay 1e-4, cosine annealing.\n- Pelatihan 100 epoch, mixed precision, checkpoint terbaik dari validation accuracy.",
+      "textPreview": "- Preprocessing: RGB, resize 380x380 untuk guru/asisten dan 160x160 untuk WasteNet. | - Augmentasi hanya pada data latih: flip, brightnes...",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 23,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 8,
+        "lines": [
+          {
+            "index": 1,
+            "text": "- Preprocessing: RGB, resize 380x380 untuk guru/asisten"
+          },
+          {
+            "index": 2,
+            "text": "dan 160x160 untuk WasteNet."
+          },
+          {
+            "index": 3,
+            "text": "- Augmentasi hanya pada data latih: flip,"
+          },
+          {
+            "index": 4,
+            "text": "brightness/contrast, dan coarse dropout."
+          },
+          {
+            "index": 5,
+            "text": "- Optimizer SGD momentum 0,9, weight decay 1e-4,"
+          },
+          {
+            "index": 6,
+            "text": "cosine annealing."
+          },
+          {
+            "index": 7,
+            "text": "- Pelatihan 100 epoch, mixed precision, checkpoint"
+          },
+          {
+            "index": 8,
+            "text": "terbaik dari validation accuracy."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "- Preprocessing: RGB, resize 380x380 untuk guru/asisten dan 160x160 untuk WasteNet.",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Preprocessing: RGB, resize 380x380 untuk guru/asisten dan 160x160 untuk WasteNet.",
+              "fontSize": 23,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "- Augmentasi hanya pada data latih: flip, brightness/contrast, dan coarse dropout.",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Augmentasi hanya pada data latih: flip, brightness/contrast, dan coarse dropout.",
+              "fontSize": 23,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "- Optimizer SGD momentum 0,9, weight decay 1e-4, cosine annealing.",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Optimizer SGD momentum 0,9, weight decay 1e-4, cosine annealing.",
+              "fontSize": 23,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 4,
+          "text": "- Pelatihan 100 epoch, mixed precision, checkpoint terbaik dari validation accuracy.",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "- Pelatihan 100 epoch, mixed precision, checkpoint terbaik dari validation accuracy.",
+              "fontSize": 23,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "4",
+      "name": "seed-panel",
+      "bbox": [
+        690,
+        150,
+        450,
+        310
+      ],
+      "geometry": "rect",
+      "fillColor": "#EDEDED",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "5",
+      "name": "seed-title",
+      "bbox": [
+        728,
+        194,
+        360,
+        42
+      ],
+      "geometry": "rect",
+      "text": "Replikasi eksperimen",
+      "textPreview": "Replikasi eksperimen",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 29,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 0.93,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Replikasi eksperimen"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Replikasi eksperimen",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "typeface": "Helvetica Neue",
+            "color": "#000000",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Replikasi eksperimen",
+              "fontSize": 29,
+              "typeface": "Helvetica Neue",
+              "color": "#000000",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "6",
+      "name": "seed-stat",
+      "bbox": [
+        728,
+        272,
+        220,
+        64
+      ],
+      "geometry": "rect",
+      "text": "5 seed",
+      "textPreview": "5 seed",
+      "resolvedFontSize": 45.33,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 50,
+        "typeface": "Helvetica Neue",
+        "color": "#FF6B35",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 0.91,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "5 seed"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "5 seed",
+          "resolvedTextStyle": {
+            "fontSize": 50,
+            "typeface": "Helvetica Neue",
+            "color": "#FF6B35",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "5 seed",
+              "fontSize": 50,
+              "typeface": "Helvetica Neue",
+              "color": "#FF6B35",
+              "bold": true
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "7",
+      "name": "seed-body",
+      "bbox": [
+        728,
+        358,
+        350,
+        88
+      ],
+      "geometry": "rect",
+      "text": "42, 123, 777, 2026, 3407\n\nSemua skenario memakai split dan konfigurasi yang sama agar perbandingan adil.",
+      "textPreview": "42, 123, 777, 2026, 3407 |  | Semua skenario memakai split dan konfigurasi yang sama agar perbandingan adil.",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "Helvetica Neue",
+        "color": "#555555",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "42, 123, 777, 2026, 3407"
+          },
+          {
+            "index": 2,
+            "text": ""
+          },
+          {
+            "index": 3,
+            "text": "Semua skenario memakai split dan konfigurasi"
+          },
+          {
+            "index": 4,
+            "text": "yang sama agar perbandingan adil."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "42, 123, 777, 2026, 3407",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Helvetica Neue",
+            "color": "#555555"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "42, 123, 777, 2026, 3407",
+              "fontSize": 16,
+              "typeface": "Helvetica Neue",
+              "color": "#555555"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Semua skenario memakai split dan konfigurasi yang sama agar perbandingan adil.",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Helvetica Neue",
+            "color": "#555555"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Semua skenario memakai split dan konfigurasi yang sama agar perbandingan adil.",
+              "fontSize": 16,
+              "typeface": "Helvetica Neue",
+              "color": "#555555"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

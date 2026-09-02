@@ -1,0 +1,1300 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/yf3ugb",
+    "id": "yf3ugb",
+    "slide": 11,
+    "layoutId": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Helvetica Neue"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0c03c94c-d08a-4615-97a2-5fa140930eaa",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "60157386-87f4-4907-ad08-8eeb6b7aa3f8",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "1",
+      "name": "slide-title",
+      "bbox": [
+        42,
+        36,
+        980,
+        70
+      ],
+      "geometry": "rect",
+      "text": "Skenario pengujian model",
+      "textPreview": "Skenario pengujian model",
+      "resolvedFontSize": 39,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 39,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Skenario pengujian model"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Skenario pengujian model",
+          "resolvedTextStyle": {
+            "fontSize": 39,
+            "typeface": "Helvetica Neue",
+            "color": "#000000"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Skenario pengujian model",
+              "fontSize": 39,
+              "typeface": "Helvetica Neue",
+              "color": "#000000"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "2",
+      "name": "slide-number",
+      "bbox": [
+        1184,
+        659,
+        54,
+        25
+      ],
+      "geometry": "rect",
+      "text": "11",
+      "textPreview": "11",
+      "resolvedFontSize": 12.83,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 15,
+        "typeface": "Helvetica Neue",
+        "color": "#000000",
+        "alignment": "right",
+        "verticalAlignment": "middle",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 0.86,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "11"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "11",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Helvetica Neue",
+            "color": "#000000",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "11",
+              "fontSize": 15,
+              "typeface": "Helvetica Neue",
+              "color": "#000000",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "3",
+      "name": "intro",
+      "bbox": [
+        42,
+        112,
+        900,
+        42
+      ],
+      "geometry": "rect",
+      "text": "R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation.",
+      "textPreview": "R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation.",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 16,
+        "typeface": "Helvetica Neue",
+        "color": "#555555",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "shrinkText",
+        "autoFitScale": 1,
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation.",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "typeface": "Helvetica Neue",
+            "color": "#555555"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation.",
+              "fontSize": 16,
+              "typeface": "Helvetica Neue",
+              "color": "#555555"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/sji5snel",
+      "id": "4",
+      "bbox": [
+        42,
+        178,
+        1196,
+        440
+      ],
+      "text": "Kode | Student | Guru soft-label | Peran\nR1 | EfficientNet-B4 | - | Guru besar / batas atas\nR2 | Focus-RCNet | - | Asisten menengah\nR3 | WasteNet-128K | - | Baseline 128K\nR4 | WasteNet-128K | EfficientNet-B4 | Direct KD\nR5 | WasteNet-128K | Focus-RCNet | TA-KD 128K\nR6 | WasteNet-256K | - | Baseline 256K\nR7 | WasteNet-256K | EfficientNet-B4 | Direct KD\nR8 | WasteNet-256K | Focus-RCNet | TA-KD 256K\nR9 | WasteNet-256K | WasteNet-256K gen. sebelumnya | Self-distillation",
+      "textPreview": "Kode | Student | Guru soft-label | Peran | R1 | EfficientNet-B4 | - | Guru besar / batas atas | R2 | Focus-RCNet | - | Asisten menengah |...",
+      "rows": 10,
+      "cols": 4,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            42,
+            178,
+            80,
+            44
+          ],
+          "text": "Kode",
+          "textPreview": "Kode",
+          "fillColor": "#000000",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Kode",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Kode"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            122,
+            178,
+            300,
+            44
+          ],
+          "text": "Student",
+          "textPreview": "Student",
+          "fillColor": "#000000",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Student",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Student"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            422,
+            178,
+            365,
+            44
+          ],
+          "text": "Guru soft-label",
+          "textPreview": "Guru soft-label",
+          "fillColor": "#000000",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Guru soft-label",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Guru soft-label"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 4,
+          "bbox": [
+            787,
+            178,
+            451,
+            44
+          ],
+          "text": "Peran",
+          "textPreview": "Peran",
+          "fillColor": "#000000",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Peran",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Peran"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            42,
+            222,
+            80,
+            44
+          ],
+          "text": "R1",
+          "textPreview": "R1",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R1",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            122,
+            222,
+            300,
+            44
+          ],
+          "text": "EfficientNet-B4",
+          "textPreview": "EfficientNet-B4",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "EfficientNet-B4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "EfficientNet-B4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            422,
+            222,
+            365,
+            44
+          ],
+          "text": "-",
+          "textPreview": "-",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "-",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "-"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 4,
+          "bbox": [
+            787,
+            222,
+            451,
+            44
+          ],
+          "text": "Guru besar / batas atas",
+          "textPreview": "Guru besar / batas atas",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Guru besar / batas atas",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Guru besar / batas atas"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            42,
+            266,
+            80,
+            44
+          ],
+          "text": "R2",
+          "textPreview": "R2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R2",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            122,
+            266,
+            300,
+            44
+          ],
+          "text": "Focus-RCNet",
+          "textPreview": "Focus-RCNet",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Focus-RCNet",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Focus-RCNet"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            422,
+            266,
+            365,
+            44
+          ],
+          "text": "-",
+          "textPreview": "-",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "-",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "-"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 4,
+          "bbox": [
+            787,
+            266,
+            451,
+            44
+          ],
+          "text": "Asisten menengah",
+          "textPreview": "Asisten menengah",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Asisten menengah",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Asisten menengah"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            42,
+            310,
+            80,
+            44
+          ],
+          "text": "R3",
+          "textPreview": "R3",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R3",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            122,
+            310,
+            300,
+            44
+          ],
+          "text": "WasteNet-128K",
+          "textPreview": "WasteNet-128K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-128K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-128K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            422,
+            310,
+            365,
+            44
+          ],
+          "text": "-",
+          "textPreview": "-",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "-",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "-"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 4,
+          "column": 4,
+          "bbox": [
+            787,
+            310,
+            451,
+            44
+          ],
+          "text": "Baseline 128K",
+          "textPreview": "Baseline 128K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Baseline 128K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Baseline 128K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 17,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            42,
+            354,
+            80,
+            44
+          ],
+          "text": "R4",
+          "textPreview": "R4",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            122,
+            354,
+            300,
+            44
+          ],
+          "text": "WasteNet-128K",
+          "textPreview": "WasteNet-128K",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-128K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-128K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            422,
+            354,
+            365,
+            44
+          ],
+          "text": "EfficientNet-B4",
+          "textPreview": "EfficientNet-B4",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "EfficientNet-B4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "EfficientNet-B4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 5,
+          "column": 4,
+          "bbox": [
+            787,
+            354,
+            451,
+            44
+          ],
+          "text": "Direct KD",
+          "textPreview": "Direct KD",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Direct KD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Direct KD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            42,
+            398,
+            80,
+            44
+          ],
+          "text": "R5",
+          "textPreview": "R5",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R5",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            122,
+            398,
+            300,
+            44
+          ],
+          "text": "WasteNet-128K",
+          "textPreview": "WasteNet-128K",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-128K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-128K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            422,
+            398,
+            365,
+            44
+          ],
+          "text": "Focus-RCNet",
+          "textPreview": "Focus-RCNet",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Focus-RCNet",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Focus-RCNet"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 6,
+          "column": 4,
+          "bbox": [
+            787,
+            398,
+            451,
+            44
+          ],
+          "text": "TA-KD 128K",
+          "textPreview": "TA-KD 128K",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "TA-KD 128K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "TA-KD 128K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 25,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            42,
+            442,
+            80,
+            44
+          ],
+          "text": "R6",
+          "textPreview": "R6",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R6",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 26,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            122,
+            442,
+            300,
+            44
+          ],
+          "text": "WasteNet-256K",
+          "textPreview": "WasteNet-256K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 27,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            422,
+            442,
+            365,
+            44
+          ],
+          "text": "-",
+          "textPreview": "-",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "-",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "-"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 28,
+          "row": 7,
+          "column": 4,
+          "bbox": [
+            787,
+            442,
+            451,
+            44
+          ],
+          "text": "Baseline 256K",
+          "textPreview": "Baseline 256K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Baseline 256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Baseline 256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 29,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            42,
+            486,
+            80,
+            44
+          ],
+          "text": "R7",
+          "textPreview": "R7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R7",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 30,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            122,
+            486,
+            300,
+            44
+          ],
+          "text": "WasteNet-256K",
+          "textPreview": "WasteNet-256K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 31,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            422,
+            486,
+            365,
+            44
+          ],
+          "text": "EfficientNet-B4",
+          "textPreview": "EfficientNet-B4",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "EfficientNet-B4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "EfficientNet-B4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 32,
+          "row": 8,
+          "column": 4,
+          "bbox": [
+            787,
+            486,
+            451,
+            44
+          ],
+          "text": "Direct KD",
+          "textPreview": "Direct KD",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Direct KD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Direct KD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 33,
+          "row": 9,
+          "column": 1,
+          "bbox": [
+            42,
+            530,
+            80,
+            44
+          ],
+          "text": "R8",
+          "textPreview": "R8",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R8",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 34,
+          "row": 9,
+          "column": 2,
+          "bbox": [
+            122,
+            530,
+            300,
+            44
+          ],
+          "text": "WasteNet-256K",
+          "textPreview": "WasteNet-256K",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 35,
+          "row": 9,
+          "column": 3,
+          "bbox": [
+            422,
+            530,
+            365,
+            44
+          ],
+          "text": "Focus-RCNet",
+          "textPreview": "Focus-RCNet",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Focus-RCNet",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Focus-RCNet"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 36,
+          "row": 9,
+          "column": 4,
+          "bbox": [
+            787,
+            530,
+            451,
+            44
+          ],
+          "text": "TA-KD 256K",
+          "textPreview": "TA-KD 256K",
+          "fillColor": "#FFF3EE",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "TA-KD 256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "TA-KD 256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 37,
+          "row": 10,
+          "column": 1,
+          "bbox": [
+            42,
+            574,
+            80,
+            44
+          ],
+          "text": "R9",
+          "textPreview": "R9",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "R9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "R9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 38,
+          "row": 10,
+          "column": 2,
+          "bbox": [
+            122,
+            574,
+            300,
+            44
+          ],
+          "text": "WasteNet-256K",
+          "textPreview": "WasteNet-256K",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-256K",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-256K"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 39,
+          "row": 10,
+          "column": 3,
+          "bbox": [
+            422,
+            574,
+            365,
+            44
+          ],
+          "text": "WasteNet-256K gen. sebelumnya",
+          "textPreview": "WasteNet-256K gen. sebelumnya",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "WasteNet-256K gen. sebelumnya",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "WasteNet-256K gen. sebelumnya"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 40,
+          "row": 10,
+          "column": 4,
+          "bbox": [
+            787,
+            574,
+            451,
+            44
+          ],
+          "text": "Self-distillation",
+          "textPreview": "Self-distillation",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Self-distillation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Self-distillation"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": []
+}

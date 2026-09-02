@@ -1,0 +1,45 @@
+==== ppt/slides/slide1.xml ====
+SEMINAR PROPOSAL SKRIPSI | Knowledge Distillation  | Berbasis |  Teacher-Assistant untuk Model  | Ringan | WasteNet |  pada Klasifikasi Citra  | Sampah | TrashNet |  d | engan  | Perbandingan |  Large-teacher, Assistant | , dan  | Self-distillation  | Mahasiswa | Hamza Pratama | 4611422068 | Program | S1 Teknik Informatika | FMIPA Universitas Negeri Semarang - 2026 | 01
+
+==== ppt/slides/slide2.xml ====
+ALUR PRESENTASI | Konteks dan masalah penelitian | Celah riset dan kebaruan | Rumusan masalah dan tujuan | Dataset TrashNet dan skema label | Model: EfficientNet-B4, Focus-RCNet, WasteNet | Strategi distilasi dan protokol eksperimen | Evaluasi, uji statistik, dan kontribusi | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 02
+
+==== ppt/slides/slide3.xml ====
+Masalah utama: akurasi perlu bertemu efisiensi | 03 | Pemilahan sampah manual masih rentan tidak konsisten, sementara CNN akurat sering terlalu berat untuk smart bin atau edge device. | Kebutuhan aplikasi | Klasifikasi cepat untuk cardboard, glass, metal, paper, plastic, dan trash. | Kendala deployment | Model besar membutuhkan komputasi tinggi, tidak ideal untuk perangkat terbatas. | Solusi riset | Knowledge distillation mentransfer dark knowledge dari teacher ke student ringan.
+
+==== ppt/slides/slide4.xml ====
+Celah riset: capacity gap pada student sangat kecil | 04 | Penelitian terdahulu seperti Focus-RCNet melaporkan akurasi sekitar 92% pada TrashNet dengan KD dari EfficientNet-B4. Namun, fokusnya belum pada perbandingan sistematis kapasitas teacher untuk student ultra-ringan. | Kebaruan yang diuji | • Menggunakan WasteNet-128K dan WasteNet-256K sebagai target student ringan. | • Membandingkan large-teacher, teacher-assistant, dan self-distillation secara terkontrol. | • Menggunakan dua ruang label: K6 dan K5 tanpa kelas trash. | • Memvalidasi selisih performa dengan uji statistik.
+
+==== ppt/slides/slide5.xml ====
+Rumusan masalah dan tujuan penelitian | 05 | 01 | Bagaimana membangun WasteNet ringan untuk klasifikasi citra sampah TrashNet dengan KD? | 02 | Bagaimana pengaruh kapasitas teacher terhadap performa student WasteNet? | 03 | Apakah performa model berbeda signifikan dibanding baseline tanpa KD? | Tujuan akhirnya adalah menentukan strategi distilasi paling efektif untuk student berkapasitas kecil pada klasifikasi sampah.
+
+==== ppt/slides/slide6.xml ====
+Dataset: TrashNet sebagai benchmark utama | 06 | 2.527 | citra sampah berlabel | 6 | kelas: cardboard, glass, metal, paper, plastic, trash | K6 / K5 | dua ruang label untuk menguji pengaruh kelas trash | 70/15/15 | split train, validation, test secara stratified | Kelas trash bersifat heterogen dan memiliki jumlah citra paling sedikit, sehingga proposal menguji skema K5 untuk melihat konsistensi efektivitas distilasi.
+
+==== ppt/slides/slide7.xml ====
+Tiga peran model di sepanjang kurva kapasitas | 07 | EfficientNet-B4 | 17,6 juta parameter | Guru besar dan batas atas performa. | Focus-RCNet | 520 ribu parameter | Teacher assistant untuk menjembatani capacity gap. | WasteNet | 128K / 256K parameter | Student ringan sebagai target deployment.
+
+==== ppt/slides/slide8.xml ====
+Strategi distilasi yang dibandingkan | 08 | Direct KD | EfficientNet-B4 -&gt; WasteNet | Transfer langsung dari guru besar; menguji risiko capacity gap. | TA-KD | Focus-RCNet -&gt; WasteNet | Teacher assistant menengah digunakan sebagai jembatan kapasitas. | Self-distillation | WasteNet gen. sebelumnya -&gt; WasteNet | Born-Again Networks dengan teacher berkapasitas sama. | L_KD = (1 − α)·L_CE + α·T²·D_KL(p_teacher ‖ p_student)
+
+==== ppt/slides/slide9.xml ====
+Prosedur penelitian | 09 | 01 | Studi literatur | KD, capacity gap, TA-KD, BAN, klasifikasi sampah. | 02 | Data dan manifest | TrashNet, deduplikasi, split deterministik per seed. | 03 | Perancangan model | Guru besar, asisten, dan dua varian WasteNet. | 04 | Pelatihan | Semua skenario memakai konfigurasi identik. | 05 | Evaluasi | Accuracy, macro F1-score, confusion matrix. | 06 | Uji statistik | Paired t-test, Wilcoxon, dan McNemar.
+
+==== ppt/slides/slide10.xml ====
+Teknik analisis data dan konfigurasi pelatihan | 10 | • Preprocessing: RGB, resize 380x380 untuk guru/asisten dan 160x160 untuk WasteNet. | • Augmentasi hanya pada data latih: flip, brightness/contrast, dan coarse dropout. | • Optimizer SGD momentum 0,9, weight decay 1e-4, cosine annealing. | • Pelatihan 100 epoch, mixed precision, checkpoint terbaik dari validation accuracy. | • Suhu (T) dan bobot α dipilih lewat pilot (seed 42) pada validasi, lalu dibekukan. | Replikasi eksperimen | 5 seed | 42, 123, 777, 2026, 3407 | Semua skenario memakai split dan konfigurasi yang sama agar perbandingan adil.
+
+==== ppt/slides/slide11.xml ====
+Skenario pengujian model | 11 | R1-R9 membentuk benchmark dari baseline, direct KD, teacher-assistant, hingga self-distillation. | Kode | Student | Guru soft-label | Peran | R1 | EfficientNet-B4 | - | Guru besar / batas atas | R2 | Focus-RCNet | - | Asisten menengah | R3 | WasteNet-128K | - | Baseline 128K | R4 | WasteNet-128K | EfficientNet-B4 | Direct KD | R5 | WasteNet-128K | Focus-RCNet | TA-KD 128K | R6 | WasteNet-256K | - | Baseline 256K | R7 | WasteNet-256K | EfficientNet-B4 | Direct KD | R8 | WasteNet-256K | Focus-RCNet | TA-KD 256K | R9 | WasteNet-256K | WasteNet-256K gen. sebelumnya | Self-distillation
+
+==== ppt/slides/slide12.xml ====
+Evaluasi dan validasi statistik | 12 | Metrik utama | • Accuracy | • Macro F1-score | • Confusion matrix | Uji antar-seed | • Paired t-test | • Wilcoxon signed-rank | • α = 0,05 | Uji sampel | • McNemar test | • Koreksi kontinuitas | • Pola benar-salah per sampel | Strategi dinyatakan unggul bila peningkatan performa konsisten terhadap baseline dan didukung hasil uji statistik.
+
+==== ppt/slides/slide13.xml ====
+Kontribusi yang diharapkan | 13 | Model ringan | untuk smart bin | Rekomendasi | strategi KD | Bukti empiris | capacity gap | Pertanyaan inti sempro: apakah teacher menengah lebih efektif daripada teacher besar ketika student sangat ringan?
+
+==== ppt/slides/slide14.xml ====
+Referensi utama | 14 | Zheng, D., dkk. (2023).  | Focus-RCNet: A lightweight recyclable waste classification algorithm based on focus and knowledge distillation. Vis. Comput. Ind. Biomed. Art, 6(19). | Hinton, G., Vinyals, O., &amp; Dean, J. (2015). Distilling the knowledge in a neural network. arXiv:1503.02531. | Mirzadeh, S. I., dkk. (2020). Improved knowledge distillation via teacher assistant. AAAI, 34(04), 5191-5198. | Furlanello, T., dkk. (2018). Born-again neural networks. ICML, PMLR 80, 1607-1616. | Cho, J. H., &amp; Hariharan, B. (2019). On the efficacy of knowledge distillation. ICCV, 4794-4802. | Tan, M., &amp; Le, Q. (2019). EfficientNet: Rethinking model scaling for convolutional neural networks. ICML, PMLR 97, 6105-6114. | Thung, G., &amp; Yang, M. (2016). Classification of trash for recyclability status. CS229 Project Report, Stanford University. | Demsar, J. (2006). Statistical comparisons of classifiers over multiple data sets. JMLR, 7, 1-30. | Dietterich, T. G. (1998). Approximate statistical tests for comparing supervised classification learning algorithms. Neural Computation, 10(7), 1895-1923. | Daftar lengkap mengikuti gaya APA edisi ke-7 pada dokumen proposal.
+
+==== ppt/slides/slide15.xml ====
+SEMINAR PROPOSAL SKRIPSI | Terima kasih | Terbuka untuk pertanyaan, saran, dan masukan dari dewan penguji. | Mahasiswa | Hamza Pratama | 4611422068 | Program | S1 Teknik Informatika | FMIPA Universitas Negeri Semarang - 2026 | 15
+

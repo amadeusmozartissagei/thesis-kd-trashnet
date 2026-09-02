@@ -1,0 +1,163 @@
+{"kind":"slide","id":"sl/jwmngt","slide":1,"title":"SEMINAR PROPOSAL SKRIPSI","textShapes":7}
+{"kind":"textbox","id":"sh/j6tovaho","slide":1,"textChars":24,"textLines":1}
+{"kind":"textbox","id":"sh/crmhk3q5","slide":1,"textChars":116,"textLines":1}
+{"kind":"shape","id":"sh/1cfa9w3m","slide":1,"name":"cover-band","bbox":[0,438,1280,282]}
+{"kind":"shape","id":"sh/uxc3ylc7","slide":1,"name":"marker","bbox":[454,489,27,27]}
+{"kind":"shape","id":"sh/ji5snelo","slide":1,"name":"marker","bbox":[865,489,27,27]}
+{"kind":"textbox","id":"sh/c3ylc7u5","slide":1,"textChars":9,"textLines":1}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":1,"textChars":24,"textLines":2}
+{"kind":"textbox","id":"sh/q5o7qpg3","slide":1,"textChars":7,"textLines":1}
+{"kind":"textbox","id":"sh/jqh0fepk","slide":1,"textChars":62,"textLines":2}
+{"kind":"textbox","id":"sh/fmlkjm1c","slide":1,"textChars":2,"textLines":1}
+{"kind":"slide","id":"sl/qcbc2h","slide":2,"title":"ALUR PRESENTASI","textShapes":4}
+{"kind":"textbox","id":"sh/1orytsvu","slide":2,"textChars":15,"textLines":1}
+{"kind":"textbox","id":"sh/u18jqh0f","slide":2,"textChars":244,"textLines":7}
+{"kind":"textbox","id":"sh/jm1cfa9w","slide":2,"textChars":20,"textLines":7}
+{"kind":"textbox","id":"sh/cfa9w3m9","slide":2,"textChars":2,"textLines":1}
+{"kind":"slide","id":"sl/j5gsjv","slide":3,"title":"Masalah utama: akurasi perlu bertemu efisiensi","textShapes":9}
+{"kind":"textbox","id":"sh/j6tovaho","slide":3,"textChars":46,"textLines":1}
+{"kind":"textbox","id":"sh/crmhk3q5","slide":3,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/1cfa9w3m","slide":3,"textChars":129,"textLines":1}
+{"kind":"shape","id":"sh/uxc3ylc7","slide":3,"name":"context-card-0","bbox":[42,282,375,296]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":3,"textChars":18,"textLines":1}
+{"kind":"textbox","id":"sh/c3ylc7u5","slide":3,"textChars":75,"textLines":1}
+{"kind":"shape","id":"sh/1kre1w7m","slide":3,"name":"context-card-1","bbox":[453,282,375,296]}
+{"kind":"textbox","id":"sh/q5o7qpg3","slide":3,"textChars":18,"textLines":1}
+{"kind":"textbox","id":"sh/jqh0fepk","slide":3,"textChars":79,"textLines":1}
+{"kind":"shape","id":"sh/fmlkjm1c","slide":3,"name":"context-card-2","bbox":[864,282,375,296]}
+{"kind":"textbox","id":"sh/q1orytsv","slide":3,"textChars":12,"textLines":1}
+{"kind":"textbox","id":"sh/xs72x4na","slide":3,"textChars":81,"textLines":1}
+{"kind":"slide","id":"sl/0d9b9s","slide":4,"title":"Celah riset: capacity gap pada student sangat kecil","textShapes":5}
+{"kind":"textbox","id":"sh/nih4byhg","slide":4,"textChars":51,"textLines":1}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":4,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/5o7qpg3e","slide":4,"textChars":214,"textLines":1}
+{"kind":"shape","id":"sh/ylc7u54z","slide":4,"name":"right-panel","bbox":[648,126,590,425]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":4,"textChars":19,"textLines":1}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":4,"textChars":280,"textLines":4}
+{"kind":"slide","id":"sl/bm9u62","slide":5,"title":"Rumusan masalah dan tujuan penelitian","textShapes":9}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":5,"textChars":37,"textLines":1}
+{"kind":"textbox","id":"sh/sji5snel","slide":5,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/h4byhgn2","slide":5,"name":"marker","bbox":[42,158,28,28]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":5,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/3m94fu18","slide":5,"textChars":86,"textLines":1}
+{"kind":"shape","id":"sh/s72x4nap","slide":5,"name":"rule","bbox":[178,244,780,1]}
+{"kind":"shape","id":"sh/lszqtcj6","slide":5,"name":"marker","bbox":[42,294,28,28]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":5,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/zidonyd0","slide":5,"textChars":72,"textLines":1}
+{"kind":"shape","id":"sh/re1w7mp0","slide":5,"name":"rule","bbox":[178,380,780,1]}
+{"kind":"shape","id":"sh/2t83itgf","slide":5,"name":"marker","bbox":[42,430,28,28]}
+{"kind":"textbox","id":"sh/9knih4by","slide":5,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/kzupwb2h","slide":5,"textChars":69,"textLines":1}
+{"kind":"shape","id":"sh/rqd4vmtw","slide":5,"name":"rule","bbox":[178,516,780,1]}
+{"kind":"textbox","id":"sh/25kb6xkf","slide":5,"textChars":125,"textLines":1}
+{"kind":"slide","id":"sl/abumi7","slide":6,"title":"Dataset: TrashNet sebagai benchmark utama","textShapes":11}
+{"kind":"textbox","id":"sh/lc7u54zi","slide":6,"textChars":41,"textLines":1}
+{"kind":"textbox","id":"sh/eloj2t83","slide":6,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/36hcrmhk","slide":6,"name":"metric-1","bbox":[42,170,270,230]}
+{"kind":"shape","id":"sh/wfyxobm5","slide":6,"name":"metric-2","bbox":[354,170,270,230]}
+{"kind":"shape","id":"sh/l0rqd4vm","slide":6,"name":"metric-3","bbox":[666,170,270,230]}
+{"kind":"shape","id":"sh/ed8bat47","slide":6,"name":"metric-4","bbox":[978,170,260,230]}
+{"kind":"textbox","id":"sh/7u54zido","slide":6,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":6,"textChars":21,"textLines":1}
+{"kind":"textbox","id":"sh/psfil0rq","slide":6,"textChars":1,"textLines":1}
+{"kind":"textbox","id":"sh/tsvu9kni","slide":6,"textChars":53,"textLines":1}
+{"kind":"textbox","id":"sh/47y1kre1","slide":6,"textChars":7,"textLines":1}
+{"kind":"textbox","id":"sh/bm58z25k","slide":6,"textChars":50,"textLines":1}
+{"kind":"textbox","id":"sh/m1cfa9w3","slide":6,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":6,"textChars":47,"textLines":1}
+{"kind":"textbox","id":"sh/4vmtwra5","slide":6,"textChars":156,"textLines":1}
+{"kind":"slide","id":"sl/fyzcv9","slide":7,"title":"Tiga peran model di sepanjang kurva kapasitas","textShapes":11}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":7,"textChars":45,"textLines":1}
+{"kind":"textbox","id":"sh/sji5snel","slide":7,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/h4byhgn2","slide":7,"name":"model-card-0","bbox":[42,190,375,370]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":7,"textChars":15,"textLines":1}
+{"kind":"textbox","id":"sh/3m94fu18","slide":7,"textChars":19,"textLines":1}
+{"kind":"textbox","id":"sh/s72x4nap","slide":7,"textChars":35,"textLines":1}
+{"kind":"shape","id":"sh/lszqtcj6","slide":7,"name":"model-card-1","bbox":[453,190,375,370]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":7,"textChars":11,"textLines":1}
+{"kind":"textbox","id":"sh/zidonyd0","slide":7,"textChars":18,"textLines":1}
+{"kind":"textbox","id":"sh/re1w7mp0","slide":7,"textChars":50,"textLines":1}
+{"kind":"shape","id":"sh/2t83itgf","slide":7,"name":"model-card-2","bbox":[864,190,375,370]}
+{"kind":"textbox","id":"sh/9knih4by","slide":7,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/kzupwb2h","slide":7,"textChars":21,"textLines":1}
+{"kind":"textbox","id":"sh/rqd4vmtw","slide":7,"textChars":41,"textLines":1}
+{"kind":"slide","id":"sl/x9dxx7","slide":8,"title":"Strategi distilasi yang dibandingkan","textShapes":12}
+{"kind":"textbox","id":"sh/4byhgn29","slide":8,"textChars":36,"textLines":1}
+{"kind":"textbox","id":"sh/bq1oryts","slide":8,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/m58z25kb","slide":8,"name":"marker","bbox":[42,232,32,32]}
+{"kind":"textbox","id":"sh/t83itgfm","slide":8,"textChars":9,"textLines":1}
+{"kind":"textbox","id":"sh/4nap4r65","slide":8,"textChars":27,"textLines":1}
+{"kind":"textbox","id":"sh/b2hwfyxo","slide":8,"textChars":63,"textLines":1}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":8,"name":"marker","bbox":[453,232,32,32]}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":8,"textChars":5,"textLines":1}
+{"kind":"textbox","id":"sh/4vmtwra5","slide":8,"textChars":23,"textLines":1}
+{"kind":"textbox","id":"sh/i5sneloj","slide":8,"textChars":64,"textLines":1}
+{"kind":"shape","id":"sh/7qpg3ex0","slide":8,"name":"marker","bbox":[864,232,32,32]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":8,"textChars":17,"textLines":1}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":8,"textChars":36,"textLines":1}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":8,"textChars":53,"textLines":1}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":8,"textChars":64,"textLines":1}
+{"kind":"slide","id":"sl/xsttha","slide":9,"title":"Prosedur penelitian","textShapes":20}
+{"kind":"textbox","id":"sh/s72x4nap","slide":9,"textChars":19,"textLines":1}
+{"kind":"textbox","id":"sh/3m94fu18","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":9,"textChars":15,"textLines":1}
+{"kind":"textbox","id":"sh/sji5snel","slide":9,"textChars":49,"textLines":1}
+{"kind":"shape","id":"sh/3ylc7u54","slide":9,"name":"rule","bbox":[42,300,335,1]}
+{"kind":"textbox","id":"sh/adsji5sn","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/hgn29gr2","slide":9,"textChars":17,"textLines":1}
+{"kind":"textbox","id":"sh/svu9knih","slide":9,"textChars":52,"textLines":1}
+{"kind":"shape","id":"sh/ed8bat47","slide":9,"name":"rule","bbox":[453,300,335,1]}
+{"kind":"textbox","id":"sh/7u54zido","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/wfyxobm5","slide":9,"textChars":17,"textLines":1}
+{"kind":"textbox","id":"sh/l0rqd4vm","slide":9,"textChars":45,"textLines":1}
+{"kind":"shape","id":"sh/eloj2t83","slide":9,"name":"rule","bbox":[864,300,335,1]}
+{"kind":"textbox","id":"sh/36hcrmhk","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/wra5gbq1","slide":9,"textChars":9,"textLines":1}
+{"kind":"textbox","id":"sh/lc7u54zi","slide":9,"textChars":43,"textLines":1}
+{"kind":"shape","id":"sh/epkzupwb","slide":9,"name":"rule","bbox":[42,520,335,1]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/z61032ls","slide":9,"textChars":8,"textLines":1}
+{"kind":"textbox","id":"sh/al87ed8b","slide":9,"textChars":43,"textLines":1}
+{"kind":"shape","id":"sh/hcrmhk3q","slide":9,"name":"rule","bbox":[453,520,335,1]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":9,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":9,"textChars":13,"textLines":1}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":9,"textChars":37,"textLines":1}
+{"kind":"shape","id":"sh/h0fepkzu","slide":9,"name":"rule","bbox":[864,520,335,1]}
+{"kind":"slide","id":"sl/z4n8hb","slide":10,"title":"Teknik analisis data dan konfigurasi pelatihan","textShapes":6}
+{"kind":"textbox","id":"sh/oza1gvy9","slide":10,"textChars":46,"textLines":1}
+{"kind":"textbox","id":"sh/zed8v6ps","slide":10,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/6xkf6dcb","slide":10,"textChars":318,"textLines":4}
+{"kind":"shape","id":"sh/hwfyxobm","slide":10,"name":"seed-panel","bbox":[690,150,450,310]}
+{"kind":"textbox","id":"sh/obm58z25","slide":10,"textChars":20,"textLines":1}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":10,"textChars":6,"textLines":1}
+{"kind":"textbox","id":"sh/65wjudg7","slide":10,"textChars":104,"textLines":3}
+{"kind":"slide","id":"sl/yf3ugb","slide":11,"title":"Skenario pengujian model","textShapes":3}
+{"kind":"textbox","id":"sh/kb6xkf6d","slide":11,"textChars":24,"textLines":1}
+{"kind":"textbox","id":"sh/rqd4vmtw","slide":11,"textChars":2,"textLines":1}
+{"kind":"textbox","id":"sh/25kb6xkf","slide":11,"textChars":96,"textLines":1}
+{"kind":"table","id":"tb/sji5snel","slide":11,"name":"","rows":10,"cols":4,"preview":"Kode | Student | Guru soft-label | Peran","bbox":[42,178,1196,440]}
+{"kind":"slide","id":"sl/gpcwna","slide":12,"title":"Evaluasi dan validasi statistik","textShapes":9}
+{"kind":"textbox","id":"sh/m94fu18j","slide":12,"textChars":31,"textLines":1}
+{"kind":"textbox","id":"sh/x0nuxc3y","slide":12,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/4fu18jqh","slide":12,"name":"eval-card-0","bbox":[42,210,375,330]}
+{"kind":"textbox","id":"sh/fil0rqd4","slide":12,"textChars":12,"textLines":1}
+{"kind":"textbox","id":"sh/qxs72x4n","slide":12,"textChars":46,"textLines":3}
+{"kind":"shape","id":"sh/xobm58z2","slide":12,"name":"eval-card-1","bbox":[453,210,375,330]}
+{"kind":"textbox","id":"sh/83itgfml","slide":12,"textChars":14,"textLines":1}
+{"kind":"textbox","id":"sh/fepkzupw","slide":12,"textChars":53,"textLines":3}
+{"kind":"shape","id":"sh/mtwra5gb","slide":12,"name":"eval-card-2","bbox":[864,210,375,330]}
+{"kind":"textbox","id":"sh/oj2t83it","slide":12,"textChars":10,"textLines":1}
+{"kind":"textbox","id":"sh/d4vmtwra","slide":12,"textChars":66,"textLines":3}
+{"kind":"textbox","id":"sh/6dcbulwv","slide":12,"textChars":114,"textLines":1}
+{"kind":"slide","id":"sl/xpwr60","slide":13,"title":"Kontribusi yang diharapkan","textShapes":6}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":13,"textChars":26,"textLines":1}
+{"kind":"textbox","id":"sh/wjudg7ad","slide":13,"textChars":2,"textLines":1}
+{"kind":"shape","id":"sh/p4r65wju","slide":13,"name":"marker","bbox":[42,360,34,34]}
+{"kind":"shape","id":"sh/i5sneloj","slide":13,"name":"marker","bbox":[454,360,34,34]}
+{"kind":"shape","id":"sh/7qpg3ex0","slide":13,"name":"marker","bbox":[866,360,34,34]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":13,"textChars":28,"textLines":2}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":13,"textChars":23,"textLines":2}
+{"kind":"textbox","id":"sh/itgfmlkj","slide":13,"textChars":26,"textLines":2}
+{"kind":"textbox","id":"sh/7ed8bat4","slide":13,"textChars":114,"textLines":1}
+{"kind":"notice","message":"Truncated: omitted 0 lines. Increase maxChars or narrow target."}
