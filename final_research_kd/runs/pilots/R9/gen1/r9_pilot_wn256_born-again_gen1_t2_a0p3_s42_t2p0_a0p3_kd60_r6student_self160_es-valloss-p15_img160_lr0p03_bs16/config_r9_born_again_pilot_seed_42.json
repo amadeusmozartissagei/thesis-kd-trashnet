@@ -1,0 +1,112 @@
+{
+  "experiment_id": "R9",
+  "experiment_name": "R9 WasteNet-256K Born-Again KD",
+  "seed": 42,
+  "run_phase": "pilot",
+  "setup_id": "r9_pilot_wn256_born-again_gen1_t2_a0p3_s42_t2p0_a0p3_kd60_r6student_self160_es-valloss-p15_img160_lr0p03_bs16",
+  "pilot_preset": "t2_a0p3",
+  "output_root": "/kaggle/working/final_research_kd/runs",
+  "output_dir": "/kaggle/working/final_research_kd/runs/pilots/R9/gen1/r9_pilot_wn256_born-again_gen1_t2_a0p3_s42_t2p0_a0p3_kd60_r6student_self160_es-valloss-p15_img160_lr0p03_bs16",
+  "dataset_dir": "/kaggle/input/datasets/feyzazkefe/trashnet/dataset-resized",
+  "r0_dir": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol",
+  "manifest_path": "/kaggle/input/notebooks/hamzapratama/notebook0-r0-final-data-protocol-setup/final_research/r0_data_protocol/split_manifest_seed_42.csv",
+  "teacher_checkpoint_path": "/kaggle/input/datasets/hamzapratama/output-notebook6-r6-wastenet-256k-ce-baseline/final_research_kd/runs/final/R6/seed_42/wastenet_256k_ce_baseline_r6_final_seed_42_best.pth",
+  "teacher_model_name": "WasteNet-256K",
+  "teacher_variant_id": "wastenet_256k",
+  "ban_generation": 1,
+  "model_name": "WasteNet-256K",
+  "variant_id": "wastenet_256k",
+  "variant": {
+    "channels": [
+      16,
+      32,
+      72,
+      128,
+      224
+    ],
+    "repeats": [
+      1,
+      1,
+      2,
+      1
+    ],
+    "expand_ratio": 2.5,
+    "classifier_hidden": 0,
+    "expected_params": 256002
+  },
+  "training_mode": "born_again",
+  "knowledge_distillation": true,
+  "kd_type": "logits_self_born_again",
+  "kd_temperature": 2.0,
+  "kd_alpha": 0.3,
+  "pilot_grid_temperatures": [
+    2.0,
+    4.0
+  ],
+  "pilot_grid_alphas": [
+    0.1,
+    0.3
+  ],
+  "pilot_anchor": {
+    "temperature": 4.0,
+    "alpha": 0.1
+  },
+  "pilot_configs": {
+    "t4_a0p1": {
+      "temperature": 4.0,
+      "alpha": 0.1,
+      "priority": 0
+    },
+    "t2_a0p1": {
+      "temperature": 2.0,
+      "alpha": 0.1,
+      "priority": 1
+    },
+    "t2_a0p3": {
+      "temperature": 2.0,
+      "alpha": 0.3,
+      "priority": 2
+    }
+  },
+  "pilot_queue": [
+    "t4_a0p1",
+    "t2_a0p1",
+    "t2_a0p3"
+  ],
+  "student_img_size": 160,
+  "teacher_img_size": 160,
+  "paired_augmentation": false,
+  "student_transform_matches_r6": true,
+  "teacher_view": "clean_resize_160",
+  "pipeline_tag": "r6student_self160",
+  "epochs": 60,
+  "final_epochs": 100,
+  "pilot_epochs": 60,
+  "batch_size": 16,
+  "optimizer": "SGD",
+  "lr": 0.03,
+  "momentum": 0.9,
+  "weight_decay": 0.0001,
+  "scheduler": "CosineAnnealingLR",
+  "use_amp": true,
+  "early_stopping": true,
+  "evaluate_test": false,
+  "early_stopping_monitor": "val_loss",
+  "patience": 15,
+  "checkpoint_metric": "best_val_accuracy",
+  "num_classes": 6,
+  "class_names": [
+    "cardboard",
+    "glass",
+    "metal",
+    "paper",
+    "plastic",
+    "trash"
+  ],
+  "train_size": 1764,
+  "val_size": 378,
+  "test_size": 379,
+  "total_params": 256002,
+  "trainable_params": 256002,
+  "total_train_time_sec": 340.4848966598511
+}

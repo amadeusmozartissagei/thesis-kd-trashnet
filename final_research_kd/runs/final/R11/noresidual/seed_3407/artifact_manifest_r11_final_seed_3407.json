@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-07-18T08:18:25.308189+00:00",
+  "experiment_id": "R11",
+  "seed": 3407,
+  "run_phase": "final",
+  "setup_id": "r11_final_wn256_abl-noresidual_s3407_e100_img160_lr0p03_bs16",
+  "output_dir": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/wastenet_256k_abl-noresidual_r11_final_seed_3407_best.pth",
+    "config": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/config_r11_final_seed_3407.json",
+    "history": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/training_history_r11_final_seed_3407.csv",
+    "metrics": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/metrics_r11_final_seed_3407.csv",
+    "val_predictions": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/predictions_r11_final_seed_3407_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/predictions_r11_final_seed_3407_test.csv",
+    "val_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/confusion_matrix_val.png",
+    "test_confusion_matrix": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/confusion_matrix_test.png",
+    "training_curves": "/kaggle/working/final_research_kd/runs/final/R11/noresidual/seed_3407/training_curves_r11_final_seed_3407.png"
+  }
+}

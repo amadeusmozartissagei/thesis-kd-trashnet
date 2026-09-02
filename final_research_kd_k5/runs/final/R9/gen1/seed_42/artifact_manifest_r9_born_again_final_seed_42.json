@@ -1,0 +1,25 @@
+{
+  "generated_at_utc": "2026-06-26T06:07:09.784766+00:00",
+  "experiment_id": "R9",
+  "dataset_name": "TrashNet-K5",
+  "dataset_version": 2,
+  "seed": 42,
+  "run_phase": "final",
+  "training_mode": "born_again",
+  "pilot_preset": null,
+  "kd_temperature": 4.0,
+  "kd_alpha": 0.1,
+  "setup_id": "r9_k5_final_wn256_born-again_gen1_s42_t4p0_a0p1_kd100_img160_lr0p03_bs16",
+  "output_dir": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42",
+  "artifacts": {
+    "checkpoint": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/wastenet_256k_born_again_gen1_r9_born_again_final_seed_42_best.pth",
+    "config": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/config_r9_born_again_final_seed_42.json",
+    "history": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/training_history_r9_born_again_final_seed_42.csv",
+    "metrics": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/metrics_r9_born_again_final_seed_42.csv",
+    "val_predictions": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/predictions_r9_born_again_final_seed_42_val.csv",
+    "test_predictions": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/predictions_r9_born_again_final_seed_42_test.csv",
+    "val_confusion_matrix": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/confusion_matrix_val.png",
+    "test_confusion_matrix": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/confusion_matrix_test.png",
+    "training_curves": "/kaggle/working/final_research_kd_k5/runs/final/R9/gen1/seed_42/training_curves_r9_born_again_final_seed_42.png"
+  }
+}

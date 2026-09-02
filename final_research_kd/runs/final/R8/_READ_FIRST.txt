@@ -1,0 +1,7 @@
+ANGKA R8 (K6) YANG DILAPORKAN = 0.7873 (test acc, 5-seed) -- student TERBAIK
+  Sumber: seed_*/ta_t4_a0p5_lr1em4_av380/   (assistant = Focus-RCNet CE / R2 ce_baseline)
+
+JANGAN pakai: seed_*/config_r8_ta_kd_final_seed_*.json (langsung di seed_*)
+  -> itu VARIAN ABLATION assistant TERDISTILASI (R2/direct_kd), angkanya 0.7884, BUKAN yang dilaporkan.
+
+Distilled vs CE = wash (n.s.); lihat RESULTS_SUMMARY_K5_K6.md -> bagian "Provenance" + Tabel 2.

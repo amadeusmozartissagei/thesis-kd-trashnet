@@ -1,0 +1,4 @@
+preset,temperature,alpha,best_epoch,val_accuracy,val_f1_macro,val_auc,setup_id
+t4_a0p1,4.0,0.1,52,0.8184357541899442,0.8180512980580529,0.9567562612609267,r9_k5_pilot_wn256_born-again_gen1_t4_a0p1_s42_t4p0_a0p1_kd60_es-valloss-p15_img160_lr0p03_bs16
+t2_a0p1,2.0,0.1,44,0.8016759776536313,0.7951700598461822,0.9524555972964729,r9_k5_pilot_wn256_born-again_gen1_t2_a0p1_s42_t2p0_a0p1_kd60_es-valloss-p15_img160_lr0p03_bs16
+t2_a0p3,2.0,0.3,32,0.7821229050279329,0.7768785889412457,0.9496053664133299,r9_k5_pilot_wn256_born-again_gen1_t2_a0p3_s42_t2p0_a0p3_kd60_es-valloss-p15_img160_lr0p03_bs16

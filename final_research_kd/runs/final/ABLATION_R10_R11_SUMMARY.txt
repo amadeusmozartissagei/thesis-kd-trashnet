@@ -1,0 +1,75 @@
+
+========================================================================
+R10  (WasteNet-128K)
+========================================================================
+
+[baseline]  params=128,086  param-free (clean)
+    note: Baseline penuh (SiLU, expand 2.0, classifier hidden 32)
+    acc  = 0.7689 +/- 0.0172   (n=5)
+    f1m  = 0.7451 +/- 0.0158
+
+[relu]  params=128,086  param-free (clean)
+    note: Aktivasi SiLU -> ReLU (bebas parameter)
+    acc  = 0.7156 +/- 0.0193   (n=5)
+    f1m  = 0.6675 +/- 0.0292
+    d_acc vs baseline = -5.33pp  (wins 0/5)   per-seed: -2.4, -4.7, -5.3, -7.9, -6.3
+    d_f1  vs baseline = -7.76pp
+
+[expand1]  params=45,638  CONFOUNDED (params -82448)
+    note: Expand ratio inverted-residual 2.0 -> 1.0 (parameter berubah)
+    acc  = 0.7689 +/- 0.0198   (n=5)
+    f1m  = 0.7427 +/- 0.0303
+    d_acc vs baseline = +0.00pp  (wins 3/5)   per-seed: +1.6, -2.6, +2.4, -4.5, +3.2
+    d_f1  vs baseline = -0.23pp
+
+[nohidden]  params=122,870  CONFOUNDED (params -5216)
+    note: Hapus hidden layer classifier 32 -> 0 (parameter berubah)
+    acc  = 0.7646 +/- 0.0192   (n=5)
+    f1m  = 0.7428 +/- 0.0187
+    d_acc vs baseline = -0.42pp  (wins 1/5)   per-seed: -1.1, -1.3, -2.1, -0.3, +2.6
+    d_f1  vs baseline = -0.23pp
+
+========================================================================
+R11  (WasteNet-256K)
+========================================================================
+
+[baseline]  params=256,002  param-free (clean)
+    note: Baseline penuh (SiLU, expand 2.5, residual aktif)
+    acc  = 0.7694 +/- 0.0164   (n=5)
+    f1m  = 0.7433 +/- 0.0253
+
+[relu]  params=256,002  param-free (clean)
+    note: Aktivasi SiLU -> ReLU (bebas parameter)
+    acc  = 0.7873 +/- 0.0223   (n=5)
+    f1m  = 0.7573 +/- 0.0288
+    d_acc vs baseline = +1.79pp  (wins 3/5)   per-seed: +5.5, -0.3, -2.4, +3.4, +2.6
+    d_f1  vs baseline = +1.39pp
+
+[noresidual]  params=256,002  param-free (clean)
+    note: Hapus koneksi residual pada stage repeat-2 (bebas parameter)
+    acc  = 0.7662 +/- 0.0130   (n=5)
+    f1m  = 0.7401 +/- 0.0248
+    d_acc vs baseline = -0.32pp  (wins 3/5)   per-seed: +1.1, -1.6, -2.6, +0.3, +1.3
+    d_f1  vs baseline = -0.32pp
+
+[expand1]  params=64,206  CONFOUNDED (params -191796)
+    note: Expand ratio inverted-residual 2.5 -> 1.0 (parameter berubah)
+    acc  = 0.7689 +/- 0.0091   (n=5)
+    f1m  = 0.7436 +/- 0.0089
+    d_acc vs baseline = -0.05pp  (wins 3/5)   per-seed: +1.1, -1.3, -1.1, +0.8, +0.3
+    d_f1  vs baseline = +0.03pp
+
+
+### COMPACT TABLE (test acc, mean +/- std) ###
+
+R10 WasteNet-128K
+  baseline     0.7689 +/- 0.0172
+  relu         0.7156 +/- 0.0193  (-5.33pp)
+  expand1      0.7689 +/- 0.0198  (+0.00pp)  [params -82448]
+  nohidden     0.7646 +/- 0.0192  (-0.42pp)  [params -5216]
+
+R11 WasteNet-256K
+  baseline     0.7694 +/- 0.0164
+  relu         0.7873 +/- 0.0223  (+1.79pp)
+  noresidual   0.7662 +/- 0.0130  (-0.32pp)
+  expand1      0.7689 +/- 0.0091  (-0.05pp)  [params -191796]
